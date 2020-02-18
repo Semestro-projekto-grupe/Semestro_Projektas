@@ -20,5 +20,6 @@ namespace Semestro_projektas
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>();
+        ///change 1
     }
 }
