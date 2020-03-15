@@ -21,6 +21,6 @@ namespace Semestro_projektas
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>();
         ///change 1
-        /////kk
+        /////kk/
     }
 }
