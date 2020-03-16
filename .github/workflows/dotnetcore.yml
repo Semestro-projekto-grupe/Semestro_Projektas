@@ -16,6 +16,6 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.1
+        dotnet-version: 2.2.108
     - name: Build with dotnet
       run: dotnet build Semestro_projektas_Semestro_projektas/Semestro_projektas.csproj --configuration Release
