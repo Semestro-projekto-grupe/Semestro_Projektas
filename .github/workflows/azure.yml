@@ -16,7 +16,7 @@ on:
 # 2. Change these variables for your configuration:
 env:
   AZURE_WEBAPP_NAME: 'Semestroprojektas20200315105724'    # set this to your application's name
-  AZURE_WEBAPP_PACKAGE_PATH: 'semestroprojektas20200315105724.scm.azurewebsites.net:443'      # set this to the path to your web app project, defaults to the repository root
+  AZURE_WEBAPP_PACKAGE_PATH: 'https://semestroprojektas20200315105724.azurewebsites.net'      # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '2.2.108'           # set this to the dot net version to use
 
 jobs:
