@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Semestro_projektas.Data;
+using Semestro_projektas.Data.Repository;
 
 namespace Semestro_projektas
 {
@@ -28,6 +29,8 @@ namespace Semestro_projektas
         {
 
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration["DefaultConnection"]));
+
+            services.AddTransient<IRepository, Repository>();
 
             services.Configure<CookiePolicyOptions>(options =>
             {

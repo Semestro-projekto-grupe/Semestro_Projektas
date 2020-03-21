@@ -1,0 +1,22 @@
+﻿@model  IEnumerable<Post>
+@{
+}
+
+<h2>Įvesti duomenys</h2>
+
+
+<table class="table">
+    <tr>
+        <th><b>Pavadinimas</b></th>
+        <th><b>Reikšmė</b></th>
+        <th><b>Data</b></th>
+    </tr>
+    @foreach (var post in Model)
+    {
+        <tr>
+            <th>@post.Title</th>
+            <th>@post.Body</th>
+            <th>@post.Created</th>
+        </tr>
+    }
+</table>

@@ -5,17 +5,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Semestro_projektas.Data;
+using Semestro_projektas.Data.Repository;
 using Semestro_projektas.Models;
 
 namespace Semestro_projektas.Controllers
 {
     public class HomeController : Controller
     {
-        private AppDbContext _ctx;
+        private IRepository _repo; //Database repo
 
-        public HomeController(AppDbContext ctx)
+        public HomeController(IRepository repo)
         {
-            _ctx = ctx;
+            _repo = repo;
         }
 
 
@@ -61,6 +62,12 @@ namespace Semestro_projektas.Controllers
             return View();
         }
 
+        public IActionResult AllPosts()
+        {
+            var posts = _repo.GetAllPosts();
+            return View(posts);
+        }
+
 
         [HttpGet]
         public IActionResult Edit()
@@ -71,11 +78,16 @@ namespace Semestro_projektas.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(Post post)
         {
-            _ctx.Posts.Add(post);
+            _repo.AddPost(post);
 
-            await _ctx.SaveChangesAsync();
+            if (await _repo.SaveChangesAsync())
+            {
+                return RedirectToAction("Index");
+            }
+            else {
+                return View(post);
+            }
 
-            return RedirectToAction("Index");
         }
 
 
