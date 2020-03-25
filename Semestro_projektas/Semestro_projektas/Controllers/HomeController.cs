@@ -62,6 +62,11 @@ namespace Semestro_projektas.Controllers
             return View();
         }
 
+        public IActionResult Chat()
+        {
+            return View();
+        }
+
         public IActionResult AllPosts()
         {
             var posts = _repo.GetAllPosts();

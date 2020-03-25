@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Semestro_projektas.Data;
 using Semestro_projektas.Data.Repository;
+using Semestro_projektas.SignalR.Hubs;
 
 namespace Semestro_projektas
 {
@@ -41,6 +42,8 @@ namespace Semestro_projektas
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -66,6 +69,12 @@ namespace Semestro_projektas
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<ChatHub>("/chatHub");
+            });
+
         }
     }
 }
