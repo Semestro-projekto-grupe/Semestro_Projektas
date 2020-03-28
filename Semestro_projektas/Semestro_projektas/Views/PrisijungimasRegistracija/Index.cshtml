@@ -51,6 +51,7 @@
         background-color: aqua;
         position: relative;
         right: 5px;
+        width: 115px;
     }
 
     .box-shadow {
@@ -164,8 +165,8 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-sm-2 col-form-label label">Gimimo data:</label>
-                    <select class="form-control w-date left2" onchange="setDay()" id="year">
+                    <label class="col-sm-2 col-form-label">Gimimo data:</label>
+                    <select class="form-control col-sm-2 w-date left2" onchange="setDay()" id="year">
 
                         <option value=—>——</option>
                         @for (int i = DateTime.Today.Year - 14; i >= DateTime.Today.Year - 100; i--)
@@ -173,7 +174,7 @@
                             <option value=@i>@i</option>
                         }
                     </select>
-                    <select class="form-control w-2 left2" onchange="setDay()" id="month">
+                    <select class="form-control col-sm-2 w-2 left2" onchange="setDay()" id="month">
                         <option value=—>—</option>
                         @for (int i = 1; i <= 12; i++)
                         {
@@ -192,7 +193,7 @@
                     @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
                 </div>
                 <div class="form-group row w-2 left">
-                    <button type="submit" class="form-control button" onchange="call()" id="btn1">Registruotis</button>
+                    <button type="submit" class="form-control button" id="btn1">Registruotis</button>
                 </div>
                 <input hidden id="data" value="-" name="data" />
             </dataInput>
