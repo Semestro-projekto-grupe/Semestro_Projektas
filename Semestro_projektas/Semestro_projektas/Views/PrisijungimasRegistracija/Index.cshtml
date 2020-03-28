@@ -46,6 +46,10 @@
         position: relative;
         left: -3px;
     }
+    .right{
+        position:relative;
+        left: 6px;
+    }
 
     .button {
         background-color: aqua;
@@ -69,10 +73,11 @@
     }
 </style>
 <!DOCTYPE html>
-<html>
-<head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script>
+<form asp-controller="PrisijungimasRegistracija" asp-action="Index" method="post">
+    <html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script>
         $(document).ready(function () {
             dataBack(@ViewData["year"] + "", @ViewData["month"] + "", @ViewData["day"] + "", @DateTime.Now.Year - 13);
             date();
@@ -115,10 +120,9 @@
         function date() {
             $('#data').val($("#year").val() + "-" + $("#month").val() + "-" + $("#day").val());
         }
-    </script>
-</head>
-@using (Html.BeginForm("Index", "", FormMethod.Post))
-{
+        </script>
+    </head>
+
     <body>
         <br><br>
         <nav class=" box-shadow box">
@@ -190,7 +194,7 @@
                     </select>
                 </div>
                 <div class="form-group row validation2">
-                    @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+                    @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger right" })
                 </div>
                 <div class="form-group row w-2 left">
                     <button type="submit" class="form-control button" id="btn1">Registruotis</button>
@@ -199,6 +203,6 @@
             </dataInput>
         </nav>
     </body>
-}
 </html>
+</form>
 
