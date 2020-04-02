@@ -73,7 +73,7 @@
     }
 </style>
 <!DOCTYPE html>
-<form asp-controller="PrisijungimasRegistracija" asp-action="Index" method="post">
+<form asp-controller="LoginRegister" asp-action="Register" method="post">
     <html>
     <head>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -197,7 +197,7 @@
                     @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger right" })
                 </div>
                 <div class="form-group row w-2 left">
-                    <button type="submit" class="form-control button" id="btn1">Registruotis</button>
+                    <button type="submit" class="form-control button">Registruotis</button>
                 </div>
                 <input hidden id="data" value="-" name="data" />
             </dataInput>

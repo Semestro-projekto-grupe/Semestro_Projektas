@@ -19,7 +19,7 @@ namespace Semestro_projektas.Models
         [Required]
         public string Surname { get; set; }
         [DisplayName("Slaptažodis:")]
-        [Required(ErrorMessage = "Vienas iš dviejų Slaptažodis: laukelių tuščias")]
+        [Required(ErrorMessage = "Neįvestas slaptažodis!")]
         [MinLength(6, ErrorMessage = "Minimalus slaptažodžio ilgis 6 simboliai!")]
         [MaxLength(16, ErrorMessage = "Maksimalus slaptažodžio ilgis 20 simbolių!")]
         public string Password { get; set; }

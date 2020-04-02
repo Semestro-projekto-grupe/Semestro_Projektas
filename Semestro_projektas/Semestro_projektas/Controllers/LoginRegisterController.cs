@@ -4,16 +4,59 @@ using Semestro_projektas.Models;
 
 namespace Semestro_projektas.Controllers
 {
-    public class PrisijungimasRegistracijaController : Controller
+    public class LoginRegisterController : Controller
     {
-        public IActionResult Index()
+
+        public ActionResult Login()
         {
             User user = new User();
             return View(user);
         }
 
         [HttpPost]
-        public ActionResult Index(User user, string pass, string password, string data)
+        public ActionResult Login(User user, string submitButton)
+        {
+            try
+            {
+                if (submitButton == "Check")
+                    {
+                        // = kintamasis iš duomenų bazės
+                        if (user.NickName != "NickNameIšDuomenųBazės" && user.Password != "PasswordIšDuomenųBazės") //-- papildyti
+                        {
+                            ModelState.AddModelError("NickName", "Vartotojas tokiu slapyvardžiu nerastas!");
+                            ModelState.AddModelError("Password", "Neteisingas slaptažodis!");
+                            return View(user);
+                        }
+                        if (user.NickName != "NickNameIšDuomenųBazės") // -- serverio validacija //pakeisti
+                        {
+                            ModelState.AddModelError("NickName", "Vartotojas tokiu slapyvardžiu nerastas!");
+                        return View(user);
+                        }
+                        if (user.Password != "PasswordIšDuomenųBazės") // -- serverio validacija //pakeisti
+                        {
+                            ModelState.AddModelError("Password", "Neteisingas slaptažodis!");
+                        return View(user);
+                        }
+                        return RedirectToAction("Index", "Home"); //-- teisingo patvirtino atveju nukreipimas į kitą valdiklį 
+                                                                  //tačiau be serverio validacijos šiuo metu neveikia
+                }
+                else
+                    return RedirectToAction("Register", "LoginRegister");
+            }
+            catch (Exception)
+            {
+                return View(user);
+            }
+        }
+
+        public IActionResult Register()
+        {
+            User user = new User();
+            return View(user);
+        }
+
+        [HttpPost]
+        public ActionResult Register(User user, string pass, string password, string data)
         {
             DataBack(data);
             try
