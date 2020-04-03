@@ -38,7 +38,7 @@ namespace Semestro_projektas
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequiredLength = 6;
-                options.User.AllowedUserNameCharacters = String.Empty;
+                options.User.AllowedUserNameCharacters = String.Empty; 
             })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>();

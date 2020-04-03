@@ -109,6 +109,12 @@ namespace Semestro_projektas.Controllers
                     user.Password = pass; //Užkraunamas slaptažodis į objektą
                     user.Date = Convert.ToDateTime(data); //Užkraunama data į objektą
 
+                    string fixedName = user.Name.Substring(0, 1).ToUpper() + user.Name.Substring(1);
+                    user.Name = fixedName;
+
+                    string fixedSurname = user.Surname.Substring(0, 1).ToUpper() + user.Surname.Substring(1);
+                    user.Surname = fixedSurname;
+
                     user.UserName = user.NickName;
 
                     bool register = _repo.RegisterUser(user, user.Password, userManager, roleManager);
