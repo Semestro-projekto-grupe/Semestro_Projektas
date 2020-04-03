@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Semestro_projektas.Models;
 
 namespace Semestro_projektas.Data.Repository
@@ -54,6 +55,48 @@ namespace Semestro_projektas.Data.Repository
             }
             return false;
         }
+
+
+
+
+
+         public bool RegisterUser(User user, string password, UserManager<User> userManager,
+             RoleManager<IdentityRole> roleManager) {
+             //var userManager = UserManager<User>;
+             //var roleManager = RoleManager<IdentityRole>;
+
+             _ctx.Database.EnsureCreated();
+
+             var userRole = new IdentityRole("ChatUser");
+             if (!_ctx.Roles.Any(r => r == userRole))
+             {
+                 //sukurti role
+                 roleManager.CreateAsync(userRole).GetAwaiter().GetResult();
+
+
+             }
+
+            if (!_ctx.Users.Any(u => u.UserName == user.UserName))
+            {
+
+                var result = userManager.CreateAsync(user, password)
+                   .GetAwaiter().GetResult();
+
+                //prideti vartotojui role
+                userManager.AddToRoleAsync(user, userRole.Name).GetAwaiter().GetResult();
+
+                return true;
+
+            }
+            else {
+                
+                return false;
+            }
+
+
+
+         }
+
 
 
     }

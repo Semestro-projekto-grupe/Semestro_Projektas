@@ -6,12 +6,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Semestro_projektas.Data;
 using Semestro_projektas.Data.Repository;
+using Semestro_projektas.Models;
 using Semestro_projektas.SignalR.Hubs;
 
 namespace Semestro_projektas
@@ -30,6 +32,17 @@ namespace Semestro_projektas
         {
 
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration["DefaultConnection"]));
+
+            services.AddDefaultIdentity<User>(options => { //slaptazodzio nustatymai
+                options.Password.RequireDigit = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 6;
+                options.User.AllowedUserNameCharacters = String.Empty;
+            })
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<AppDbContext>();
+
 
             services.AddTransient<IRepository, Repository>();
 
@@ -62,6 +75,7 @@ namespace Semestro_projektas
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
@@ -76,5 +90,8 @@ namespace Semestro_projektas
             });
 
         }
+
+
+        
     }
 }

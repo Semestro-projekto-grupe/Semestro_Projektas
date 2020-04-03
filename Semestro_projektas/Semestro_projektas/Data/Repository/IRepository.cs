@@ -1,4 +1,5 @@
-﻿using Semestro_projektas.Models;
+﻿using Microsoft.AspNetCore.Identity;
+using Semestro_projektas.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,9 @@ namespace Semestro_projektas.Data.Repository
         void UpdatePost(Post post);
 
         Task<bool> SaveChangesAsync();
+
+        bool RegisterUser(User user, string password, UserManager<User> userManager,
+             RoleManager<IdentityRole> roleManager);
 
     }
 }

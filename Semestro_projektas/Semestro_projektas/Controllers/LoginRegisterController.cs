@@ -1,11 +1,27 @@
 ﻿using System;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Semestro_projektas.Data.Repository;
 using Semestro_projektas.Models;
 
 namespace Semestro_projektas.Controllers
 {
     public class LoginRegisterController : Controller
     {
+
+        private readonly UserManager<User> userManager;
+        private SignInManager<User> signInManager;
+        private readonly RoleManager<IdentityRole> roleManager;
+        private IRepository _repo; //Database repo
+
+        public LoginRegisterController(UserManager<User> userManager,
+            RoleManager<IdentityRole> roleManager, SignInManager<User> signInManager, IRepository repo) {
+            this.userManager = userManager;
+            this.roleManager = roleManager;
+            this.signInManager = signInManager;
+            _repo = repo;
+        }
+
 
         public ActionResult Login()
         {
@@ -92,6 +108,14 @@ namespace Semestro_projektas.Controllers
                     //Duomenų perkėlimas į duomenų bazę
                     user.Password = pass; //Užkraunamas slaptažodis į objektą
                     user.Date = Convert.ToDateTime(data); //Užkraunama data į objektą
+
+                    user.UserName = user.NickName;
+
+                    bool register = _repo.RegisterUser(user, user.Password, userManager, roleManager);
+                    if (!register) {
+                        ModelState.AddModelError("NickName", "Toks vartotojo vardas jau egzistuoja!");
+                        return View(user);
+                    }
                     return RedirectToAction("Index", "Home"); // Nukėlimas į kitą kontrolerį arba sekantį šio kontrolerio langą + registracija sėkminga galima prisijungti
                 }
                 return View(user); //Perkėlimas į sekančio kontrolerio vaizdą
