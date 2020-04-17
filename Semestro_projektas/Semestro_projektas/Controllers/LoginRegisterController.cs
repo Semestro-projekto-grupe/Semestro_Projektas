@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Semestro_projektas.Data.Repository;
@@ -22,7 +25,6 @@ namespace Semestro_projektas.Controllers
             _repo = repo;
         }
 
-
         public ActionResult Login()
         {
             User user = new User();
@@ -30,31 +32,42 @@ namespace Semestro_projektas.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(User user, string submitButton)
+        public async Task<IActionResult> Login(User user, string submitButton)
         {
             try
             {
                 if (submitButton == "Check")
+                {
+
+                    if (user.NickName == null && user.Password == null) //-- papildyti
                     {
-                        // = kintamasis iš duomenų bazės
-                        if (user.NickName != "NickNameIšDuomenųBazės" && user.Password != "PasswordIšDuomenųBazės") //-- papildyti
-                        {
-                            ModelState.AddModelError("NickName", "Vartotojas tokiu slapyvardžiu nerastas!");
-                            ModelState.AddModelError("Password", "Neteisingas slaptažodis!");
-                            return View(user);
-                        }
-                        if (user.NickName != "NickNameIšDuomenųBazės") // -- serverio validacija //pakeisti
-                        {
-                            ModelState.AddModelError("NickName", "Vartotojas tokiu slapyvardžiu nerastas!");
+                        ModelState.AddModelError("NickName", "Vartotojas tokiu slapyvardžiu nerastas!");
+                        ModelState.AddModelError("Password", "Neteisingas slaptažodis!");
                         return View(user);
-                        }
-                        if (user.Password != "PasswordIšDuomenųBazės") // -- serverio validacija //pakeisti
-                        {
-                            ModelState.AddModelError("Password", "Neteisingas slaptažodis!");
+                    }
+                    else if (user.NickName == null)
+                    {
+                        ModelState.AddModelError("NickName", "Vartotojas tokiu slapyvardžiu nerastas!");
                         return View(user);
-                        }
-                        return RedirectToAction("Index", "Home"); //-- teisingo patvirtino atveju nukreipimas į kitą valdiklį 
-                                                                  //tačiau be serverio validacijos šiuo metu neveikia
+                    }
+                    else if (user.Password == null)
+                    {
+                        ModelState.AddModelError("Password", "Neteisingas slaptažodis!");
+                        return View(user);
+                    }
+                    else if (user.Password.Length < 6)
+                    {
+                        ModelState.AddModelError("Password", "Minimalus slaptažodžio ilgis 6 simboliai!");
+                        return View(user);
+                    }
+                    var result = await signInManager.PasswordSignInAsync(user.NickName, user.Password, false, false);
+                    if (!result.Succeeded)
+                    {
+                        ModelState.AddModelError("Password", "Įvesti neteisingi prisijungimo duomenys!");
+                        return View(user);
+                    }
+                    return RedirectToAction("Chat", "Home"); //-- teisingo patvirtino atveju nukreipimas į kitą valdiklį 
+                                                                      //tačiau be serverio validacijos šiuo metu neveikia
                 }
                 else
                     return RedirectToAction("Register", "LoginRegister");
@@ -94,19 +107,30 @@ namespace Semestro_projektas.Controllers
                 }
                 if (ModelState.IsValid)
                 {
-                    //šioje vietoje turi būti patikrinimas serverio pusėje slaptažodžiui ir nickName (validacijos klaidų metimas)
-                    /*if ( user.Nickname == ?)    //if su boolean salyga
-                    {
-                        ModelState.AddModelError("Nickname", "Toks slapyvardis jau yra naudojamas!");
-                        return View(user);
-                    }
-                    if(pass == ?)      //if su boolean salyga//jei sutaps frontende pateikti slaptažodžiai pass ir password kintamieji bus lygūs
-                    {
-                         ModelState.AddModelError("Password", "Toks slaptažodis jau yra naudojamas!");
-                    }*/
-                    //----------------------------------------------------------------------------
-                    //Duomenų perkėlimas į duomenų bazę
-                    user.Password = pass; //Užkraunamas slaptažodis į objektą
+                //šioje vietoje turi būti patikrinimas serverio pusėje slaptažodžiui ir nickName (validacijos klaidų metimas)
+                /*if ( user.Nickname == ?)    //if su boolean salyga
+                {
+                    ModelState.AddModelError("Nickname", "Toks slapyvardis jau yra naudojamas!");
+                    return View(user);
+                }
+                if(pass == ?)      //if su boolean salyga//jei sutaps frontende pateikti slaptažodžiai pass ir password kintamieji bus lygūs
+                {
+                     ModelState.AddModelError("Password", "Toks slaptažodis jau yra naudojamas!");
+                }*/
+                //----------------------------------------------------------------------------
+                //Duomenų perkėlimas į duomenų bazę
+                string temp = pass.Substring(0, 1);
+                if (Regex.Matches(pass, "[^a-zA-Z]").Count == pass.Length) //Patikra dėl neraidžių naudojimo (turi būti bent viena raidė)
+                {
+                    ModelState.AddModelError("Password", "Slaptažodyje privalo būti bent viena raidė!");
+                    return View(user);
+                }
+                else if(Regex.Matches(pass, temp).Count == pass.Length) //Vienodų simbolių naudojimo atvejis slaptažodyje
+                {
+                    ModelState.AddModelError("Password", "Slaptažodis negali būti sudarytas iš vienodų simbolių!");
+                    return View(user);
+                }
+                user.Password = pass; //Užkraunamas slaptažodis į objektą
                     user.Date = Convert.ToDateTime(data); //Užkraunama data į objektą
 
                     string fixedName = user.Name.Substring(0, 1).ToUpper() + user.Name.Substring(1);
@@ -122,7 +146,7 @@ namespace Semestro_projektas.Controllers
                         ModelState.AddModelError("NickName", "Toks vartotojo vardas jau egzistuoja!");
                         return View(user);
                     }
-                    return RedirectToAction("Index", "Home"); // Nukėlimas į kitą kontrolerį arba sekantį šio kontrolerio langą + registracija sėkminga galima prisijungti
+                    return RedirectToAction("Login", "LoginRegister"); // Nukėlimas į kitą kontrolerį arba sekantį šio kontrolerio langą + registracija sėkminga galima prisijungti
                 }
                 return View(user); //Perkėlimas į sekančio kontrolerio vaizdą
             }

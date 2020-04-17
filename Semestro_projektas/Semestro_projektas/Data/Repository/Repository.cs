@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Internal;
 using Semestro_projektas.Models;
 
 namespace Semestro_projektas.Data.Repository
@@ -39,8 +40,6 @@ namespace Semestro_projektas.Data.Repository
             _ctx.Posts.Remove(GetPost(id));
         }
 
-       
-
         public void UpdatePost(Post post)
         {
             _ctx.Posts.Update(post);
@@ -55,10 +54,6 @@ namespace Semestro_projektas.Data.Repository
             }
             return false;
         }
-
-
-
-
 
          public bool RegisterUser(User user, string password, UserManager<User> userManager,
              RoleManager<IdentityRole> roleManager) {
@@ -92,12 +87,6 @@ namespace Semestro_projektas.Data.Repository
                 
                 return false;
             }
-
-
-
          }
-
-
-
     }
 }

@@ -33,8 +33,9 @@ namespace Semestro_projektas
 
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration["DefaultConnection"]));
 
-            services.AddDefaultIdentity<User>(options => { //slaptazodzio nustatymai
+            services.AddDefaultIdentity<User>(options => { //slaptazodzio nustatymai (nemažinti nustatymų ir nekeisti, kitaip būtina pertvarkyti valdiklyje)
                 options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequiredLength = 6;
