@@ -67,7 +67,7 @@ namespace Semestro_projektas.Controllers
                         return View(user);
                     }
                     return RedirectToAction("Chat", "Home"); //-- teisingo patvirtino atveju nukreipimas į kitą valdiklį 
-                                                                      //tačiau be serverio validacijos šiuo metu neveikia
+                                                             //tačiau be serverio validacijos šiuo metu neveikia
                 }
                 else
                     return RedirectToAction("Register", "LoginRegister");
@@ -146,7 +146,8 @@ namespace Semestro_projektas.Controllers
                         ModelState.AddModelError("NickName", "Toks vartotojo vardas jau egzistuoja!");
                         return View(user);
                     }
-                    return RedirectToAction("Login", "LoginRegister"); // Nukėlimas į kitą kontrolerį arba sekantį šio kontrolerio langą + registracija sėkminga galima prisijungti
+                    TempData["Success"] = "Successful";
+                    return RedirectToAction("Login", "LoginRegister");
                 }
                 return View(user); //Perkėlimas į sekančio kontrolerio vaizdą
             }
