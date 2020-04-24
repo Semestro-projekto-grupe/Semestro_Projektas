@@ -66,7 +66,7 @@ namespace Semestro_projektas.Controllers
                         ModelState.AddModelError("Password", "Įvesti neteisingi prisijungimo duomenys!");
                         return View(user);
                     }
-                    return RedirectToAction("Chat", "Home"); //-- teisingo patvirtino atveju nukreipimas į kitą valdiklį 
+                    return RedirectToAction("Chat", "Chat"); //-- teisingo patvirtino atveju nukreipimas į kitą valdiklį 
                                                                       //tačiau be serverio validacijos šiuo metu neveikia
                 }
                 else
