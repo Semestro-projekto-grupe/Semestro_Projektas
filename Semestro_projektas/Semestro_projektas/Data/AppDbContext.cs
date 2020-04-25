@@ -13,6 +13,7 @@ namespace Semestro_projektas.Data
     {
 
         public DbSet<Post> Posts { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {

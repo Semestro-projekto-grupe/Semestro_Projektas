@@ -20,6 +20,31 @@ namespace Semestro_projektas.Data.Repository
         }
 
 
+        public List<Message> GetChatMessages()
+        {
+            return _ctx.Messages.ToList();
+        }
+
+        public void SaveMessage(Message msg)
+        {
+            _ctx.Messages.Add(msg);
+        }
+
+        public void EditMessage(Message msg)
+        {
+            _ctx.Messages.Update(msg);
+        }
+
+        public void RemoveMessage(int id)
+        {
+            _ctx.Messages.Remove(GetMessage(id));
+        }
+
+        public Message GetMessage(int id)
+        {
+            return _ctx.Messages.FirstOrDefault(p => p.Id == id);
+        }
+
         public void AddPost(Post post)
         {
             _ctx.Posts.Add(post);  
@@ -88,5 +113,7 @@ namespace Semestro_projektas.Data.Repository
                 return false;
             }
          }
+
+     
     }
 }
