@@ -114,6 +114,9 @@ namespace Semestro_projektas.Data.Repository
             }
          }
 
-     
+        public List<User> GetUsers()
+        {
+           return _ctx.Users.ToList();
+        }
     }
 }

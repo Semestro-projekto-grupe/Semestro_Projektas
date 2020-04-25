@@ -28,5 +28,7 @@ namespace Semestro_projektas.Data.Repository
 
         bool RegisterUser(User user, string password, UserManager<User> userManager,
              RoleManager<IdentityRole> roleManager);
+
+        List<User> GetUsers();
     }
 }

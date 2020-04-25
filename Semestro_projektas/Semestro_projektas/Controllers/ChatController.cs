@@ -21,10 +21,12 @@ namespace Semestro_projektas.Controllers
 
         public IActionResult Chat()
         {
+            ViewData["User"] = _repo.GetUsers();
             var messages = _repo.GetChatMessages();
 
             return View(messages);
         }
+
 
 
         [HttpPost]

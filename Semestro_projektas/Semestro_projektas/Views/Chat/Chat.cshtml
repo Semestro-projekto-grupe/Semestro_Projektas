@@ -3,6 +3,8 @@
 *@
 @model IEnumerable<Message>
 @{
+    IEnumerable<User> users = ViewData["User"] as IEnumerable<User>;
+
 }
 
 <style>
@@ -10,16 +12,28 @@
         overflow: scroll;
         background: url('http://subtlepatterns.com/patterns/geometry2.png');
     }
+
+    .expand {
+        font-weight: bold;
+        font-style: italic;
+        font-size: 12px;
+        cursor: pointer;
+    }
+
+    .expandable {
+        display: none;
+    }
+
 </style>
-<h2>ChatBox</h2>
+<h2>Studentų Chat'as</h2>
 <div class="chat-panel panel panel-default">
     <div class="panel-heading">
-        ChatBox using SingalR
         @if (User.Identity.IsAuthenticated)
         {
             <h3> Prisijungęs kaip @User.Identity.Name</h3>
         }
-        else {
+        else
+        {
             <h3> Prisijungęs kaip Guest</h3>
         }
         <i class="fa fa-paper-plane fa-fw"></i>
@@ -41,6 +55,17 @@
             </span>
         </div>
     </div>
+
+    <div>
+        <p class="expand" id="expand-1">Registruoti vartotojai (išskleisti)</p>
+    </div>
+    <div class="expandable" id="expandable-1">
+        @foreach (var user in users)
+        {
+            <p>@user.NickName</p>
+        }
+        </div>
+
 </div>
 @section scripts {
     <!--Script references. -->
@@ -139,6 +164,13 @@
             var element = document.getElementById("chat");
             element.scrollTop = element.scrollHeight + 100;
         }
+
+
+        $('.expand').click(function () {
+            target_num = $(this).attr('id').split('-')[1];
+            content_id = '#expandable-'.concat(target_num);
+            $(content_id).slideToggle('fast');
+        });
 
     </script>
 
