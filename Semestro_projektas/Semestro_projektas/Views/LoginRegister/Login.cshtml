@@ -57,45 +57,44 @@
         position: relative;
         right: 20px;
     }
+
     .pull-center {
-     position:absolute;
+        position: absolute;
     }
 </style>
 
 <form asp-controller="LoginRegister" asp-action="Login" method="post">
     <br><br>
     <br><br>
-        <nav class=" box-shadow">
-            <div class="text-center">
-                <h1>Prisijungimas</h1>
-                <p></p>
+    <nav class=" box-shadow">
+        <div class="text-center">
+            <h1>Prisijungimas</h1>
+            <p></p>
+        </div>
+        @if (TempData["Success"] != null)
+        {
+            <label class="pull-center" style="color:red; font-size:20px;">&#160 &#160 &#160 Registracija sėkminga!!!</label>
+        }
+        <dataInput>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group row">
+                @Html.LabelFor(model => model.NickName, htmlAttributes: new { @class = "col-sm-2 col-form-label caption" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.NickName, new { htmlAttributes = new { @class = "form-control caption", @placeholder = "Slapyvardis" } })
+                    @Html.ValidationMessageFor(model => model.NickName, "", new { @class = "text-danger validation" })
+                </div>
             </div>
-            @if (TempData["Success"] != null)
-            {
-                <label class="pull-center" style="color:red; font-size:20px;">&#160 &#160 &#160 Registracija sėkminga!!!</label>
-            }
-            <dataInput>
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <div class="form-group row">
-                    @Html.LabelFor(model => model.NickName, htmlAttributes: new { @class = "col-sm-2 col-form-label caption" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.NickName, new { htmlAttributes = new { @class = "form-control caption", @placeholder = "Slapyvardis" } })
-                        @Html.ValidationMessageFor(model => model.NickName, "", new { @class = "text-danger validation" })
-                    </div>
+            <div class="form-group row">
+                @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @type = "password", @placeholder = "Slaptažodis" } })
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger validation" })
                 </div>
-                <div class="form-group row">
-                    @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @type = "password", @placeholder = "Slaptažodis" } })
-                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger validation" })
-                    </div>
-                </div>
-                <div class="row">
-                    <button type="submit" class="form-control col-sm-2 w-3" name="submitButton" value="Regist">Registruotis</button>
-                    <button type="submit" class="form-control col-sm-2 w-2" name="submitButton" value="Check">Prisijungti</button>
-                </div>
-            </dataInput>
-        </nav>
+            </div>
+            <div class="row">
+                <button type="submit" class="form-control col-sm-2 w-3" name="submitButton" value="Regist">Registruotis</button>
+                <button type="submit" class="form-control col-sm-2 w-2" name="submitButton" value="Check">Prisijungti</button>
+            </div>
+        </dataInput>
+    </nav>
 </form>
-
-
