@@ -157,6 +157,13 @@ namespace Semestro_projektas.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Logout() {
+            await signInManager.SignOutAsync();
+            return RedirectToAction("Chat", "Chat");
+        }
+
+
         public void DataBack(string data)
         {
             if (data.Length > 1)
@@ -168,5 +175,6 @@ namespace Semestro_projektas.Controllers
                 ViewData["year2"] = DateTime.Now.Year;
             }
         }
+
     }
 }
