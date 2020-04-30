@@ -1,0 +1,210 @@
+﻿@model Semestro_projektas.Models.User
+
+@{
+    ViewData["Title"] = "Index";
+    string password = "", pass = "";
+}
+<style>
+    body {
+        background-image: url('@Url.Content("~/images/Conversations-webinar.jpg")');
+        background-repeat: round;
+    }
+
+    dataInput {
+        position: relative;
+        left: 280px;
+        font-weight: bolder;
+    }
+
+    .form-control {
+        position: relative;
+        width: 210px;
+        right: 19px;
+        border: 1px solid;
+        background-color: white;
+    }
+
+    .col-sm-2 {
+        position: relative;
+        left: 60px;
+    }
+
+    .w-date {
+        width: 83px;
+    }
+
+    .w-2 {
+        width: 64px;
+    }
+
+    .left {
+        position: relative;
+        left: 295px;
+    }
+
+    .left2 {
+        position: relative;
+        left: -3px;
+    }
+    .right{
+        position:relative;
+        left: 6px;
+    }
+
+    .button {
+        background-color: aqua;
+        position: relative;
+        right: 5px;
+        width: 115px;
+    }
+
+    .box-shadow {
+        background: rgba(0, 191, 255, 0.7);
+        padding: 1%;
+    }
+
+    .validation {
+        position: relative;
+        right: 20px;
+    }
+
+    .validation2 {
+        position: relative;
+        left: 185px;
+    }
+</style>
+<!DOCTYPE html>
+<form asp-controller="LoginRegister" asp-action="Register" method="post">
+    <html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script>
+        $(document).ready(function () {
+            dataBack(@ViewData["year"] + "", @ViewData["month"] + "", @ViewData["day"] + "", @DateTime.Now.Year - 13);
+            date();
+        });
+        function dataBack(year, month, day, year2) {
+            if (year != 0) {
+                document.getElementById("year").selectedIndex = year2 - year;
+            }
+            if (month != 0) {
+                document.getElementById("month").selectedIndex = month;
+            }
+            if (day != 0) {
+                document.getElementById("day").selectedIndex = day;
+            }
+        }
+        function setDay() {
+            //var temp = $("#month > option").length; -- select ilgis pagal id
+            var month = $("#month").val();
+            var day = $("#day").val();
+            if (day != 30 && (month == 4 || month == 6 || month == 9 || month == 11))
+                setValue(31);
+            else if (month == 2) {
+                var year = $("#year").val();
+                if (year % 4 == 0)
+                    setValue(30);
+                else
+                    setValue(29);
+            }
+            else if ($("#day > option").length != 31)
+                setValue(32);
+            date();
+        }
+        function setValue(day) {
+            $("#day").empty();
+            $("#day").append("<option value=—>"+"—"+"</option>");
+            for (var i = 1; i < day; i++) {
+                $("#day").append("<option value=" + i + ">" + i + "</option>");
+            }
+        }
+        function date() {
+            $('#data').val($("#year").val() + "-" + $("#month").val() + "-" + $("#day").val());
+        }
+        </script>
+    </head>
+
+    <body>
+        <br><br>
+        <nav class=" box-shadow box">
+            <div class="text-center">
+                <h1>Asmeninė informacijos redagavimas</h1>
+                <p></p>
+            </div>
+            <dataInput>
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.NickName, htmlAttributes: new { @class = "col-sm-2 col-form-label caption" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.NickName, new { htmlAttributes = new { @class = "form-control caption", @placeholder = "Slapyvardis" } })
+                        @Html.ValidationMessageFor(model => model.NickName, "", new { @class = "text-danger validation" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Vardas" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger validation" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.Surname, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control caption", @placeholder = "Pavardė" } })
+                        @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger validation" })
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => pass, new { htmlAttributes = new { @class = "form-control", @minlength = "6", @maxlength = "20", @placeholder = "Slaptažodis", @type = "password" } })
+                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger validation" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => password, new { htmlAttributes = new { @class = "form-control", @minlength = "6", @type = "password", @maxlength = "20", @placeholder = "Pakartoti-slaptažodį" } })
+                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger validation" })
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-2 col-form-label">Gimimo data:</label>
+                    <select class="form-control col-sm-2 w-date left2" onchange="setDay()" id="year">
+
+                        <option value=—>——</option>
+                        @for (int i = DateTime.Today.Year - 14; i >= DateTime.Today.Year - 100; i--)
+                        {
+                            <option value=@i>@i</option>
+                        }
+                    </select>
+                    <select class="form-control col-sm-2 w-2 left2" onchange="setDay()" id="month">
+                        <option value=—>—</option>
+                        @for (int i = 1; i <= 12; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                    <select class="form-control w-2 left2" onchange="date()" id="day">
+                        <option value=—>—</option>
+                        @for (int i = 1; i <= 31; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group row validation2">
+                    @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger right" })
+                </div>
+                <div class="form-group row w-2 left">
+                    <button type="submit" class="form-control button">Registruotis</button>
+                </div>
+                <input hidden id="data" value="-" name="data" />
+            </dataInput>
+        </nav>
+    </body>
+</html>
+</form>
+
+
