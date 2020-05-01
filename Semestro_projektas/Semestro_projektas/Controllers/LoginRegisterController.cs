@@ -160,7 +160,7 @@ namespace Semestro_projektas.Controllers
         [HttpGet]
         public async Task<IActionResult> Logout() {
             await signInManager.SignOutAsync();
-            return RedirectToAction("Chat", "Chat");
+            return RedirectToAction("Login", "LoginRegister");
         }
 
 
