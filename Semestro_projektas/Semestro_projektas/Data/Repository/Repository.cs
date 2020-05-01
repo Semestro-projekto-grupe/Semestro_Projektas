@@ -25,10 +25,25 @@ namespace Semestro_projektas.Data.Repository
             return _ctx.Messages.ToList();
         }
 
+        public List<Message> GetChatMessagesByChat(int chatId, string user) {
+            if (CheckIfChannelExists(user, chatId)){
+                return _ctx.Messages.Where(m => m.ChannelId == chatId).ToList();
+            }
+            else {
+                return new List<Message>();
+            }
+        }
+
         public void SaveMessage(Message msg)
         {
-            _ctx.Messages.Add(msg);
+            if (CheckIfChannelExists(msg.Author, msg.ChannelId))
+            {
+                _ctx.Messages.Add(msg);
+            }
         }
+
+
+
 
         public void EditMessage(Message msg)
         {
@@ -47,7 +62,7 @@ namespace Semestro_projektas.Data.Repository
 
         public void AddPost(Post post)
         {
-            _ctx.Posts.Add(post);  
+            _ctx.Posts.Add(post);
         }
 
         public List<Post> GetAllPosts()
@@ -74,27 +89,29 @@ namespace Semestro_projektas.Data.Repository
         public async Task<bool> SaveChangesAsync()
         {
 
-            if (await _ctx.SaveChangesAsync() > 0) {
+            if (await _ctx.SaveChangesAsync() > 0)
+            {
                 return true;
             }
             return false;
         }
 
-         public bool RegisterUser(User user, string password, UserManager<User> userManager,
-             RoleManager<IdentityRole> roleManager) {
-             //var userManager = UserManager<User>;
-             //var roleManager = RoleManager<IdentityRole>;
+        public bool RegisterUser(User user, string password, UserManager<User> userManager,
+            RoleManager<IdentityRole> roleManager)
+        {
+            //var userManager = UserManager<User>;
+            //var roleManager = RoleManager<IdentityRole>;
 
-             _ctx.Database.EnsureCreated();
+            _ctx.Database.EnsureCreated();
 
-             var userRole = new IdentityRole("ChatUser");
-             if (!_ctx.Roles.Any(r => r == userRole))
-             {
-                 //sukurti role
-                 roleManager.CreateAsync(userRole).GetAwaiter().GetResult();
+            var userRole = new IdentityRole("ChatUser");
+            if (!_ctx.Roles.Any(r => r == userRole))
+            {
+                //sukurti role
+                roleManager.CreateAsync(userRole).GetAwaiter().GetResult();
 
 
-             }
+            }
 
             if (!_ctx.Users.Any(u => u.UserName == user.UserName))
             {
@@ -108,15 +125,61 @@ namespace Semestro_projektas.Data.Repository
                 return true;
 
             }
-            else {
-                
+            else
+            {
+
                 return false;
             }
-         }
+        }
 
         public List<User> GetUsers()
         {
-           return _ctx.Users.ToList();
+            return _ctx.Users.ToList();
+        }
+
+
+        public void CreateChannel(Channel channel, string userName)
+        {
+            _ctx.Channels.Add(channel);
+
+            User creator = _ctx.Users.FirstOrDefault(p => p.Name == userName);
+            AddChannelUser(channel, creator);
+
+        }
+
+        public void AddChannelUser(Channel channel, User user)
+        {
+            ChannelUser channelUser = new ChannelUser();
+            channelUser.ChannelId = channel.Id;
+            channelUser.Channel = channel;
+            channelUser.UserId = user.Id;
+            _ctx.ChannelUsers.Add(channelUser);
+            user.channelUsers.Add(channelUser);
+        }
+
+        public List<Channel> GetUserChannels(string userName)
+        {
+            // User user = _ctx.Users.FirstOrDefault(p => p.Name == userName);
+            var channels = _ctx.Channels.Where(t => t.channelUsers.Any(s => s.User.UserName == userName));
+            //foreach (ChannelUser c in user.channelUsers) {
+            // channels.Add(c.Channel);
+            // }
+            return channels.ToList();
+        }
+
+
+        public bool CheckIfChannelExists(string userName, int id)
+        {
+            var channels = _ctx.Channels.Where(t => t.channelUsers.Any(s => s.User.UserName == userName));
+            int index = channels.ToList().FindIndex(f => f.Id == id);
+            if (index >= 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

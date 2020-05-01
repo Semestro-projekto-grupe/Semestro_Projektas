@@ -4,7 +4,7 @@
 @model IEnumerable<Message>
 @{
     IEnumerable<User> users = ViewData["User"] as IEnumerable<User>;
-
+    IEnumerable<Channel> userChannels = ViewData["userChannels"] as IEnumerable<Channel>;
 }
 
 <style>
@@ -24,48 +24,109 @@
         display: none;
     }
 
+    /* Create three equal columns that floats next to each other */
+    .column {
+        float: left;
+        padding: 15px;
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    #userChannels tr {
+        background-color: #eee;
+        border-top: 1px solid #fff;
+        height: 30px;
+    }
+
+        #userChannels tr:hover {
+            background-color: #ccc;
+        }
+
+    #userChannels th {
+        background-color: #fff;
+    }
+
+    #userChannels th, #userChannels td {
+        padding: 3px 5px;
+    }
+
+        #userChannels td:hover {
+            cursor: pointer;
+        }
 </style>
-<h2>Studentų Chat'as</h2>
-<div class="chat-panel panel panel-default">
-    <div class="panel-heading">
-        @if (User.Identity.IsAuthenticated)
-        {
-            <h3> Prisijungęs kaip @User.Identity.Name</h3>
-        }
-        else
-        {
-            <h3> Prisijungęs kaip Guest</h3>
-        }
-        <i class="fa fa-paper-plane fa-fw"></i>
-    </div>
-    <!-- /.panel-heading -->
-    <div class="panel-body" id="chat" style="height:250px;">
-        <input type="hidden" id="displayname" />
+<div class="row">
+    <div class="column" style="width:20%;">
+        <div class="chat-channels">
 
-        <p id="discussion"></p>
-    </div>
-    <!-- /.panel-body -->
-    <div class="panel-footer">
-        <div class="input-group">
-            <input id="message" type="text" name="message" class="form-control input-sm" placeholder="Type your message here..." />
-
-            <span class="input-group-btn">
-                <input type="button" class="btn btn-warning btn-sm" id="sendmessage" value="Send">
-
-            </span>
+            <h3>Vartotojo kanalai</h3>
+            <div class="panel-body" id="chatChannels" style="height:250px;">
+                <table class="table" id="userChannels"></table>
+            </div>
         </div>
-    </div>
-
-    <div>
-        <p class="expand" id="expand-1">Registruoti vartotojai (išskleisti)</p>
-    </div>
-    <div class="expandable" id="expandable-1">
-        @foreach (var user in users)
-        {
-            <p>@user.NickName</p>
-        }
+        <br>
+        <p class="expand" id="expand-2"><input type="button" class="btn btn-warning btn-sm" id="getChannels" value="Naujas kanalas"></p>
+        <div class="expandable" id="expandable-2">
+            <input id="newChannel" type="text" class="form-control input-sm" placeholder="Kanalo pavadinimas" />
+            <br>
+            <input type="button" class="btn btn-warning btn-sm" id="createChannel" value="Kurti kanalą">
         </div>
 
+    </div>
+    <div class="column" style="width:80%;">
+        <h2>Studentų Chat'as</h2>
+        <div class="chat-panel panel panel-default">
+            <div class="panel-heading">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <h3> Prisijungęs kaip @User.Identity.Name</h3>
+                }
+                else
+                {
+                    <h3> Prisijungęs kaip Guest</h3>
+                }
+
+
+                <i class="fa fa-paper-plane fa-fw"></i>
+                <h3 id="selectedChannel"></h3>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body" id="chat" style="height:250px;">
+                <input type="hidden" id="displayname" />
+
+                <p id="discussion"></p>
+            </div>
+            <!-- /.panel-body -->
+            <div class="panel-footer">
+                <div class="input-group">
+                    <input id="message" type="text" name="message" class="form-control input-sm" placeholder="Type your message here..." />
+
+                    <span class="input-group-btn">
+                        <input type="button" class="btn btn-warning btn-sm" id="sendmessage" value="Send">
+
+                    </span>
+                </div>
+            </div>
+
+            <div>
+                <p class="expand" id="expand-1">Registruoti vartotojai (išskleisti)</p>
+            </div>
+            <div class="expandable" id="expandable-1">
+                @foreach (var user in users)
+                {
+                    <p>@user.UserName</p>
+                    /*foreach (var userChannel in user.channelUsers) {
+                        <p>@userChannel.Channel.Name</p>
+                    }*/
+                }
+            </div>
+
+        </div>
+    </div>
 </div>
 @section scripts {
     <!--Script references. -->
@@ -78,8 +139,11 @@
 
 
     <script>
+        let channels = new Array();
+        let currentChannel = 1;
         $(function () {
-
+            
+            
             // Reference the auto-generated proxy for the hub.
             // const chat = $.connection.chatHub;
             const connection = new signalR.HubConnectionBuilder()
@@ -129,7 +193,7 @@
                 $.ajax({
                     url: '@Url.Action("Send")',
                     type: "POST",
-                    data: { name: userName, text: message },
+                    data: { name: userName, text: message, channelId: currentChannel },
                     dataType: "json",
                     success: function (response) {
                         console.log("success send message!");
@@ -142,6 +206,51 @@
                 updateScroll();
                 });
             //});
+
+
+            $('#createChannel').click(function () {
+                let channelName = $('#newChannel').val();
+                 $.ajax({
+                    url: '@Url.Action("CreateChannel")',
+                     type: "POST",
+                     data: { name: channelName, userName: "@User.Identity.Name" },
+                    dataType: "json",
+                     success: function (response) {
+                         console.log("success send message! " + response);
+                    },
+                    failure: function (response) {
+                        console.log("failure send message!");
+                    }
+
+                });
+            });
+
+
+
+
+                 $.ajax({
+                    url: '@Url.Action("GetUserChannels")',
+                     type: "POST",
+                     data: { userName: "@User.Identity.Name" },
+                    dataType: "json",
+                    success: function (response) {
+                        console.log("success send message! " + response + " response");
+                        channels = JSON.parse(response);
+
+                        channels.forEach((element) => {
+                            $("#userChannels").append("<tr onclick='selectChannel("+element.Id+")'><td>" + element.Name + "</td></tr>");
+                        });
+                        //selectChannel(channels[0].Id);
+
+                    },
+                    failure: function (response) {
+                        console.log("failure send message!");
+                    }
+
+            });
+
+
+
 
             //On enter key press when inside input field send message
             $('#message').keypress(function (e) {
@@ -163,7 +272,43 @@
         function updateScroll() {
             var element = document.getElementById("chat");
             element.scrollTop = element.scrollHeight + 100;
-        }
+                }
+
+                function selectChannel(id) {
+                    currentChannel = id;
+                    channels.forEach((element) => {
+                        if (element.Id === id) {
+                            $("#selectedChannel").text("Pasirinktas kanalas: " + element.Name);
+                        }
+                    });
+                    loadChatLog(currentChannel);
+
+                }
+
+
+                function loadChatLog(channel) {
+                    $.ajax({
+                    url: '@Url.Action("GetChatMessages")',
+                        type: "POST",
+                        data: { chatId: channel, userName: "@User.Identity.Name" },
+                    dataType: "json",
+                    success: function (response) {
+                        console.log("success get messages! " + response + " response");
+                        msgs = JSON.parse(response);
+                        $('#discussion').empty()
+                        msgs.forEach((element) => {
+                            $('#discussion').append('<p style="color:green; text-align:left; width:500px"><strong>' +
+             htmlEncode(element.Author) + ' :</strong> ' + htmlEncode(element.Content) + '</p>');
+                        });
+
+                    },
+                    failure: function (response) {
+                        console.log("failure getting messages!");
+                    }
+
+                    });
+                }
+
 
 
         $('.expand').click(function () {
@@ -175,12 +320,13 @@
     </script>
 
 
-    @foreach (var msg in Model)
-    {
-        <script>
-         $('#discussion').append('<p style="color:green; text-align:left; width:500px"><strong>' +
-             htmlEncode('@msg.Author') + ' :</strong> ' + htmlEncode('@msg.Content') + '</p>');
-        </script>
+    <!--//foreach (var msg in Model)
+        {
+            <script>
+     $('#discussion').append('<p style="color:green; text-align:left; width:500px"><strong>' +
+         htmlEncode('msg.Author') + ' :</strong> ' + htmlEncode('msg.Content') + '</p>');
+            </script>
+        }
+        <script>updateScroll();</script>
+    }-->
     }
-    <script>updateScroll();</script>
-}

@@ -18,6 +18,7 @@ namespace Semestro_projektas.Data.Repository
 
         Message GetMessage(int id);
         List<Message> GetChatMessages();
+        List<Message> GetChatMessagesByChat(int chatId, string user);
         void SaveMessage(Message message);
         void EditMessage(Message msg);
         void RemoveMessage(int id);
@@ -30,5 +31,8 @@ namespace Semestro_projektas.Data.Repository
              RoleManager<IdentityRole> roleManager);
 
         List<User> GetUsers();
+
+        void CreateChannel(Channel channel, string userName);
+        List<Channel> GetUserChannels(string userName);
     }
 }
