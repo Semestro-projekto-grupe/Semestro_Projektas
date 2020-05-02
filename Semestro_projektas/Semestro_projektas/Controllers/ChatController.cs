@@ -53,6 +53,14 @@ namespace Semestro_projektas.Controllers
         }
 
         [HttpPost]
+        public async Task<JsonResult> GetUsersJson()
+        {
+            List<User> users = _repo.GetUsers();
+            var json = JsonConvert.SerializeObject(users);
+            return Json(json);
+        }
+
+        [HttpPost]
         public async Task<JsonResult> GetChatMessages(int chatId, string userName)
         {
             List<Message> messages = _repo.GetChatMessagesByChat(chatId, userName);

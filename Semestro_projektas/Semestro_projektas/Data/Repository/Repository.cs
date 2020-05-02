@@ -142,7 +142,7 @@ namespace Semestro_projektas.Data.Repository
         {
             _ctx.Channels.Add(channel);
 
-            User creator = _ctx.Users.FirstOrDefault(p => p.Name == userName);
+            User creator = _ctx.Users.FirstOrDefault(p => p.UserName == userName);
             AddChannelUser(channel, creator);
 
         }

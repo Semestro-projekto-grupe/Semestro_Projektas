@@ -28,6 +28,7 @@
     .column {
         float: left;
         padding: 15px;
+        position:relative;
     }
 
     /* Clear floats after the columns */
@@ -58,9 +59,110 @@
         #userChannels td:hover {
             cursor: pointer;
         }
+
+
+
+
+    .searchcontainer {
+        width: 100%;
+        margin: auto;
+        background-image: url('@Url.Content("~/images/header.png")');
+        overflow: hidden;
+        background-repeat: no-repeat;
+        background-size: cover;
+        padding: 5%;
+    }
+
+        .searchcontainer input {
+            background: #ffffff57;
+            border: 0;
+            font-size: 20px;
+            color: #fff;
+            margin-left: auto;
+            margin-right: auto;
+            width: 90%;
+        }
+
+        .searchcontainer button {
+            background-image: url('@Url.Content("~/images/search.svg")');
+            background-repeat: no-repeat;
+            background-color: #fff;
+            background-position: center;
+            width: 50px;
+            height: 50px;
+            border: none;
+        }
+
+            .searchcontainer button:hover {
+                background-image: url('@Url.Content("~/images/search.svg")');
+                background-repeat: no-repeat;
+                background-color: #ffa;
+                background-position: center;
+                width: 50px;
+                height: 50px;
+                border: none;
+            }
+
+
+    #results {
+        border-top: 2px solid #999;
+        margin-left: auto;
+        margin-right: auto;
+        width: 90%;
+        position:absolute;
+    }
+
+    .suggestions {
+        padding: 15px;
+        font-size: 15px;
+        background: white;
+        border-top: 1px solid #666;
+        cursor: pointer;
+        margin-left: auto;
+        margin-right: auto;
+        width: 90%;
+
+    }
+
+        .suggestions:hover {
+            background-color: #1e4dd4;
+        }
+
+    .emphy {
+        width: 50%;
+        margin: 40px auto;
+        text-align: center;
+        color: white;
+    }
+
+    #searchInput:focus {
+        background: url('@Url.Content("~/images/search.svg")') left no-repeat white;
+        background-size: 20px;
+        background-position: 20px;
+        padding-left: 55px;
+        width: 92%;
+        font-size: 20px;
+        color: #000;
+    }
+
 </style>
 <div class="row">
     <div class="column" style="width:20%;">
+
+
+        <div class="searchcontainer">
+            
+            <h3>Vartotojų paieška</h3>
+
+                <input type="text" id="searchInput">
+                <div id="results"></div>
+                <br>
+                <br>
+
+
+        </div>
+
+
         <div class="chat-channels">
 
             <h3>Vartotojo kanalai</h3>
@@ -249,7 +351,16 @@
 
             });
 
+            let lastentry = "";
+            $('#searchInput').keyup(function (event) {
+                let newText = $('#searchInput').val();
+                $('#results').empty();
+                if (newText != lastentry && newText.length >= 1) {
 
+                    fetchData($(this).val());
+                }
+                lastentry = $('#searchInput').val();
+            });
 
 
             //On enter key press when inside input field send message
@@ -284,7 +395,7 @@
                     loadChatLog(currentChannel);
 
                 }
-
+                
 
                 function loadChatLog(channel) {
                     $.ajax({
@@ -307,8 +418,70 @@
                     }
 
                     });
-                }
+        }
 
+
+        async function getUsersJson() {
+            let usersjson = null;
+            return $.ajax({
+                    url: '@Url.Action("GetUsersJson")',
+                        type: "POST",
+                    dataType: "json",
+                    success: function (response) {
+                        console.log("success get messages! " + response + " response");
+                        usersjson = JSON.parse(response);
+
+                    },
+                    failure: function (response) {
+                        console.log("failure getting messages!");
+                    }
+
+            }).then(response => usersjson);
+        }
+
+        async function fetchData(search) {
+
+            //let search = document.getElementById("searchInput").value;
+            console.log(search);
+            let data = await getUsersJson();
+            if (!$('#results').is(':empty')) {
+                $('#results').empty();
+            }
+
+            let resultLength = data.length;
+
+            if (resultLength > 8) {
+                resultLength = 8;
+            }
+
+
+            data.forEach((element) => {
+                let node = document.createElement("div")//("<div class='suggestions' onclick='selectSuggestion()'></div>");
+
+                node.setAttribute("class", "suggestions");
+                let theFunction = "selectSuggestion(\"" + element.UserName + "\")";
+                //alert(theFunction);
+                node.setAttribute("onclick", theFunction);
+                
+                node.appendChild(document.createTextNode(element.UserName));
+                let img = document.createElement('img'); 
+                img.src = '@Url.Content("~/images/prideti.png")';
+                img.width = "15";
+                node.appendChild(img);
+                document.getElementById('results').appendChild(node);
+                //$('#suggestion' + i).append(data.results[i].original_title);
+                //$('#suggestion' + i).append("</br>");
+                //$('#suggestion' + i).append(data.results[i].vote_average + " Rating, ");
+                //$('#suggestion' + i).append(new Date(data.results[i].release_date).getFullYear());
+                //$('#suggestion' + i).append("</br>");
+                //$('#results' + i).append("</div>");
+
+            });
+
+
+            console.log(data);
+
+        }
 
 
         $('.expand').click(function () {
