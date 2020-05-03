@@ -31,6 +31,7 @@ namespace Semestro_projektas.Data.Repository
              RoleManager<IdentityRole> roleManager);
 
         List<User> GetUsers();
+        User GetUser(string id);
 
         void CreateChannel(Channel channel, string userName);
         List<Channel> GetUserChannels(string userName);

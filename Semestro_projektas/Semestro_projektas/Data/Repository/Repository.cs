@@ -137,6 +137,11 @@ namespace Semestro_projektas.Data.Repository
             return _ctx.Users.ToList();
         }
 
+        public User GetUser(string id) 
+        {
+            return _ctx.Users.FirstOrDefault(p => p.Id == id);
+        }
+
 
         public void CreateChannel(Channel channel, string userName)
         {
@@ -144,7 +149,6 @@ namespace Semestro_projektas.Data.Repository
 
             User creator = _ctx.Users.FirstOrDefault(p => p.UserName == userName);
             AddChannelUser(channel, creator);
-
         }
 
         public void AddChannelUser(Channel channel, User user)

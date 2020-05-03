@@ -6,8 +6,8 @@
 }
 <style>
     body {
-        background-image: url('@Url.Content("~/images/Conversations-webinar.jpg")');
-        background-repeat: round;
+        //background-image: url('@Url.Content("~/images/Conversations-webinar.jpg")');
+        //background-repeat: round;
     }
 
     dataInput {
@@ -74,7 +74,7 @@
     }
 </style>
 <!DOCTYPE html>
-<form asp-controller="LoginRegister" asp-action="Register" method="post">
+<form asp-controller="Settings" asp-action="Settings" method="post">
     <html>
     <head>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -128,7 +128,7 @@
         <br><br>
         <nav class=" box-shadow box">
             <div class="text-center">
-                <h1>Asmeninė informacijos redagavimas</h1>
+                <h1>Asmeninės informacijos redagavimas</h1>
                 <p></p>
             </div>
             <dataInput>
@@ -198,7 +198,7 @@
                     @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger right" })
                 </div>
                 <div class="form-group row w-2 left">
-                    <button type="submit" class="form-control button">Registruotis</button>
+                    <button type="submit" class="form-control button">Išsaugoti</button>
                 </div>
                 <input hidden id="data" value="-" name="data" />
             </dataInput>
