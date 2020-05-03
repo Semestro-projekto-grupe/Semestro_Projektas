@@ -21,8 +21,8 @@ namespace Semestro_projektas.Controllers
         }
         public IActionResult Settings()
         {
-            User user = _repo.GetUser("a8de697e-dcb1-4b29-b00e-93f6d6813b13");
-            return View(user);
+           // User user = _repo.GetUser("a8de697e-dcb1-4b29-b00e-93f6d6813b13");
+            return View(new User());
         }
 
         [HttpPost]
