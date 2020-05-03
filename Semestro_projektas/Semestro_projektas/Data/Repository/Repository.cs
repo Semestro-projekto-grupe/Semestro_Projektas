@@ -181,5 +181,16 @@ namespace Semestro_projektas.Data.Repository
                 return false;
             }
         }
+
+
+
+        public void AddUserToChannel(string userName, string inviterName, int channelId) {
+            if (CheckIfChannelExists(inviterName, channelId)) {
+                User foundUser = _ctx.Users.FirstOrDefault(p => p.UserName == userName);
+                Channel foundChannel = _ctx.Channels.FirstOrDefault(c => c.Id == channelId);
+                AddChannelUser(foundChannel, foundUser);
+            }
+        }
+
     }
 }
