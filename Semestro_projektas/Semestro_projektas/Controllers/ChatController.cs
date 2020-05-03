@@ -122,6 +122,23 @@ namespace Semestro_projektas.Controllers
         }
 
 
+        [HttpPost]
+        public async Task<JsonResult> AddUserToChannel(string userName, string inviterName, int channelId)
+        {
+            _repo.AddUserToChannel(userName, inviterName, channelId);
+            if (await _repo.SaveChangesAsync())
+            {
+                return Json("sent msg " + _repo.GetUserChannels(userName));
+            }
+            else
+            {
+                return Json("failed to save data");
+            }
+
+        }
+
+
+
 
 
 

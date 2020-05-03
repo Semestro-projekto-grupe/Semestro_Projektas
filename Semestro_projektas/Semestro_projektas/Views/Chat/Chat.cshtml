@@ -448,26 +448,35 @@
                 $('#results').empty();
             }
 
-            let resultLength = data.length;
+            let dataArray = new Array();
+            
+            data.forEach((element) => {
+                if (element.UserName.startsWith(search)) {
+                    dataArray.push(element);
+                }
+            });
+
+            let resultLength = dataArray.length;
 
             if (resultLength > 8) {
                 resultLength = 8;
             }
 
 
-            data.forEach((element) => {
+            for (i = 0; i < resultLength; i++) {
                 let node = document.createElement("div")//("<div class='suggestions' onclick='selectSuggestion()'></div>");
 
                 node.setAttribute("class", "suggestions");
-                let theFunction = "selectSuggestion(\"" + element.UserName + "\")";
+                let theFunction = "selectSuggestion(\"" + dataArray[i].UserName + "\")";
                 //alert(theFunction);
                 node.setAttribute("onclick", theFunction);
-                
-                node.appendChild(document.createTextNode(element.UserName));
+
                 let img = document.createElement('img'); 
                 img.src = '@Url.Content("~/images/prideti.png")';
                 img.width = "15";
                 node.appendChild(img);
+                node.appendChild(document.createTextNode(dataArray[i].UserName));
+                
                 document.getElementById('results').appendChild(node);
                 //$('#suggestion' + i).append(data.results[i].original_title);
                 //$('#suggestion' + i).append("</br>");
@@ -476,13 +485,28 @@
                 //$('#suggestion' + i).append("</br>");
                 //$('#results' + i).append("</div>");
 
-            });
+            }
 
 
-            console.log(data);
+            console.log(dataArray);
 
         }
 
+        function selectSuggestion(userNm) {
+
+            $.ajax({
+                url: '@Url.Action("AddUserToChannel")',
+                type: "POST",
+                data: { userName: userNm, inviterName: "@User.Identity.Name", channelId: currentChannel },
+                dataType: "json",
+                success: function (response) {
+                    console.log("success add user! " + response + " response");
+                }
+            });
+            $('#results').empty();
+            $('#searchInput').empty();
+        }
+            
 
         $('.expand').click(function () {
             target_num = $(this).attr('id').split('-')[1];
