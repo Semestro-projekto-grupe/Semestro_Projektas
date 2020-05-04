@@ -138,6 +138,42 @@ namespace Semestro_projektas.Controllers
         }
 
 
+        
+        [HttpPost]
+        public async Task<JsonResult> GetChannelUsers(int chatId, string userName)
+        {
+            List<User> chu = _repo.GetChannelUsers(chatId, userName);
+            // foreach (var c in chn) {
+            //chnNames.Add("{c.nam}"c.Name);
+            // }
+            var json = JsonConvert.SerializeObject(chu);
+            return Json(json);
+            /*if (await _repo.SaveChangesAsync())
+            {
+                return Json(chn);
+            }
+            else
+            {
+                return Json("failed to save data");
+            }*/
+
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> KickChannelUser(int channelId, string userId)
+        {
+            _repo.KickChannelUser(userId, channelId);
+            if (await _repo.SaveChangesAsync())
+            {
+                return Json("sent msg ");
+            }
+            else
+            {
+                return Json("failed to save data");
+            }
+
+        }
+
 
 
 

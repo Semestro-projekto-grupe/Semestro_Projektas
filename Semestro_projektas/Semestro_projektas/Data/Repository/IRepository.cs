@@ -36,5 +36,7 @@ namespace Semestro_projektas.Data.Repository
         void CreateChannel(Channel channel, string userName);
         List<Channel> GetUserChannels(string userName);
         void AddUserToChannel(string userName, string inviterName, int channelId);
+        List<User> GetChannelUsers(int chatId, string userName);
+        void KickChannelUser(string userId, int channelId);
     }
 }

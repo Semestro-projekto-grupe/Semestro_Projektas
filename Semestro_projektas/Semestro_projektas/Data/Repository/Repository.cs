@@ -196,5 +196,25 @@ namespace Semestro_projektas.Data.Repository
             }
         }
 
+
+        public List<User> GetChannelUsers(int chatId, string userName) {
+            if (CheckIfChannelExists(userName, chatId))
+            {
+               // List<ChannelUser> cu = _ctx.ChannelUsers.Any(c => c.ChannelId )
+                return _ctx.Users.Where(t => t.channelUsers.Any(s => s.ChannelId == chatId)).ToList();
+            }
+            else
+            {
+                return new List<User>();
+            }
+
+        }
+
+        public void KickChannelUser(string userId, int channelId) {
+            var chUser = new ChannelUser { ChannelId = channelId, UserId = userId };
+            _ctx.ChannelUsers.Attach(chUser);
+            _ctx.ChannelUsers.Remove(chUser);
+        }
+
     }
 }
