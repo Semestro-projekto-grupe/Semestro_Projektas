@@ -138,7 +138,7 @@
         border-top: 2px solid #999;
         margin-left: auto;
         margin-right: auto;
-        width: 90%;
+        width: 70%;
         position:absolute;
     }
 
@@ -352,45 +352,29 @@
 
 
             $('#createChannel').click(function () {
+                
                 let channelName = $('#newChannel').val();
-                 $.ajax({
-                    url: '@Url.Action("CreateChannel")',
-                     type: "POST",
-                     data: { name: channelName, userName: "@User.Identity.Name" },
-                    dataType: "json",
-                     success: function (response) {
-                         console.log("success send message! " + response);
-                    },
-                    failure: function (response) {
-                        console.log("failure send message!");
-                    }
+                if (channelName.length >= 1) {
+                    $.ajax({
+                        url: '@Url.Action("CreateChannel")',
+                        type: "POST",
+                        data: { name: channelName, userName: "@User.Identity.Name" },
+                        dataType: "json",
+                        success: function (response) {
+                            console.log("success create channel! " + response);
+                            getUserChannels();
+                        },
+                        failure: function (response) {
+                            console.log("failure send message!");
+                        }
 
-                });
+                    });
+                }
             });
 
 
 
-
-                 $.ajax({
-                    url: '@Url.Action("GetUserChannels")',
-                     type: "POST",
-                     data: { userName: "@User.Identity.Name" },
-                    dataType: "json",
-                    success: function (response) {
-                        console.log("success send message! " + response + " response");
-                        channels = JSON.parse(response);
-
-                        channels.forEach((element) => {
-                            $("#userChannels").append("<tr onclick='selectChannel("+element.Id+")'><td>" + element.Name + "</td></tr>");
-                        });
-                        //selectChannel(channels[0].Id);
-
-                    },
-                    failure: function (response) {
-                        console.log("failure send message!");
-                    }
-
-            });
+            getUserChannels();
 
             let lastentry = "";
             $('#searchInput').keyup(function (event) {
@@ -411,6 +395,12 @@
                 {
                     $('#sendmessage').click();
                     return false;
+                }
+            });
+
+            $('html').click(function (e) {
+                if (e.target.className !== "suggestions") {
+                    $('#results').empty();
                 }
             });
         });
@@ -542,6 +532,7 @@
                 data: { userName: userNm, inviterName: "@User.Identity.Name", channelId: currentChannel },
                 dataType: "json",
                 success: function (response) {
+
                     console.log("success add user! " + response + " response");
                 }
             });
@@ -608,6 +599,31 @@
 
                     });
             }
+
+            function getUserChannels() {
+                $.ajax({
+                    url: '@Url.Action("GetUserChannels")',
+                    type: "POST",
+                    data: { userName: "@User.Identity.Name" },
+                    dataType: "json",
+                    success: function (response) {
+                        console.log("success send message! " + response + " response");
+                        channels = JSON.parse(response);
+                        $("#userChannels").empty();
+                        channels.forEach((element) => {
+                            $("#userChannels").append("<tr onclick='selectChannel(" + element.Id + ")'><td>" + element.Name + "</td></tr>");
+                        });
+                        //selectChannel(channels[0].Id);
+
+                    },
+                    failure: function (response) {
+                        console.log("failure send message!");
+                    }
+
+                });
+            }
+
+            
 
         </script>
 
