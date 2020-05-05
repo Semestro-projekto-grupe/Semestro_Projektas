@@ -89,7 +89,7 @@ namespace Semestro_projektas.Controllers
             _repo.CreateChannel(channel, userName);
             if (await _repo.SaveChangesAsync())
             {
-                return Json("sent msg " + _repo.GetUserChannels(userName));
+                return Json(_repo.GetUserChannels(userName));
             }
             else
             {
@@ -128,7 +128,7 @@ namespace Semestro_projektas.Controllers
             _repo.AddUserToChannel(userName, inviterName, channelId);
             if (await _repo.SaveChangesAsync())
             {
-                return Json("sent msg " + _repo.GetUserChannels(userName));
+                return Json("Success");
             }
             else
             {
