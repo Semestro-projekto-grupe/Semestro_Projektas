@@ -54,7 +54,7 @@
     .button {
         background-color: aqua;
         position: relative;
-        right: 5px;
+        right: 9px;
         width: 115px;
     }
 
@@ -132,6 +132,7 @@
                 <p></p>
             </div>
             <dataInput>
+                <label> @Model.Name</label>
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form-group row">
                     @Html.LabelFor(model => model.NickName, htmlAttributes: new { @class = "col-sm-2 col-form-label caption" })
@@ -155,20 +156,6 @@
                     </div>
                 </div>
 
-                <div class="form-group row">
-                    @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => pass, new { htmlAttributes = new { @class = "form-control", @minlength = "6", @maxlength = "20", @placeholder = "Slaptažodis", @type = "password" } })
-                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger validation" })
-                    </div>
-                </div>
-                <div class="form-group row">
-                    @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => password, new { htmlAttributes = new { @class = "form-control", @minlength = "6", @type = "password", @maxlength = "20", @placeholder = "Pakartoti-slaptažodį" } })
-                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger validation" })
-                    </div>
-                </div>
                 <div class="row">
                     <label class="col-sm-2 col-form-label">Gimimo data:</label>
                     <select class="form-control col-sm-2 w-date left2" onchange="setDay()" id="year">
@@ -198,9 +185,38 @@
                     @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger right" })
                 </div>
                 <div class="form-group row w-2 left">
-                    <button type="submit" class="form-control button">Išsaugoti</button>
+                    <button type="submit" class="form-control button" name="change" value="data">Išsaugoti</button>
                 </div>
                 <input hidden id="data" value="-" name="data" />
+
+                <div class="text-left" style="position:relative; left:50px">
+                    <h1>Slaptažodžio keitimas</h1>
+                    <p></p>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => pass, new { htmlAttributes = new { @class = "form-control", @minlength = "6", @maxlength = "20", @placeholder = "Slaptažodis", @type = "password" } })
+                        @if (ViewData["show"] != null)
+                        {
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger validation" })
+                        }
+                    </div>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => password, new { htmlAttributes = new { @class = "form-control", @minlength = "6", @type = "password", @maxlength = "20", @placeholder = "Pakartoti-slaptažodį" } })
+                        @if (ViewData["show"] != null)
+                        {
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger validation" })
+                        }
+                    </div>
+                </div>
+                <div class="form-group row w-2 left">
+                    <button type="submit" class="form-control button" name="change" value="Password">Išsaugoti</button>
+                </div>
+
             </dataInput>
         </nav>
     </body>

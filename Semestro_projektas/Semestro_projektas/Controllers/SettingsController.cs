@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 using Semestro_projektas.Data.Repository;
 using Semestro_projektas.Models;
 
@@ -21,57 +22,29 @@ namespace Semestro_projektas.Controllers
         }
         public IActionResult Settings()
         {
-           // User user = _repo.GetUser("a8de697e-dcb1-4b29-b00e-93f6d6813b13");
-            return View(new User());
+            User user = _repo.GetUser("a8de697e-dcb1-4b29-b00e-93f6d6813b13");
+            ViewData["year"] = user.Date.Year;
+            ViewData["month"] = user.Date.Month;
+            ViewData["day"] = user.Date.Day;
+            ViewData["year2"] = DateTime.Now.Year;
+            return View(user);
         }
 
         [HttpPost]
-        public IActionResult Settings(User user, string pass, string password, string data) 
+        public IActionResult Settings(User user, string pass, string password, string data, string change) 
         {
+            ModelState.AddModelError("Password", "");
             DataBack(data);
             try
             {
                 //Index.@HTML pateiktos tik readonly reikšmės, kurių automatiškai pakeisti be validacijos iš back-endo pusės neina.
-                if (pass != password) //patikrinimas ar įvesti slaptažodžiai sutampa
+                if (change == "data")
                 {
-                    ModelState.AddModelError("Password", "Slaptažodžiai nesutampa!");
                     if (data.Contains("—") || data.Length == 1)
                     {
                         ModelState.AddModelError("Date", "Pateikta neteisinga gimimo data!");
-                    }
-                    return View(user);
-                }
-                if (data.Contains("—") || data.Length == 1)
-                {
-                    ModelState.AddModelError("Date", "Pateikta neteisinga gimimo data!");
-                    return View(user);
-                }
-                if (ModelState.IsValid)
-                {
-                    //šioje vietoje turi būti patikrinimas serverio pusėje slaptažodžiui ir nickName (validacijos klaidų metimas)
-                    /*if ( user.Nickname == ?)    //if su boolean salyga
-                    {
-                        ModelState.AddModelError("Nickname", "Toks slapyvardis jau yra naudojamas!");
                         return View(user);
                     }
-                    if(pass == ?)      //if su boolean salyga//jei sutaps frontende pateikti slaptažodžiai pass ir password kintamieji bus lygūs
-                    {
-                         ModelState.AddModelError("Password", "Toks slaptažodis jau yra naudojamas!");
-                    }*/
-                    //----------------------------------------------------------------------------
-                    //Duomenų perkėlimas į duomenų bazę
-                    string temp = pass.Substring(0, 1);
-                    if (Regex.Matches(pass, "[^a-zA-Z]").Count == pass.Length) //Patikra dėl neraidžių naudojimo (turi būti bent viena raidė)
-                    {
-                        ModelState.AddModelError("Password", "Slaptažodyje privalo būti bent viena raidė!");
-                        return View(user);
-                    }
-                    else if (Regex.Matches(pass, temp).Count == pass.Length) //Vienodų simbolių naudojimo atvejis slaptažodyje
-                    {
-                        ModelState.AddModelError("Password", "Slaptažodis negali būti sudarytas iš vienodų simbolių!");
-                        return View(user);
-                    }
-                    user.Password = pass; //Užkraunamas slaptažodis į objektą
                     user.Date = Convert.ToDateTime(data); //Užkraunama data į objektą
 
                     string fixedName = user.Name.Substring(0, 1).ToUpper() + user.Name.Substring(1);
@@ -81,18 +54,36 @@ namespace Semestro_projektas.Controllers
                     user.Surname = fixedSurname;
 
                     user.UserName = user.NickName;
-
-                    //bool register = _repo.RegisterUser(user, user.Password, userManager, roleManager);
-                    //
-                    /*if (!register)
+                    return RedirectToAction("Chat", "Chat");
+                }
+                else
+                {
+                    ViewData["show"] = "t";
+                    if (pass != password) //patikrinimas ar įvesti slaptažodžiai sutampa
                     {
-                        ModelState.AddModelError("NickName", "Toks vartotojo vardas jau egzistuoja!");
+                        ModelState.AddModelError("Password", "Slaptažodžiai nesutampa!");
+                       // return RedirectToAction("Chat", "Chat");
                         return View(user);
                     }
-                    TempData["Success"] = "Successful";*/
-                    return RedirectToAction("Chat", "Chat"); // Nukėlimas į kitą kontrolerį arba sekantį šio kontrolerio langą + registracija sėkminga galima prisijungti
+                    user.Name = "sfsfs2";
+                        string temp = pass.Substring(0, 1);
+                        if (Regex.Matches(pass, "[^a-zA-Z]").Count == pass.Length) //Patikra dėl neraidžių naudojimo (turi būti bent viena raidė)
+                        {
+                            ModelState.AddModelError("Password", "Slaptažodyje privalo būti bent viena raidė!");
+                            return View(user);
+                        }
+                        else if (Regex.Matches(pass, temp).Count == pass.Length) //Vienodų simbolių naudojimo atvejis slaptažodyje
+                        {
+                            ModelState.AddModelError("Password", "Slaptažodis negali būti sudarytas iš vienodų simbolių!");
+                            return View(user);
+                        }
+                        ModelState.AddModelError("Password", " ");
+                    user.Password = pass; //Užkraunamas slaptažodis į objektą
+                  //  bool register = _repo.RegisterUser(user, user.Password, userManager, roleManager);
+
+                     return RedirectToAction("Chat", "Chat");
                 }
-                return View(user); //Perkėlimas į sekančio kontrolerio vaizdą
+                return View(user);
             }
             catch (Exception)
             {

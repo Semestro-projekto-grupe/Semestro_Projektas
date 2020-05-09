@@ -13,7 +13,6 @@ namespace Semestro_projektas.Controllers
     {
         private IRepository _repo;
 
-
         public ChatController(IRepository repo)
         {
             _repo = repo;

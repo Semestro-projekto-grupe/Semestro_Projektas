@@ -24,7 +24,7 @@ namespace Semestro_projektas.Models
         [DisplayName("Slaptažodis:")]
         [Required(ErrorMessage = "Neįvestas slaptažodis!")]
         [MinLength(6, ErrorMessage = "Minimalus slaptažodžio ilgis 6 simboliai!")]
-        [MaxLength(16, ErrorMessage = "Maksimalus slaptažodžio ilgis 20 simbolių!")]
+        [MaxLength(20, ErrorMessage = "Maksimalus slaptažodžio ilgis 20 simbolių!")]
         [NotMapped]
         public string Password { get; set; }
         [DataType(DataType.Date)]
