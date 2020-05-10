@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Pages.Internal.Account;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
+using NPoco.DatabaseTypes;
 using Semestro_projektas.Models;
 
 namespace Semestro_projektas.Data.Repository
@@ -216,5 +221,39 @@ namespace Semestro_projektas.Data.Repository
             _ctx.ChannelUsers.Remove(chUser);
         }
 
+        public bool EditUserData(User user, string change, string pass2 = null, UserManager<User> userManager = null)
+        {
+            var result = _ctx.Users.SingleOrDefault(b => b.Id == user.Id);
+            if (result != null)
+            {
+                // result.UserName = user.NickName;
+                // result.NickName = user.NickName;
+                //_ctx.Entry(user).State = EntityState.Modified;
+                // result.NormalizedUserName = user.NickName.ToUpper();
+                //_ctx.Entry(user).State = EntityState.Modified;
+                if (change == "data")
+                {
+                    result.Name = user.Name;
+                    result.Surname = user.Surname;
+                    result.Date = user.Date;
+                }
+                else if (change == "nick")
+                {
+                    if (!_ctx.Users.Any(u => u.UserName == user.NickName))
+                    {
+                        result.NickName = user.NickName;
+                        result.UserName = user.NickName;
+                        result.NormalizedUserName = user.NickName.ToUpper();
+                        _ctx.SaveChanges();
+                        return true;
+                    }
+                    return false;
+                }
+                  
+                _ctx.SaveChanges();
+                return true;
+            }
+            return false;
+        }
     }
 }
