@@ -42,12 +42,18 @@ namespace Semestro_projektas.Data.Repository
             }
         }
 
+        
 
 
 
-        public void EditMessage(Message msg)
+        public void EditMessage(int id, string text, string user)
         {
-            _ctx.Messages.Update(msg);
+            Message msg = _ctx.Messages.FirstOrDefault(m => m.Id == id);
+            if (msg.Author == user)
+            {
+                msg.Content = text;
+                _ctx.Messages.Update(msg);
+            }
         }
 
         public void RemoveMessage(int id)

@@ -80,6 +80,32 @@ namespace Semestro_projektas.Controllers
 
         }
 
+        [HttpPost]
+        public async Task<JsonResult> EditMessage(int messageId, string message, string userName)
+        {
+            _repo.EditMessage(messageId, message, userName);
+            // foreach (var c in chn) {
+            //chnNames.Add("{c.nam}"c.Name);
+            // }
+            if (await _repo.SaveChangesAsync())
+            {
+                return Json("edited msg");
+            }
+            else
+            {
+                return Json("failed to edit msg");
+            }
+            /*if (await _repo.SaveChangesAsync())
+            {
+                return Json(chn);
+            }
+            else
+            {
+                return Json("failed to save data");
+            }*/
+
+        }
+
 
         [HttpPost]
         public async Task<JsonResult> CreateChannel(string name, string userName)

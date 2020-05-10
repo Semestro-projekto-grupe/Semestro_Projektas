@@ -175,6 +175,10 @@
         color: #000;
     }
 
+    .editableMessage:hover {
+         background-color: rgba(244, 235, 158, 0.5);
+    }
+
 </style>
 <div class="row">
     <div class="column" style="width:15%;">
@@ -440,8 +444,14 @@
                         msgs = JSON.parse(response);
                         $('#discussion').empty()
                         msgs.forEach((element) => {
-                            $('#discussion').append("<p style='color:green; text-align:left; width:500px; display:inline'><strong>" +
-                                htmlEncode(element.Author) + " :</strong> <input id='edit" + element.Id + "' value='" + element.Content + "' style='visibility: hidden; width: 0;'></input><div id='content" + element.Id + "' style='display:inline'>" + htmlEncode(element.Content) + "</div><button onclick='editMessage(" + element.Id + ")'>Redaguoti</button><button onclick='deleteMessage(" + element.Id + ")'>Trinti</button></p>");
+                            if ("@User.Identity.Name" === element.Author) {
+                                $('#discussion').append("<div class='editableMessage' style='color:green; text-align:left; width:500px; display:block'><strong>" +
+                                    htmlEncode(element.Author) + " :</strong><input id='edit" + element.Id + "' value='" + element.Content + "' style='visibility: hidden; width: 0;'></input><button id='saveEdit" + element.Id + "' onclick='saveEdit(" + element.Id + ")' style='visibility: hidden; width: 0;'>Išsaugoti</button><div id='content" + element.Id + "' style='display:inline'>" + htmlEncode(element.Content) + "</div><button id='editMessage" + element.Id + "' onclick='editMessage(" + element.Id + ")'  style='float:right;'>Redaguoti</button><button id='deleteMessage" + element.Id + "' onclick='deleteMessage(" + element.Id + ")'  style='float:right;'>Trinti</button></div>");
+                            }
+                            else {
+                                $('#discussion').append("<div style='color:green; text-align:left; width:500px; display:block'><strong>" +
+                                    htmlEncode(element.Author) + " :</strong><div id='content" + element.Id + "' style='display:inline'>" + htmlEncode(element.Content) + "</div></div>");
+                            }
                         });
 
                     },
@@ -626,10 +636,53 @@
             function editMessage(id) {
                 let elId = "edit" + id;
                 let contId = "content" + id;
+                let editbtnId = "editMessage" + id;
+                let deletebtnId = "deleteMessage" + id;
+                let saveEditbtnId = "saveEdit" + id;
                 $("#" + elId).css("visibility", "visible"); 
                 $("#" + elId).css("width", "fit-content"); 
+                $("#" + saveEditbtnId).css("visibility", "visible");
+                $("#" + saveEditbtnId).css("width", "fit-content"); 
                 $("#" + contId).css("width", "0"); 
                 $("#" + contId).css("visibility", "hidden");  
+                $("#" + editbtnId).css("width", "0");
+                $("#" + editbtnId).css("visibility", "hidden");
+                $("#" + deletebtnId).css("width", "0");
+                $("#" + deletebtnId).css("visibility", "hidden");
+            }
+
+
+            function saveEdit(id) {
+                let elId = "edit" + id;
+                let value = $("#" + elId).val();
+                let contId = "content" + id;
+                let editbtnId = "editMessage" + id;
+                let deletebtnId = "deleteMessage" + id;
+                let saveEditbtnId = "saveEdit" + id;
+                //alert("save edit " + id);
+                $.ajax({
+                    url: '@Url.Action("EditMessage")',
+                        type: "POST",
+                     data: {messageId: id, message: value, userName: "@User.Identity.Name" },
+                    dataType: "json",
+                    success: function (response) {
+                        $("#" + contId).css("width", "fit-content");
+                        $("#" + contId).css("visibility", "visible");  
+                        $("#" + editbtnId).css("width", "fit-content");
+                        $("#" + editbtnId).css("visibility", "visible");
+                        $("#" + deletebtnId).css("width", "fit-content");
+                        $("#" + deletebtnId).css("visibility", "visible");
+                        $("#" + elId).css("visibility", "hidden");
+                        $("#" + elId).css("width", "0");
+                        $("#" + saveEditbtnId).css("visibility", "hidden");
+                        $("#" + saveEditbtnId).css("width", "0"); 
+                        $("#" + contId).html(value);
+                    },
+                    failure: function (response) {
+                        console.log("failure getting messages!");
+                    }
+
+                    });
             }
 
             
