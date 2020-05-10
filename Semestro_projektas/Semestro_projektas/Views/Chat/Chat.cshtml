@@ -309,7 +309,7 @@
             }
 
                 $('#discussion').append('<p style="color:green; text-align:left; width:500px"><strong>' +
-                    htmlEncode(name) + ' :</strong> ' + htmlEncode(message) + '</p>');
+                    htmlEncode(name) + ' :</strong> ' + htmlEncode(message) + '<button>Redaguoti</button><button>Trinti</button></p>');
 
 
         });
@@ -440,8 +440,8 @@
                         msgs = JSON.parse(response);
                         $('#discussion').empty()
                         msgs.forEach((element) => {
-                            $('#discussion').append('<p style="color:green; text-align:left; width:500px"><strong>' +
-             htmlEncode(element.Author) + ' :</strong> ' + htmlEncode(element.Content) + '</p>');
+                            $('#discussion').append("<p style='color:green; text-align:left; width:500px; display:inline'><strong>" +
+                                htmlEncode(element.Author) + " :</strong> <input id='edit" + element.Id + "' value='" + element.Content + "' style='visibility: hidden; width: 0;'></input><div id='content" + element.Id + "' style='display:inline'>" + htmlEncode(element.Content) + "</div><button onclick='editMessage(" + element.Id + ")'>Redaguoti</button><button onclick='deleteMessage(" + element.Id + ")'>Trinti</button></p>");
                         });
 
                     },
@@ -621,6 +621,15 @@
                     }
 
                 });
+            }
+
+            function editMessage(id) {
+                let elId = "edit" + id;
+                let contId = "content" + id;
+                $("#" + elId).css("visibility", "visible"); 
+                $("#" + elId).css("width", "fit-content"); 
+                $("#" + contId).css("width", "0"); 
+                $("#" + contId).css("visibility", "hidden");  
             }
 
             
