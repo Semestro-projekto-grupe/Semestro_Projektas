@@ -47,12 +47,18 @@ namespace Semestro_projektas.Data.Repository
             }
         }
 
+        
 
 
 
-        public void EditMessage(Message msg)
+        public void EditMessage(int id, string text, string user)
         {
-            _ctx.Messages.Update(msg);
+            Message msg = _ctx.Messages.FirstOrDefault(m => m.Id == id);
+            if (msg.Author == user)
+            {
+                msg.Content = text;
+                _ctx.Messages.Update(msg);
+            }
         }
 
         public void RemoveMessage(int id)
@@ -169,7 +175,8 @@ namespace Semestro_projektas.Data.Repository
         public List<Channel> GetUserChannels(string userName)
         {
             // User user = _ctx.Users.FirstOrDefault(p => p.Name == userName);
-            var channels = _ctx.Channels.Where(t => t.channelUsers.Any(s => s.User.UserName == userName));
+            string uid = GetUserIdByName(userName);
+            var channels = _ctx.Channels.Where(t => t.channelUsers.Any(s => s.User.Id == uid));
             //foreach (ChannelUser c in user.channelUsers) {
             // channels.Add(c.Channel);
             // }
@@ -179,7 +186,8 @@ namespace Semestro_projektas.Data.Repository
 
         public bool CheckIfChannelExists(string userName, int id)
         {
-            var channels = _ctx.Channels.Where(t => t.channelUsers.Any(s => s.User.UserName == userName));
+            string uid = GetUserIdByName(userName);
+            var channels = _ctx.Channels.Where(t => t.channelUsers.Any(s => s.User.Id == uid));
             int index = channels.ToList().FindIndex(f => f.Id == id);
             if (index >= 0)
             {
@@ -195,7 +203,8 @@ namespace Semestro_projektas.Data.Repository
 
         public void AddUserToChannel(string userName, string inviterName, int channelId) {
             if (CheckIfChannelExists(inviterName, channelId)) {
-                User foundUser = _ctx.Users.FirstOrDefault(p => p.UserName == userName);
+                string uid = GetUserIdByName(userName);
+                User foundUser = _ctx.Users.FirstOrDefault(p => p.Id == uid);
                 Channel foundChannel = _ctx.Channels.FirstOrDefault(c => c.Id == channelId);
                 AddChannelUser(foundChannel, foundUser);
             }
@@ -220,6 +229,13 @@ namespace Semestro_projektas.Data.Repository
             _ctx.ChannelUsers.Attach(chUser);
             _ctx.ChannelUsers.Remove(chUser);
         }
+
+        string GetUserIdByName(string name) {
+            return _ctx.Users.FirstOrDefault(u => u.UserName == name).Id;
+        }
+
+        
+
 
         public bool EditUserData(User user, string change, string pass2 = null, UserManager<User> userManager = null)
         {
@@ -255,5 +271,6 @@ namespace Semestro_projektas.Data.Repository
             }
             return false;
         }
+
     }
 }
