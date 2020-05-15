@@ -31,11 +31,14 @@ namespace Semestro_projektas.Data.Repository
              RoleManager<IdentityRole> roleManager);
 
         List<User> GetUsers();
+        User GetUser(string id);
 
         void CreateChannel(Channel channel, string userName);
         List<Channel> GetUserChannels(string userName);
         void AddUserToChannel(string userName, string inviterName, int channelId);
         List<User> GetChannelUsers(int chatId, string userName);
         void KickChannelUser(string userId, int channelId);
+
+        bool EditUserData(User user, string change, string pass = null, UserManager<User> userManager = null);
     }
 }

@@ -162,8 +162,6 @@ namespace Semestro_projektas.Controllers
             await signInManager.SignOutAsync();
             return RedirectToAction("Login", "LoginRegister");
         }
-
-
         public void DataBack(string data)
         {
             if (data.Length > 1)
@@ -175,6 +173,5 @@ namespace Semestro_projektas.Controllers
                 ViewData["year2"] = DateTime.Now.Year;
             }
         }
-
     }
 }
