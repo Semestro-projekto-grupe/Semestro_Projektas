@@ -234,7 +234,7 @@
             <div class="panel-body" id="chat" style="height:250px;">
                 <input type="hidden" id="displayname" />
 
-                <p id="discussion"></p>
+                <table id="discussion"></table>
             </div>
             <!-- /.panel-body -->
             <div class="panel-footer">
@@ -445,12 +445,12 @@
                         $('#discussion').empty()
                         msgs.forEach((element) => {
                             if ("@User.Identity.Name" === element.Author) {
-                                $('#discussion').append("<div class='editableMessage' style='color:green; text-align:left; width:500px; display:block'><strong>" +
-                                    htmlEncode(element.Author) + " :</strong><input id='edit" + element.Id + "' value='" + element.Content + "' style='visibility: hidden; width: 0;'></input><button id='saveEdit" + element.Id + "' onclick='saveEdit(" + element.Id + ")' style='visibility: hidden; width: 0;'>Išsaugoti</button><div id='content" + element.Id + "' style='display:inline'>" + htmlEncode(element.Content) + "</div><button id='editMessage" + element.Id + "' onclick='editMessage(" + element.Id + ")'  style='float:right;'>Redaguoti</button><button id='deleteMessage" + element.Id + "' onclick='deleteMessage(" + element.Id + ")'  style='float:right;'>Trinti</button></div>");
+                                $('#discussion').append("<tr style='color:green; text-align:left; width:15%; display:inline-table;'><th><img src='@Url.Content("~/images/avatar.png")' style='width:40px;' id='profile-pic" + element.Id + "'><strong>" +
+                                    htmlEncode(element.Author) + " :</strong></th></tr><tr class='editableMessage' style='color:black; text-align:left; display:table-row;'><th id='content" + element.Id + "' style='word-break: break-word;'>" + htmlEncode(element.Content) + "<textarea id='edit" + element.Id + "' style='visibility: hidden; width: 0;'>" + element.Content + "</textarea></th><th><button id='saveEdit" + element.Id + "' onclick='saveEdit(" + element.Id + ")' style='visibility: hidden; width: 0;'>Išsaugoti</button><button id='editMessage" + element.Id + "' onclick='editMessage(" + element.Id + ")'  style='float:right;'>Redaguoti</button><button id='deleteMessage" + element.Id + "' onclick='deleteMessage(" + element.Id + ")'  style='float:right;'>Trinti</button></th></tr>");
                             }
                             else {
-                                $('#discussion').append("<div style='color:green; text-align:left; width:500px; display:block'><strong>" +
-                                    htmlEncode(element.Author) + " :</strong><div id='content" + element.Id + "' style='display:inline'>" + htmlEncode(element.Content) + "</div></div>");
+                                $('#discussion').append("<tr style='color:green; text-align:left; width:500px; display:block'><th><strong>" +
+                                    htmlEncode(element.Author) + " :</strong></th><th id='content" + element.Id + "' style='display:inline'>" + htmlEncode(element.Content) + "</th></tr>");
                             }
                         });
 
@@ -640,7 +640,7 @@
                 let deletebtnId = "deleteMessage" + id;
                 let saveEditbtnId = "saveEdit" + id;
                 $("#" + elId).css("visibility", "visible"); 
-                $("#" + elId).css("width", "fit-content"); 
+                $("#" + elId).css("width", "-webkit-fill-available");
                 $("#" + saveEditbtnId).css("visibility", "visible");
                 $("#" + saveEditbtnId).css("width", "fit-content"); 
                 $("#" + contId).css("width", "0"); 
@@ -675,8 +675,9 @@
                         $("#" + elId).css("visibility", "hidden");
                         $("#" + elId).css("width", "0");
                         $("#" + saveEditbtnId).css("visibility", "hidden");
-                        $("#" + saveEditbtnId).css("width", "0"); 
-                        $("#" + contId).html(value);
+                        $("#" + saveEditbtnId).css("width", "0");
+                        $("#" + elId).html(value);
+                        $("#" + contId).html($("#" + elId).parent().html());
                     },
                     failure: function (response) {
                         console.log("failure getting messages!");
