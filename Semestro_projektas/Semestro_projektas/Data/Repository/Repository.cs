@@ -258,6 +258,7 @@ namespace Semestro_projektas.Data.Repository
                 {
                     if (!_ctx.Users.Any(u => u.UserName == user.NickName))
                     {
+                        ChangeChatMessagesNames(result.UserName, user.NickName);
                         result.NickName = user.NickName;
                         result.UserName = user.NickName;
                         result.NormalizedUserName = user.NickName.ToUpper();
@@ -271,6 +272,21 @@ namespace Semestro_projektas.Data.Repository
                 return true;
             }
             return false;
+        }
+
+
+        void ChangeChatMessagesNames(string oldName, string newName) {
+            List<Message> messages = _ctx.Messages.ToList();
+
+            foreach (Message msg in messages)
+            {
+                if (msg.Author == oldName)
+                {
+                    msg.Author = newName;
+                    _ctx.Messages.Update(msg);
+                }
+            }
+            _ctx.SaveChanges();
         }
 
     }
