@@ -179,6 +179,10 @@
          background-color: rgba(244, 235, 158, 0.5);
     }
 
+    #discussion {
+        width:100%;
+    }
+
 </style>
 <div class="row">
     <div class="column" style="width:15%;">
@@ -313,8 +317,23 @@
                 userName = "Guest";
                 }
                 if (channel === currentChannel) {
-                    $('#discussion').append('<p style="color:green; text-align:left; width:500px"><strong>' +
-                        htmlEncode(name) + ' :</strong> ' + htmlEncode(message) + '<button>Redaguoti</button><button>Trinti</button></p>');
+                    if ("@User.Identity.Name" === name) {
+                                $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='@Url.Content("~/images/avatar.png")' style='width:40px;' id='profile-pic" +
+                                    name + "'><strong>" + htmlEncode(name) +
+                                    "</strong></th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + name +
+                                    "' style='word-break: break-word; width:100%;'>" + htmlEncode(message) + "<textarea id='edit" +
+                                    name + "' style='visibility: hidden; width: 0;'>" +
+                                    message + "</textarea></th><th style='display:inline-flex;'><button id='saveEdit" +
+                                    name + "' onclick='saveEdit(" + name + ")' style='visibility: hidden; width: 0;'>Išsaugoti</button><button id='editMessage" +
+                                    name + "' onclick='editMessage(" + name + ")'  style='float:right;'>Redaguoti</button><button id='deleteMessage" +
+                                    name + "' onclick='deleteMessage(" + name + ")'  style='float:right;'>Trinti</button></th></tr>");
+                            }
+                            else {
+                                $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='@Url.Content("~/images/avatar.png")' style='width:40px;' id='profile-pic" +
+                                    name + "'><strong>" + htmlEncode(name) +
+                                    "</strong></th></tr><tr class='otherMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + name +
+                                    "' style='word-break: break-word; width:100%;'>" + htmlEncode(message) + "</th><th></th></tr>");
+                            }
                 }
 
             });
@@ -333,6 +352,18 @@
                     getUserChannels();
                 }
 
+            });
+
+            connection.on('EditMessage', (value, id, channel) => {
+                if (channel === currentChannel) {
+                    if ($("#" + id).find('textarea')[0]) {
+                        let txtArea = $("#" + id).find('textarea')[0].outerHTML;
+                        $("#" + id).html(value + txtArea);
+                    }
+                    else {
+                        $("#" + id).html(value);
+                    }
+                }
             });
             
 
@@ -468,12 +499,21 @@
                         $('#discussion').empty()
                         msgs.forEach((element) => {
                             if ("@User.Identity.Name" === element.Author) {
-                                $('#discussion').append("<tr style='color:green; text-align:left; width:15%; display:inline-table;'><th><img src='@Url.Content("~/images/avatar.png")' style='width:40px;' id='profile-pic" + element.Id + "'><strong>" +
-                                    htmlEncode(element.Author) + " :</strong></th></tr><tr class='editableMessage' style='color:black; text-align:left; display:table-row;'><th id='content" + element.Id + "' style='word-break: break-word;'>" + htmlEncode(element.Content) + "<textarea id='edit" + element.Id + "' style='visibility: hidden; width: 0;'>" + element.Content + "</textarea></th><th><button id='saveEdit" + element.Id + "' onclick='saveEdit(" + element.Id + ")' style='visibility: hidden; width: 0;'>Išsaugoti</button><button id='editMessage" + element.Id + "' onclick='editMessage(" + element.Id + ")'  style='float:right;'>Redaguoti</button><button id='deleteMessage" + element.Id + "' onclick='deleteMessage(" + element.Id + ")'  style='float:right;'>Trinti</button></th></tr>");
+                                $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='@Url.Content("~/images/avatar.png")' style='width:40px;' id='profile-pic" +
+                                    element.Id + "'><strong>" + htmlEncode(element.Author) +
+                                    "</strong></th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Id +
+                                    "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Content) + "<textarea id='edit" +
+                                    element.Id + "' style='visibility: hidden; width: 0;'>" +
+                                    element.Content + "</textarea></th><th style='display:inline-flex;'><button id='saveEdit" +
+                                    element.Id + "' onclick='saveEdit(" + element.Id + ")' style='visibility: hidden; width: 0;'>Išsaugoti</button><button id='editMessage" +
+                                    element.Id + "' onclick='editMessage(" + element.Id + ")'  style='float:right;'>Redaguoti</button><button id='deleteMessage" +
+                                    element.Id + "' onclick='deleteMessage(" + element.Id + ")'  style='float:right;'>Trinti</button></th></tr>");
                             }
                             else {
-                                $('#discussion').append("<tr style='color:green; text-align:left; width:500px; display:block'><th><strong>" +
-                                    htmlEncode(element.Author) + " :</strong></th><th id='content" + element.Id + "' style='display:inline'>" + htmlEncode(element.Content) + "</th></tr>");
+                                $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='@Url.Content("~/images/avatar.png")' style='width:40px;' id='profile-pic" +
+                                    element.Id + "'><strong>" + htmlEncode(element.Author) +
+                                    "</strong></th></tr><tr class='otherMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Id +
+                                    "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Content) + "</th><th></th></tr>");
                             }
                         });
 
@@ -703,6 +743,7 @@
                         $("#" + saveEditbtnId).css("width", "0");
                         $("#" + elId).html(value);
                         $("#" + contId).html($("#" + elId).parent().html());
+                        connection.invoke('EditMessage', value, contId, currentChannel);
                     },
                     failure: function (response) {
                         console.log("failure getting messages!");

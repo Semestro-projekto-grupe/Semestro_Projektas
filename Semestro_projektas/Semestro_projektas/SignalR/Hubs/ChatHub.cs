@@ -30,5 +30,10 @@ namespace Semestro_projektas.SignalR.Hubs
         {
             await Clients.All.SendAsync("AddChannelToUser", userName);
         }
+
+        public async Task EditMessage(string message, string contId, int channel)
+        {
+            await Clients.All.SendAsync("EditMessage", message, contId, channel);
+        }
     }
 }
