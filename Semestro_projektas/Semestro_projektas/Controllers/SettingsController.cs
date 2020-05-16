@@ -18,10 +18,12 @@ namespace Semestro_projektas.Controllers
     {
         private IRepository _repo;
         private readonly UserManager<User> userManager;
+        private readonly SignInManager<User> signInManager;
 
-        public SettingsController(UserManager<User> userManager, IRepository repo)
+        public SettingsController(UserManager<User> userManager, SignInManager<User> signInManager, IRepository repo)
         {
             this.userManager = userManager;
+            this.signInManager = signInManager;
             _repo = repo;
         }
         public async Task <IActionResult> Settings()
@@ -71,6 +73,8 @@ namespace Semestro_projektas.Controllers
                     ModelState.AddModelError("NickName", "Toks slapyvardis jau yra!");
                     return View(user);
                 }
+                user.SecurityStamp = "editUserName";
+                await signInManager.SignInAsync(user, true);
             }
             else
             {
