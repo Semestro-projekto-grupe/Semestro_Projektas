@@ -303,7 +303,7 @@
             //var chat = $.connection.chatHub;
             // Create a function that the hub can call back to display messages.
             //chat.client.addNewMessageToPage = function (name, message) {
-            connection.on('Send', (name, message) => {
+            connection.on('Send', (name, message, channel) => {
 
             // Add the message to the page.
 
@@ -311,11 +311,11 @@
 
             if (userName == "") {
                 userName = "Guest";
-            }
-
-                $('#discussion').append('<p style="color:green; text-align:left; width:500px"><strong>' +
-                    htmlEncode(name) + ' :</strong> ' + htmlEncode(message) + '<button>Redaguoti</button><button>Trinti</button></p>');
-
+                }
+                if (channel === currentChannel) {
+                    $('#discussion').append('<p style="color:green; text-align:left; width:500px"><strong>' +
+                        htmlEncode(name) + ' :</strong> ' + htmlEncode(message) + '<button>Redaguoti</button><button>Trinti</button></p>');
+                }
 
             });
 
@@ -351,8 +351,8 @@
                     }
                     // Call the Send method on the hub.
                 // chat.server.send($('#displayname').val(), $('#message').val());
-                    connection.invoke('Send', userName, message);
-                    // Clear text box and reset focus for next comment.
+                connection.invoke('Send', userName, message, currentChannel);
+                // Clear text box and reset focus for next comment.
                 $('#message').val('').focus();
 
                 //Save sent message in the database using ajax request
@@ -363,6 +363,7 @@
                     dataType: "json",
                     success: function (response) {
                         console.log("success send message!");
+
                     },
                     failure: function (response) {
                         console.log("failure send message!");

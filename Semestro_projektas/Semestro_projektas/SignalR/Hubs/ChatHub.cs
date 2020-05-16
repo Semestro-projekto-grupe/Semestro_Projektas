@@ -17,8 +17,8 @@ namespace Semestro_projektas.SignalR.Hubs
             Clients.All.AddNewMessageToPage(name, message);
         }*/
 
-        public async Task Send(string name, string message) {
-            await Clients.All.SendAsync("Send", name, message);
+        public async Task Send(string name, string message, int channel) {
+            await Clients.All.SendAsync("Send", name, message, channel);
         }
 
         public async Task AddChannelUser(string newUser, int currentChannel)
