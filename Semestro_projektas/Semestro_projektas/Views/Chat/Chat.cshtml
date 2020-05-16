@@ -288,14 +288,15 @@
         <script>
         let channels = new Array();
         let currentChannel = 1;
+        const connection = new signalR.HubConnectionBuilder()
+                .withUrl("/chatHub")
+                .build();
         $(function () {
 
 
             // Reference the auto-generated proxy for the hub.
             // const chat = $.connection.chatHub;
-            const connection = new signalR.HubConnectionBuilder()
-                .withUrl("/chatHub")
-                .build();
+            
 
             connection.start().catch(err => console.error(err.toString()));
 
@@ -316,7 +317,25 @@
                     htmlEncode(name) + ' :</strong> ' + htmlEncode(message) + '<button>Redaguoti</button><button>Trinti</button></p>');
 
 
-        });
+            });
+
+            connection.on('AddChannelUser', (newUser, channel) => {
+                console.log(currentChannel);
+                if (currentChannel === channel) {
+                    $("#ChannelUsers").append("<tr><td>" + newUser + "</td></tr>");
+                   
+                }
+
+            });
+
+            connection.on('AddChannelToUser', (userName) => {
+                if ('@User.Identity.Name' === userName) {
+                    getUserChannels();
+                }
+
+            });
+            
+
             //};
             // Get the user name and store it to prepend to messages.
             //$('#displayname').val(prompt('Enter your name:', ''));
@@ -366,7 +385,10 @@
                         dataType: "json",
                         success: function (response) {
                             console.log("success create channel! " + response);
+                            $('#userChannels').empty()
                             getUserChannels();
+                            
+                           // connection.invoke('AddChannelToUser', channelName, '@User.Identity.Name');
                         },
                         failure: function (response) {
                             console.log("failure send message!");
@@ -544,6 +566,8 @@
                 success: function (response) {
 
                     console.log("success add user! " + response + " response");
+                    connection.invoke('AddChannelUser', userNm, currentChannel);
+                    connection.invoke('AddChannelToUser', userNm);
                 }
             });
             $('#results').empty();
@@ -572,7 +596,6 @@
                         console.log("success get messages! " + users + " response ilgis " + users.length);
                         $('#ChannelUsers').empty()
                         users.forEach((element) => {
-
                             //$("#ChannelUsers").append("<tr><td>" + element.UserName + "</td> <td class='kickrow' onclick=\"kickUser('" + element.Id + "')\">        </td></tr>");
                             $("#ChannelUsers").append("<tr><td>" + element.UserName + "</td></tr>");
                         });
@@ -582,7 +605,8 @@
                         console.log("failure getting messages!");
                     }
 
-                    });
+                });
+
             }
 
 

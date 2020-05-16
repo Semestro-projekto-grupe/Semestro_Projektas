@@ -114,7 +114,7 @@ namespace Semestro_projektas.Controllers
             _repo.CreateChannel(channel, userName);
             if (await _repo.SaveChangesAsync())
             {
-                return Json(_repo.GetUserChannels(userName));
+                return Json("Kanalas sukurtas");
             }
             else
             {
