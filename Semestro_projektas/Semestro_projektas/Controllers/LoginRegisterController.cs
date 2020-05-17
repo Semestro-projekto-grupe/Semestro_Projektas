@@ -108,17 +108,6 @@ namespace Semestro_projektas.Controllers
                 }
                 if (ModelState.IsValid)
                 {
-                    //šioje vietoje turi būti patikrinimas serverio pusėje slaptažodžiui ir nickName (validacijos klaidų metimas)
-                    /*if ( user.Nickname == ?)    //if su boolean salyga
-                    {
-                        ModelState.AddModelError("Nickname", "Toks slapyvardis jau yra naudojamas!");
-                        return View(user);
-                    }
-                    if(pass == ?)      //if su boolean salyga//jei sutaps frontende pateikti slaptažodžiai pass ir password kintamieji bus lygūs
-                    {
-                         ModelState.AddModelError("Password", "Toks slaptažodis jau yra naudojamas!");
-                    }*/
-                    //----------------------------------------------------------------------------
                     //Duomenų perkėlimas į duomenų bazę
                     string temp = pass.Substring(0, 1);
                     if (Regex.Matches(pass, "[^a-zA-Z]").Count == pass.Length) //Patikra dėl neraidžių naudojimo (turi būti bent viena raidė)
