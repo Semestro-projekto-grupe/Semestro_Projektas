@@ -38,8 +38,10 @@ namespace Semestro_projektas.Controllers
             msg.Content = text;
             msg.Created = DateTime.Now;
             msg.ChannelId = channelId;
-
-            _repo.SaveMessage(msg);
+            if (User.Identity.Name == name)
+            {
+                _repo.SaveMessage(msg);
+            }
             if (await _repo.SaveChangesAsync())
             {
                 return Json("sent msg");
@@ -62,7 +64,14 @@ namespace Semestro_projektas.Controllers
         [HttpPost]
         public async Task<JsonResult> GetChatMessages(int chatId, string userName)
         {
-            List<Message> messages = _repo.GetChatMessagesByChat(chatId, userName);
+            List<Message> messages = null;
+            if (User.Identity.Name == userName)
+            {
+                messages = _repo.GetChatMessagesByChat(chatId, userName);
+            }
+            else {
+                messages = null;
+            }
             // foreach (var c in chn) {
             //chnNames.Add("{c.nam}"c.Name);
             // }
@@ -82,7 +91,10 @@ namespace Semestro_projektas.Controllers
         [HttpPost]
         public async Task<JsonResult> EditMessage(int messageId, string message, string userName)
         {
-            _repo.EditMessage(messageId, message, userName);
+            if (User.Identity.Name == userName)
+            {
+                _repo.EditMessage(messageId, message, userName);
+            }
             // foreach (var c in chn) {
             //chnNames.Add("{c.nam}"c.Name);
             // }
@@ -114,7 +126,7 @@ namespace Semestro_projektas.Controllers
             _repo.CreateChannel(channel, userName);
             if (await _repo.SaveChangesAsync())
             {
-                return Json(_repo.GetUserChannels(userName));
+                return Json("Kanalas sukurtas");
             }
             else
             {
@@ -128,13 +140,19 @@ namespace Semestro_projektas.Controllers
         [HttpPost]
         public async Task<JsonResult> GetUserChannels(string userName)
         {
-            List<Channel> chn =  _repo.GetUserChannels(userName);
-            List<string> chnNames = new List<string>();
-           // foreach (var c in chn) {
+            if (User.Identity.Name == userName)
+            {
+                List<Channel> chn = _repo.GetUserChannels(userName);
+                List<string> chnNames = new List<string>();
+                // foreach (var c in chn) {
                 //chnNames.Add("{c.nam}"c.Name);
-           // }
-            var json = JsonConvert.SerializeObject(chn);
-            return Json(json);
+                // }
+                var json = JsonConvert.SerializeObject(chn);
+                return Json(json);
+            }
+            else {
+                return null;
+            }
             /*if (await _repo.SaveChangesAsync())
             {
                 return Json(chn);
@@ -150,7 +168,10 @@ namespace Semestro_projektas.Controllers
         [HttpPost]
         public async Task<JsonResult> AddUserToChannel(string userName, string inviterName, int channelId)
         {
-            _repo.AddUserToChannel(userName, inviterName, channelId);
+            if (User.Identity.Name == inviterName)
+            {
+                _repo.AddUserToChannel(userName, inviterName, channelId);
+            }
             if (await _repo.SaveChangesAsync())
             {
                 return Json("Success");
@@ -167,12 +188,18 @@ namespace Semestro_projektas.Controllers
         [HttpPost]
         public async Task<JsonResult> GetChannelUsers(int chatId, string userName)
         {
-            List<User> chu = _repo.GetChannelUsers(chatId, userName);
-            // foreach (var c in chn) {
-            //chnNames.Add("{c.nam}"c.Name);
-            // }
-            var json = JsonConvert.SerializeObject(chu);
-            return Json(json);
+            if (User.Identity.Name == userName)
+            {
+                List<User> chu = _repo.GetChannelUsers(chatId, userName);
+                // foreach (var c in chn) {
+                //chnNames.Add("{c.nam}"c.Name);
+                // }
+                var json = JsonConvert.SerializeObject(chu);
+                return Json(json);
+            }
+            else {
+                return null;
+            }
             /*if (await _repo.SaveChangesAsync())
             {
                 return Json(chn);
