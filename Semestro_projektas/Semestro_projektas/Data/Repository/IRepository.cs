@@ -22,7 +22,7 @@ namespace Semestro_projektas.Data.Repository
         void SaveMessage(Message message);
         void EditMessage(int id, string text, string user);
         void RemoveMessage(int id);
-        
+
 
 
         Task<bool> SaveChangesAsync();
@@ -32,6 +32,7 @@ namespace Semestro_projektas.Data.Repository
 
         List<User> GetUsers();
         User GetUser(string id);
+        int AvatarUsage(string image);
 
         void CreateChannel(Channel channel, string userName);
         List<Channel> GetUserChannels(string userName);
