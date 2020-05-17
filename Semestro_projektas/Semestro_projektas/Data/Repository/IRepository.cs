@@ -22,7 +22,7 @@ namespace Semestro_projektas.Data.Repository
         void SaveMessage(Message message);
         void EditMessage(int id, string text, string user);
         void RemoveMessage(int id);
-        
+
 
 
         Task<bool> SaveChangesAsync();
