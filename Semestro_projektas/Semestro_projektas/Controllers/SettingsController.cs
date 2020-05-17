@@ -39,10 +39,10 @@ namespace Semestro_projektas.Controllers
         [HttpPost]
         public async Task<IActionResult> Settings(User user, string pass, string password, string pass2, string data, string change, string id) 
         {
-            //ModelState.AddModelError("Password", "");
+            ModelState.AddModelError("Password", "");
             DataBack(data);
-            // try
-            // {
+             try
+             {
             if (change == "data")
             {
                 if (data.Contains("—") || data.Length == 1)
@@ -119,11 +119,11 @@ namespace Semestro_projektas.Controllers
             }
             ViewData["Success2"] = "tt";
                 return View(user);
-           /* }
+            }
             catch (Exception)
             {
                 return View(user); //exeption gaudyklė
-            }*/
+            }
         }
         public void DataBack(string data)
         {
