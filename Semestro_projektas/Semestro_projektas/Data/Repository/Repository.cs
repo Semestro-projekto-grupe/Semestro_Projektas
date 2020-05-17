@@ -30,11 +30,14 @@ namespace Semestro_projektas.Data.Repository
             return _ctx.Messages.ToList();
         }
 
-        public List<Message> GetChatMessagesByChat(int chatId, string user) {
-            if (CheckIfChannelExists(user, chatId)){
+        public List<Message> GetChatMessagesByChat(int chatId, string user)
+        {
+            if (CheckIfChannelExists(user, chatId))
+            {
                 return _ctx.Messages.Where(m => m.ChannelId == chatId).ToList();
             }
-            else {
+            else
+            {
                 return new List<Message>();
             }
         }
@@ -47,7 +50,7 @@ namespace Semestro_projektas.Data.Repository
             }
         }
 
-        
+
 
 
 
@@ -148,9 +151,14 @@ namespace Semestro_projektas.Data.Repository
             return _ctx.Users.ToList();
         }
 
-        public User GetUser(string id) 
+        public User GetUser(string id)
         {
             return _ctx.Users.FirstOrDefault(p => p.Id == id);
+        }
+
+        public int AvatarUsage(string avatar)
+        {
+            return _ctx.Users.Count(p => p.Avatar == avatar);
         }
 
 
@@ -201,8 +209,10 @@ namespace Semestro_projektas.Data.Repository
 
 
 
-        public void AddUserToChannel(string userName, string inviterName, int channelId) {
-            if (CheckIfChannelExists(inviterName, channelId)) {
+        public void AddUserToChannel(string userName, string inviterName, int channelId)
+        {
+            if (CheckIfChannelExists(inviterName, channelId))
+            {
                 string uid = GetUserIdByName(userName).Id;
                 User foundUser = _ctx.Users.FirstOrDefault(p => p.Id == uid);
                 Channel foundChannel = _ctx.Channels.FirstOrDefault(c => c.Id == channelId);
@@ -211,10 +221,11 @@ namespace Semestro_projektas.Data.Repository
         }
 
 
-        public List<User> GetChannelUsers(int chatId, string userName) {
+        public List<User> GetChannelUsers(int chatId, string userName)
+        {
             if (CheckIfChannelExists(userName, chatId))
             {
-               // List<ChannelUser> cu = _ctx.ChannelUsers.Any(c => c.ChannelId )
+                // List<ChannelUser> cu = _ctx.ChannelUsers.Any(c => c.ChannelId )
                 return _ctx.Users.Where(t => t.channelUsers.Any(s => s.ChannelId == chatId)).ToList();
             }
             else
@@ -224,18 +235,20 @@ namespace Semestro_projektas.Data.Repository
 
         }
 
-        public void KickChannelUser(string userId, int channelId) {
+        public void KickChannelUser(string userId, int channelId)
+        {
             var chUser = new ChannelUser { ChannelId = channelId, UserId = userId };
             _ctx.ChannelUsers.Attach(chUser);
             _ctx.ChannelUsers.Remove(chUser);
         }
 
-        User GetUserIdByName(string name) {
+        User GetUserIdByName(string name)
+        {
             User usr = _ctx.Users.FirstOrDefault(u => u.UserName == name);
             return usr;
         }
 
-        
+
 
 
         public bool EditUserData(User user, string change, string pass2 = null, UserManager<User> userManager = null)
@@ -243,16 +256,13 @@ namespace Semestro_projektas.Data.Repository
             var result = _ctx.Users.SingleOrDefault(b => b.Id == user.Id);
             if (result != null)
             {
-                // result.UserName = user.NickName;
-                // result.NickName = user.NickName;
-                //_ctx.Entry(user).State = EntityState.Modified;
-                // result.NormalizedUserName = user.NickName.ToUpper();
-                //_ctx.Entry(user).State = EntityState.Modified;
                 if (change == "data")
                 {
                     result.Name = user.Name;
                     result.Surname = user.Surname;
                     result.Date = user.Date;
+                    if (user.Avatar != null)
+                        result.Avatar = user.Avatar;
                 }
                 else if (change == "nick")
                 {
@@ -267,7 +277,7 @@ namespace Semestro_projektas.Data.Repository
                     }
                     return false;
                 }
-                  
+
                 _ctx.SaveChanges();
                 return true;
             }
@@ -275,7 +285,8 @@ namespace Semestro_projektas.Data.Repository
         }
 
 
-        void ChangeChatMessagesNames(string oldName, string newName) {
+        void ChangeChatMessagesNames(string oldName, string newName)
+        {
             List<Message> messages = _ctx.Messages.ToList();
 
             foreach (Message msg in messages)
