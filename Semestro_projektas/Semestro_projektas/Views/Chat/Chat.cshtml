@@ -184,6 +184,25 @@
     }
 
 </style>
+
+<div class="modal" id="userProfile" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal">&times;</button>
+               <h4 class="modal-title" id="profileName">Vartotojo profilis</h4>
+                <div class="modal-body">
+                    <p>lalala</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" data-dismiss="modal">Uždaryti</button>
+                </div>
+            </div>
+        </div>
+    </div>    
+</div>
+
+
 <div class="row">
     <div class="column" style="width:15%;">
 
@@ -638,7 +657,7 @@
                         $('#ChannelUsers').empty()
                         users.forEach((element) => {
                             //$("#ChannelUsers").append("<tr><td>" + element.UserName + "</td> <td class='kickrow' onclick=\"kickUser('" + element.Id + "')\">        </td></tr>");
-                            $("#ChannelUsers").append("<tr><td>" + element.UserName + "</td></tr>");
+                            $("#ChannelUsers").append("<tr><td  onclick='getUserProfile()'>" + element.UserName + "</td></tr>");
                         });
 
                     },
@@ -750,6 +769,10 @@
                     }
 
                     });
+            }
+
+            function getUserProfile() {
+                $("#userProfile").modal();
             }
 
             
