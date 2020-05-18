@@ -41,7 +41,6 @@ namespace Semestro_projektas.Controllers
         [HttpPost]
         public async Task<IActionResult> Settings(User user, string pass, string password, string pass2, string data, string change, IFormFile file)
         {
-            //ModelState.AddModelError("Password", "");
             DataBack(data);
             try
             {
@@ -69,11 +68,6 @@ namespace Semestro_projektas.Controllers
                     {
                         if (user.Avatar == file.FileName || Regex.IsMatch(file.FileName, "((.png)|(.jpg))$"))
                         {
-                            if (_repo.AvatarUsage(file.FileName) == 1)
-                            {
-                                ModelState.AddModelError("Avatar", "Tokiu pavadinimu avataras jau yra naudojamas!");
-                                return View(user);
-                            }
                             if (user.Avatar != "student.png")
                             {
                                 string delete = Path.Combine(
@@ -83,16 +77,17 @@ namespace Semestro_projektas.Controllers
                                 System.IO.File.Delete(delete);
                                 fi.Delete();
                             }
+                            string rename = user.NickName + file.FileName.Substring(file.FileName.Length - 4, 4);
+                            user.Avatar = rename;
                             var path = Path.Combine(
                                  Directory.GetCurrentDirectory(), "wwwroot/avatars",
-                                 file.FileName);
-
+                                 rename);
                             using (var stream = new FileStream(path, FileMode.Create))
                             {
                                 await file.CopyToAsync(stream);
                             }
-                            user.Avatar = file.FileName;
                             _repo.EditUserData(user, change);
+                            View(user);
                         }
                         else
                         {
