@@ -156,12 +156,6 @@ namespace Semestro_projektas.Data.Repository
             return _ctx.Users.FirstOrDefault(p => p.Id == id);
         }
 
-        public int AvatarUsage(string avatar)
-        {
-            return _ctx.Users.Count(p => p.Avatar == avatar);
-        }
-
-
         public void CreateChannel(Channel channel, string userName)
         {
             _ctx.Channels.Add(channel);
