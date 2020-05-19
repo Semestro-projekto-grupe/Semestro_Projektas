@@ -217,11 +217,11 @@ namespace Semestro_projektas.Controllers
             _repo.KickChannelUser(userId, channelId);
             if (await _repo.SaveChangesAsync())
             {
-                return Json("sent msg ");
+                return Json("sent msg " + "DELETE ChannelUsers FROM ChannelUsers WHERE ChannelUsers.UserId = '" + userId + "' AND ChannelUsers.ChannelId = " + channelId + ";");
             }
             else
             {
-                return Json("failed to save data");
+                return Json("failed to save data " + "DELETE ChannelUsers FROM ChannelUsers WHERE ChannelUsers.UserId = '" + userId + "' AND ChannelUsers.ChannelId = " + channelId + ";");
             }
 
         }
@@ -230,7 +230,7 @@ namespace Semestro_projektas.Controllers
         public async Task<JsonResult> GetUserProfile(string userId)
         {
             var data = _repo.GetUser(userId);
-            var temp = Tuple.Create(data.UserName, data.Name, data.Surname, data.Date);
+            var temp = Tuple.Create(data.UserName, data.Name, data.Surname, data.Date.ToString("yyyy-MM-dd"), data.Avatar);
             return Json(temp);
         }
 
