@@ -191,9 +191,10 @@
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
                <h4 class="modal-title" id="profileName">Vartotojo profilis</h4>
-                <div class="modal-body">
-                    <p>lalala</p>
-                </div>
+               <div class="modal-body">
+                   <img  src='@Url.Content("~/images/avatar.png")' id="pfp" style="width:100px;height:100px; float:left;">
+                   <div id="userData" style="height:100px; padding-left: 110px;"></div>
+               </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary" data-dismiss="modal">Uždaryti</button>
                 </div>
@@ -657,7 +658,7 @@
                         $('#ChannelUsers').empty()
                         users.forEach((element) => {
                             //$("#ChannelUsers").append("<tr><td>" + element.UserName + "</td> <td class='kickrow' onclick=\"kickUser('" + element.Id + "')\">        </td></tr>");
-                            $("#ChannelUsers").append("<tr><td  onclick='getUserProfile()'>" + element.UserName + "</td></tr>");
+                            $("#ChannelUsers").append("<tr><td  onclick='getUserProfile(&quot;" + element.Id + "&quot;)'>" + element.UserName + "</td></tr>");
                         });
 
                     },
@@ -771,8 +772,35 @@
                     });
             }
 
-            function getUserProfile() {
-                $("#userProfile").modal();
+            function getUserProfile(id) {
+
+
+
+                $.ajax({
+                    url: '@Url.Action("GetUserProfile")',
+                        type: "POST",
+                     data: {userId: id},
+                    dataType: "json",
+                    success: function (response) {
+                        $("#userProfile").modal();
+                        console.log(response);
+                        //let user = JSON.parse(response);
+                        console.log("success get messages! " + response + " response ilgis " + response.length);
+                        $('#userData').empty();
+                        $('#profileName').text("Vartotojo " + response.item1 + " profilis");
+                        $('#userData').append("<p><b>Vardas: </b>" + response.item2 + "</p>");
+                        $('#userData').append("<p><b>Pavardė: </b>" + response.item3 + "</p>");
+                        $('#userData').append("<p><b>Gimimo data: </b>" + response.item4 + "</p>");
+                    },
+                    failure: function (response) {
+                        console.log("failure getting messages!");
+                    }
+
+                    });
+
+
+
+                
             }
 
             
