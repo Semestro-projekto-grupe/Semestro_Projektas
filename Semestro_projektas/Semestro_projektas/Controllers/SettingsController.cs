@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -26,7 +28,7 @@ namespace Semestro_projektas.Controllers
             this.signInManager = signInManager;
             _repo = repo;
         }
-        public async Task <IActionResult> Settings()
+        public async Task<IActionResult> Settings()
         {
             User user = await userManager.GetUserAsync(User);
             ViewData["year"] = user.Date.Year;
@@ -37,93 +39,126 @@ namespace Semestro_projektas.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Settings(User user, string pass, string password, string pass2, string data, string change, string id) 
+        public async Task<IActionResult> Settings(User user, string pass, string password, string pass2, string data, string change, IFormFile file)
         {
-            //ModelState.AddModelError("Password", "");
             DataBack(data);
-            // try
-            // {
-            if (change == "data")
+            try
             {
-                if (data.Contains("—") || data.Length == 1)
+                user.Avatar = _repo.GetUser(user.Id).Avatar;
+                if (change == "data")
                 {
-                    ModelState.AddModelError("Date", "Pateikta neteisinga gimimo data!");
-                    return View(user);
-                }
-                user.Date = Convert.ToDateTime(data); //Užkraunama data į objektą
-                if (user.Name == null || user.Surname == null)
-                    return View(user);
-                string fixedName = user.Name.Substring(0, 1).ToUpper() + user.Name.Substring(1);
-                user.Name = fixedName;
-
-                string fixedSurname = user.Surname.Substring(0, 1).ToUpper() + user.Surname.Substring(1);
-                user.Surname = fixedSurname;
-
-                _repo.EditUserData(user, change);
-                //return RedirectToAction("Chat", "Chat");
-            }
-            else if (change == "nick")
-            {
-                if (user.NickName == null)
-                    return View(user);
-                user.UserName = user.NickName;
-                bool result = _repo.EditUserData(user, change, pass2);
-                if (!result)
-                {
-                    ModelState.AddModelError("NickName", "Toks slapyvardis jau yra!");
-                    return View(user);
-                }
-                user.SecurityStamp = "editUserName";
-                await signInManager.SignInAsync(user, true);
-            }
-            else
-            {
-                ViewData["show"] = "t";
-                if (pass == null || password == null || pass2 == null)
-                {
-                    if (pass2 == null)
+                    if (data.Contains("—") || data.Length == 1)
                     {
-                        ModelState.AddModelError("pass", "Neįvestas slaptažodis!");
-                        ModelState.AddModelError("Password", " ");
+                        ModelState.AddModelError("Date", "Pateikta neteisinga gimimo data!");
                         return View(user);
                     }
-                    ModelState.AddModelError("Password", "Neįvestas slaptažodis!");
-                    return View(user);
+                    user.Date = Convert.ToDateTime(data); //Užkraunama data į objektą
+                    if (user.Name == null || user.Surname == null)
+                        return View(user);
+                    string fixedName = user.Name.Substring(0, 1).ToUpper() + user.Name.Substring(1);
+                    user.Name = fixedName;
+
+                    string fixedSurname = user.Surname.Substring(0, 1).ToUpper() + user.Surname.Substring(1);
+                    user.Surname = fixedSurname;
+                    if (file == null || file.Length == 0) //Dėl failo nebuvimo galimybės tenka taip rašyti
+                    {
+                        _repo.EditUserData(user, change);
+                    }
+                    else
+                    {
+                        if (user.Avatar == file.FileName || Regex.IsMatch(file.FileName, "((.png)|(.jpg))$"))
+                        {
+                            if (user.Avatar != "student.png")
+                            {
+                                string delete = Path.Combine(
+                                 Directory.GetCurrentDirectory(), "wwwroot/avatars",
+                                 user.Avatar);
+                                FileInfo fi = new FileInfo(delete);
+                                System.IO.File.Delete(delete);
+                                fi.Delete();
+                            }
+                            string rename = user.NickName + file.FileName.Substring(file.FileName.Length - 4, 4);
+                            user.Avatar = rename;
+                            var path = Path.Combine(
+                                 Directory.GetCurrentDirectory(), "wwwroot/avatars",
+                                 rename);
+                            using (var stream = new FileStream(path, FileMode.Create))
+                            {
+                                await file.CopyToAsync(stream);
+                            }
+                            _repo.EditUserData(user, change);
+                            View(user);
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("Avatar", "Galimi formatai: (.jpg, .png)!");
+                        }
+
+                    }
+                    //return RedirectToAction("Chat", "Chat");
                 }
-                if (pass != password) //patikrinimas ar įvesti slaptažodžiai sutampa
+                else if (change == "nick")
                 {
-                    ModelState.AddModelError("Password", "Slaptažodžiai nesutampa!");
-                    // return RedirectToAction("Chat", "Chat");
-                    return View(user);
+                    if (user.NickName == null)
+                        return View(user);
+                    user.UserName = user.NickName;
+                    bool result = _repo.EditUserData(user, change, pass2);
+                    if (!result)
+                    {
+                        ModelState.AddModelError("NickName", "Toks slapyvardis jau yra!");
+                        return View(user);
+                    }
+                    user.SecurityStamp = "editUserName";
+                    await signInManager.SignInAsync(user, true);
                 }
-                string temp = pass.Substring(0, 1);
-                if (Regex.Matches(pass, "[^a-zA-Z]").Count == pass.Length) //Patikra dėl neraidžių naudojimo (turi būti bent viena raidė)
+                else
                 {
-                    ModelState.AddModelError("Password", "Slaptažodyje privalo būti bent viena raidė!");
-                    return View(user);
+                    ViewData["show"] = "t";
+                    if (pass == null || password == null || pass2 == null)
+                    {
+                        if (pass2 == null)
+                        {
+                            ModelState.AddModelError("pass", "Neįvestas slaptažodis!");
+                            ModelState.AddModelError("Password", " ");
+                            return View(user);
+                        }
+                        ModelState.AddModelError("Password", "Neįvestas slaptažodis!");
+                        return View(user);
+                    }
+                    if (pass != password) //patikrinimas ar įvesti slaptažodžiai sutampa
+                    {
+                        ModelState.AddModelError("Password", "Slaptažodžiai nesutampa!");
+                        // return RedirectToAction("Chat", "Chat");
+                        return View(user);
+                    }
+                    string temp = pass.Substring(0, 1);
+                    if (Regex.Matches(pass, "[^a-zA-Z]").Count == pass.Length) //Patikra dėl neraidžių naudojimo (turi būti bent viena raidė)
+                    {
+                        ModelState.AddModelError("Password", "Slaptažodyje privalo būti bent viena raidė!");
+                        return View(user);
+                    }
+                    else if (Regex.Matches(pass, temp).Count == pass.Length) //Vienodų simbolių naudojimo atvejis slaptažodyje
+                    {
+                        ModelState.AddModelError("Password", "Slaptažodis negali būti sudarytas iš vienodų simbolių!");
+                        return View(user);
+                    }
+                    ModelState.AddModelError("Password", " ");
+                    var user2 = await userManager.GetUserAsync(User);
+                    var result = await userManager.ChangePasswordAsync(user2, pass2, password);
+                    user.Name = result.ToString();
+                    if (!result.Succeeded)
+                    {
+                        ModelState.AddModelError("pass", "Neteisingas slaptažodis!");
+                        return View(user);
+                    }
                 }
-                else if (Regex.Matches(pass, temp).Count == pass.Length) //Vienodų simbolių naudojimo atvejis slaptažodyje
-                {
-                    ModelState.AddModelError("Password", "Slaptažodis negali būti sudarytas iš vienodų simbolių!");
-                    return View(user);
-                }
-                ModelState.AddModelError("Password", " ");
-                var user2 = await userManager.GetUserAsync(User);
-                var result = await userManager.ChangePasswordAsync(user2, pass2, password);
-                user.Name = result.ToString();
-                if (!result.Succeeded)
-                {
-                    ModelState.AddModelError("pass", "Neteisingas slaptažodis!");
-                    return View(user);
-                }
-            }
-            ViewData["Success2"] = "tt";
+                ViewData["Success2"] = "tt";
                 return View(user);
-           /* }
+            }
             catch (Exception)
             {
                 return View(user); //exeption gaudyklė
-            }*/
+            }
         }
         public void DataBack(string data)
         {

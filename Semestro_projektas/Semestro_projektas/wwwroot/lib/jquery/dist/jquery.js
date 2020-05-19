@@ -9029,7 +9029,10 @@ jQuery.extend( {
 					return this;
 				}
 			};
-
+		////////////////////////////////////
+		$(function () {
+			$("#message").emojioneArea();
+		});
 		// Attach deferreds
 		deferred.promise( jqXHR );
 

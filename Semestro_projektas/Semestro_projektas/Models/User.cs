@@ -31,7 +31,8 @@ namespace Semestro_projektas.Models
         [DisplayName("Data")]
         [Required]
         public DateTime Date { get; set; }
-
+        [DisplayName("Avataras:")]
+        public string Avatar { get; set; }
 
         public ICollection<ChannelUser> channelUsers { get; set; }
     }
