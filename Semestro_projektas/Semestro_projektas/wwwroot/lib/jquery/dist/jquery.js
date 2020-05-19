@@ -9031,7 +9031,7 @@ jQuery.extend( {
 			};
 		////////////////////////////////////
 		$(function () {
-			$("#txtMessage").emojioneArea();
+			$("#message").emojioneArea();
 		});
 		// Attach deferreds
 		deferred.promise( jqXHR );
