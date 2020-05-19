@@ -226,9 +226,13 @@ namespace Semestro_projektas.Controllers
 
         }
 
-
-
-
+        [HttpPost]
+        public async Task<JsonResult> GetUserProfile(string userId)
+        {
+            var data = _repo.GetUser(userId);
+            var temp = Tuple.Create(data.UserName, data.Name, data.Surname, data.Date);
+            return Json(temp);
+        }
 
 
     }
