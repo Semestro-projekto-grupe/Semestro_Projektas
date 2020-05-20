@@ -235,5 +235,25 @@ namespace Semestro_projektas.Controllers
         }
 
 
+        [HttpPost]
+        public async Task<JsonResult> DeleteMessage(int messageId, string userName)
+        {
+            if (User.Identity.Name == userName)
+            {
+                _repo.DeleteMessage(messageId, userName);
+            }
+
+            if (await _repo.SaveChangesAsync())
+            {
+                return Json("sent msg");
+            }
+            else
+            {
+                return Json("failed to save data");
+            }
+
+        }
+
+
     }
 }

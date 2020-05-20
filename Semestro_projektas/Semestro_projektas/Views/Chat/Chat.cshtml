@@ -484,6 +484,15 @@
                 }
             });
 
+            connection.on('DeleteMessage', (id, channel) => {
+                if (channel === currentChannel) {
+                    
+                    $("#content" + id).parent().prev().remove();
+                    $("#content" + id).parent().remove();
+                    
+                }
+            });
+
 
             //};
             // Get the user name and store it to prepend to messages.
@@ -913,7 +922,29 @@
                 
             }
 
-            
+        function deleteMessage(id) {
+              $.ajax({
+                    url: '@Url.Action("DeleteMessage")',
+                     type: "POST",
+                  data: { messageId: id, userName: "@User.Identity.Name" },
+                    dataType: "json",
+                     success: function (response) {
+                         console.log("kick user success " + response);
+                       /* let users = JSON.parse(response);
+                        console.log("success get messages! " + msgs + " response ilgis " + msgs.length);
+                        $('#ChannelUsers').empty()
+                        msgs.forEach((element) => {
+
+                            $("#ChannelUsers").append("<tr><td>" + element.UserName + "</td> <td class='kickrow' onclick=\"kickUser('" + element.Id +  "')\">        </td></tr>");
+                        });*/
+                         connection.invoke('DeleteMessage', id, currentChannel);
+                    },
+                    failure: function (response) {
+                        console.log("failure getting messages!");
+                    }
+
+                    });
+        }
 
 
 

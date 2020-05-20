@@ -297,5 +297,12 @@ namespace Semestro_projektas.Data.Repository
             _ctx.SaveChanges();
         }
 
+
+        public void DeleteMessage(int messageId, string userName) {
+            Message msg = _ctx.Messages.FirstOrDefault(m => m.Author == userName);
+            _ctx.Messages.Remove(msg);
+
+        }
+
     }
 }
