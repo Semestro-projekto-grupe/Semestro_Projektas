@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
 using Semestro_projektas.Data.Repository;
 using Semestro_projektas.Models;
@@ -13,9 +14,15 @@ namespace Semestro_projektas.Controllers
     {
         private IRepository _repo;
 
-        public ChatController(IRepository repo)
+        //naudojama lokalizacijai
+        //naudojimas: _localizer["pvz"]
+        //"isvercia" "pvz" i current culture nustatyta kalba
+        private readonly IStringLocalizer<HomeController> _localizer;
+
+        public ChatController(IRepository repo, IStringLocalizer<HomeController> localizer)
         {
             _repo = repo;
+            _localizer = localizer;
         }
 
 

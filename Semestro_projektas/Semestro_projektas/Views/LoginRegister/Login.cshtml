@@ -1,7 +1,10 @@
 ﻿@model Semestro_projektas.Models.User;
 
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizer
+
 @{
-    ViewData["Title"] = "Prisijungimas";
+    ViewData["Title"] = _localizer["Prisijungimas"];
 }
 <style>
     body {

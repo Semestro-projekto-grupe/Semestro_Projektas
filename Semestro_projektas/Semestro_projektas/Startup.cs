@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -7,10 +8,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Semestro_projektas.Data;
 using Semestro_projektas.Data.Repository;
 using Semestro_projektas.Models;
@@ -33,13 +37,14 @@ namespace Semestro_projektas
 
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration["DefaultConnection"]));
 
-            services.AddDefaultIdentity<User>(options => { //slaptazodzio nustatymai (nemažinti nustatymų ir nekeisti, kitaip būtina pertvarkyti valdiklyje)
+            services.AddDefaultIdentity<User>(options =>
+            { //slaptazodzio nustatymai (nemažinti nustatymų ir nekeisti, kitaip būtina pertvarkyti valdiklyje)
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequiredLength = 6;
-                options.User.AllowedUserNameCharacters = String.Empty; 
+                options.User.AllowedUserNameCharacters = String.Empty;
             })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>();
@@ -54,8 +59,37 @@ namespace Semestro_projektas
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            //nurodom papke kurioje laikysim resource failus
+            services.AddLocalization(opts =>
+            {
+                opts.ResourcesPath = "Resources";
+            });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+
+            //planuojamu palaikyt kalbu sarasas
+            services.Configure<RequestLocalizationOptions>(opts =>
+            {
+                var supportedCultures = new List<CultureInfo> {
+                    new CultureInfo("en"),
+                    new CultureInfo("en-US"),
+                    new CultureInfo("lt-LT"),
+                  };
+
+                //Nustatom "pagrindine" kalba
+                opts.DefaultRequestCulture = new RequestCulture("lt-LT");
+                // numeriu, datu ir t.t. formatui
+                opts.SupportedCultures = supportedCultures;
+                // UI vertimui
+                opts.SupportedUICultures = supportedCultures;
+            });
+
+            //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);  Original
+            services.AddMvc()
+                    .AddViewLocalization(opts => { opts.ResourcesPath = "Resources"; })
+                    .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                    .AddDataAnnotationsLocalization()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddSignalR();
         }
@@ -74,6 +108,12 @@ namespace Semestro_projektas
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            //parodom kad "in pipeline" naudosim globalizacija
+            //sukeitus vietom su kitais app pradeda galimai neveikt.
+            var options = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
+            app.UseRequestLocalization(options.Value);
+
             app.UseCookiePolicy();
             app.UseAuthentication();
 
@@ -88,10 +128,6 @@ namespace Semestro_projektas
             {
                 routes.MapHub<ChatHub>("/chatHub");
             });
-
         }
-
-
-        
     }
 }

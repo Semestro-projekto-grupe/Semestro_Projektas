@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Semestro_projektas.Data.Repository;
 using Semestro_projektas.Models;
 
@@ -16,14 +17,19 @@ namespace Semestro_projektas.Controllers
         private SignInManager<User> signInManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private IRepository _repo; //Database repo
+        private readonly IStringLocalizer<HomeController> _localizer;
 
-        public LoginRegisterController(UserManager<User> userManager,
-            RoleManager<IdentityRole> roleManager, SignInManager<User> signInManager, IRepository repo)
+        public LoginRegisterController( UserManager<User> userManager,
+                                        RoleManager<IdentityRole> roleManager,
+                                        SignInManager<User> signInManager,
+                                        IRepository repo,
+                                        IStringLocalizer<HomeController> localizer)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.signInManager = signInManager;
             _repo = repo;
+            _localizer = localizer;
         }
 
         public ActionResult Login()
@@ -94,7 +100,7 @@ namespace Semestro_projektas.Controllers
                 //Index.@HTML pateiktos tik readonly reikšmės, kurių automatiškai pakeisti be validacijos iš back-endo pusės neina.
                 if (pass != password) //patikrinimas ar įvesti slaptažodžiai sutampa
                 {
-                    ModelState.AddModelError("Password", "Slaptažodžiai nesutampa!");
+                    ModelState.AddModelError("Password", _localizer["Slaptažodžiai nesutampa!"]);
                     if (data.Contains("—") || data.Length == 1)
                     {
                         ModelState.AddModelError("Date", "Pateikta neteisinga gimimo data!");

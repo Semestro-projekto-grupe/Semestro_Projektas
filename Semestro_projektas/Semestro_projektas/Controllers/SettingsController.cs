@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
+using Microsoft.Extensions.Localization;
 using Semestro_projektas.Data.Repository;
 using Semestro_projektas.Models;
 
@@ -21,8 +22,12 @@ namespace Semestro_projektas.Controllers
         private IRepository _repo;
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
+        private readonly IStringLocalizer<HomeController> _localizer;
 
-        public SettingsController(UserManager<User> userManager, SignInManager<User> signInManager, IRepository repo)
+        public SettingsController(  UserManager<User> userManager,
+                                    SignInManager<User> signInManager,
+                                    IRepository repo,
+                                    IStringLocalizer<HomeController> localizer)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;

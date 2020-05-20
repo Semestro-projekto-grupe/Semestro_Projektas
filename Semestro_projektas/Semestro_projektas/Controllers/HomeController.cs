@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Semestro_projektas.Data;
 using Semestro_projektas.Data.Repository;
 using Semestro_projektas.Models;
@@ -13,10 +14,12 @@ namespace Semestro_projektas.Controllers
     public class HomeController : Controller
     {
         private IRepository _repo; //Database repo
+        private readonly IStringLocalizer<HomeController> _localizer;
 
-        public HomeController(IRepository repo)
+        public HomeController(IRepository repo, IStringLocalizer<HomeController> localizer)
         {
             _repo = repo;
+            _localizer = localizer;
         }
 
 
