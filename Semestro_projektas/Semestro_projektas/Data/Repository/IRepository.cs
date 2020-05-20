@@ -40,5 +40,7 @@ namespace Semestro_projektas.Data.Repository
         void KickChannelUser(string userId, int channelId);
 
         bool EditUserData(User user, string change, string pass = null, UserManager<User> userManager = null);
+
+        void DeleteMessage(int messageId, string userName);
     }
 }
