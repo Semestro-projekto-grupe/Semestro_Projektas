@@ -117,31 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Minimalus slaptažodžio ilgis 6 simboliai!" xml:space="preserve">
-    <value>Minumum password length - 6.</value>
+  <data name="Galimi formatai:" xml:space="preserve">
+    <value>Available formats:</value>
   </data>
   <data name="Neteisingas slaptažodis!" xml:space="preserve">
-    <value>Wrong password!</value>
+    <value>Wrong password.</value>
+  </data>
+  <data name="Neįvestas slaptažodis!" xml:space="preserve">
+    <value>Missing password.</value>
   </data>
   <data name="Pateikta neteisinga gimimo data!" xml:space="preserve">
     <value>Unacceptable birth date.</value>
   </data>
   <data name="Slaptažodis negali būti sudarytas iš vienodų simbolių!" xml:space="preserve">
-    <value>Password must contain at least two different symbols.</value>
+    <value>Password must contain different symbols.</value>
   </data>
   <data name="Slaptažodyje privalo būti bent viena raidė!" xml:space="preserve">
     <value>Password must contain at least one letter.</value>
   </data>
   <data name="Slaptažodžiai nesutampa!" xml:space="preserve">
-    <value>Passwords do not match!</value>
+    <value>Passwords do not match.</value>
   </data>
-  <data name="Toks vartotojo vardas jau egzistuoja!" xml:space="preserve">
+  <data name="Toks slapyvardis jau yra!" xml:space="preserve">
     <value>User already exists.</value>
-  </data>
-  <data name="Vartotojas tokiu slapyvardžiu nerastas!" xml:space="preserve">
-    <value>User does not exist.</value>
-  </data>
-  <data name="Įvesti neteisingi prisijungimo duomenys!" xml:space="preserve">
-    <value>Wrong user name or password.</value>
   </data>
 </root>

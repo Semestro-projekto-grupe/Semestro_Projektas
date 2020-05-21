@@ -1,6 +1,8 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizer
 @model IEnumerable<Message>
 @{
     IEnumerable<User> users = ViewData["User"] as IEnumerable<User>;
@@ -246,17 +248,17 @@
                 <button class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title" id="profileName">Vartotojo profilis</h4>
             </div>
-               <div class="modal-body">
-                   <img  src='@Url.Content("~/images/avatar.png")' id="pfp" style="width:150px;height:150px; float:left;">
-                   <div id="userData" style="height:150px; padding-left: 160px;"></div>
-               </div>
-               <div class="modal-footer">
-                   <button class="btn btn-default" onclick="callKick()" id="callKick">Išspirti</button>
-                   <button class="btn btn-primary" data-dismiss="modal">Uždaryti</button>
-               </div>
-            
+            <div class="modal-body">
+                <img src='@Url.Content("~/images/avatar.png")' id="pfp" style="width:150px;height:150px; float:left;">
+                <div id="userData" style="height:150px; padding-left: 160px;"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" onclick="callKick()" id="callKick">Išspirti</button>
+                <button class="btn btn-primary" data-dismiss="modal">Uždaryti</button>
+            </div>
+
         </div>
-    </div>    
+    </div>
 </div>
 
 
@@ -271,9 +273,9 @@
                 <button class="btn btn-primary" data-dismiss="modal">Uždaryti</button>
                 <button class="btn btn-default" onclick="kickUser(id, name)" id="kickUsr">Išspirti</button>
             </div>
-            </div>
         </div>
     </div>
+</div>
 
 
 
@@ -486,10 +488,10 @@
 
             connection.on('DeleteMessage', (id, channel) => {
                 if (channel === currentChannel) {
-                    
+
                     $("#content" + id).parent().prev().remove();
                     $("#content" + id).parent().remove();
-                    
+
                 }
             });
 
@@ -532,7 +534,7 @@
                 });
             //});
             //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////Adds a emoji bar function
-           
+
 
             $('#createChannel').click(function () {
 
@@ -909,7 +911,7 @@
                         $("#pfp").attr("src", "/avatars/" + response.item5);
                         $("#kickUsr").attr("onclick", "kickUser('" + id + "', '" + response.item1 + "')");
                         $('#kickUserName').text("Ar tikrai norite išspirti vartotoją " + response.item1);
-                        
+
                     },
                     failure: function (response) {
                         console.log("failure getting messages!");
@@ -919,7 +921,7 @@
 
 
 
-                
+
             }
 
         function deleteMessage(id) {

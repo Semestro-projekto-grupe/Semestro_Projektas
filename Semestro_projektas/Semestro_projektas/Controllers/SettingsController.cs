@@ -32,6 +32,7 @@ namespace Semestro_projektas.Controllers
             this.userManager = userManager;
             this.signInManager = signInManager;
             _repo = repo;
+            _localizer = localizer;
         }
         public async Task<IActionResult> Settings()
         {

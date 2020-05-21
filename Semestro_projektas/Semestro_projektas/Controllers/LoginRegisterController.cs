@@ -100,7 +100,7 @@ namespace Semestro_projektas.Controllers
                 //Index.@HTML pateiktos tik readonly reikšmės, kurių automatiškai pakeisti be validacijos iš back-endo pusės neina.
                 if (pass != password) //patikrinimas ar įvesti slaptažodžiai sutampa
                 {
-                    ModelState.AddModelError("Password", _localizer["Slaptažodžiai nesutampa!"]);
+                    ModelState.AddModelError("Password", "Slaptažodžiai nesutampa!");
                     if (data.Contains("—") || data.Length == 1)
                     {
                         ModelState.AddModelError("Date", "Pateikta neteisinga gimimo data!");
