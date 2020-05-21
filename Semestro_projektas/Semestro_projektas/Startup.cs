@@ -59,20 +59,19 @@ namespace Semestro_projektas
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+
             //nurodom papke kurioje laikysim resource failus
             services.AddLocalization(opts =>
             {
                 opts.ResourcesPath = "Resources";
             });
 
-
-
             //planuojamu palaikyt kalbu sarasas
             services.Configure<RequestLocalizationOptions>(opts =>
             {
                 var supportedCultures = new List<CultureInfo> {
                     new CultureInfo("en"),
-                    new CultureInfo("en-US"),
+                    //new CultureInfo("en-US"),
                     new CultureInfo("lt-LT"),
                   };
 

@@ -117,19 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Prisijungimas" xml:space="preserve">
-    <value>Log In</value>
+  <data name="Asmeninės informacijos redagavimas" xml:space="preserve">
+    <value>Personal Info Edit</value>
   </data>
-  <data name="Prisijungti" xml:space="preserve">
-    <value>Log In</value>
+  <data name="Gimimo data" xml:space="preserve">
+    <value>Date of Birth</value>
   </data>
-  <data name="Registruotis" xml:space="preserve">
-    <value>Register</value>
+  <data name="Išsaugoti" xml:space="preserve">
+    <value>Save</value>
   </data>
-  <data name="Slaptažodis" xml:space="preserve">
-    <value>Password</value>
+  <data name="Naujas-Slaptažodis" xml:space="preserve">
+    <value>New-Password</value>
+  </data>
+  <data name="Pakartoti-Slaptažodį" xml:space="preserve">
+    <value>Repeat Password</value>
+  </data>
+  <data name="Papildomi nustatymai: matomumas" xml:space="preserve">
+    <value>View Settings</value>
+  </data>
+  <data name="Pavardė" xml:space="preserve">
+    <value>Surname</value>
+  </data>
+  <data name="Senas-Slaptažodis" xml:space="preserve">
+    <value>Old-Password</value>
   </data>
   <data name="Slapyvardis" xml:space="preserve">
-    <value>NickName</value>
+    <value>Nickname</value>
+  </data>
+  <data name="Slapyvardžio keitimas" xml:space="preserve">
+    <value>Change Password</value>
+  </data>
+  <data name="Vardas" xml:space="preserve">
+    <value>Name</value>
   </data>
 </root>
