@@ -55,7 +55,7 @@ namespace Semestro_projektas
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
+                options.CheckConsentNeeded = context => false;      //pakeist i true, kai jei veiks visom narsyklem
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
