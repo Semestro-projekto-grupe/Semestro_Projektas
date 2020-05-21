@@ -117,6 +117,10 @@ namespace Semestro_projektas.Controllers
                     user.SecurityStamp = "editUserName";
                     await signInManager.SignInAsync(user, true);
                 }
+                else if (change == "papild") 
+                {
+                    _repo.EditUserData(user, change);
+                }
                 else
                 {
                     ViewData["show"] = "t";

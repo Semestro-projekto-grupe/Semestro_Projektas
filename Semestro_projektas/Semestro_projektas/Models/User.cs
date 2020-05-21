@@ -28,11 +28,14 @@ namespace Semestro_projektas.Models
         [NotMapped]
         public string Password { get; set; }
         [DataType(DataType.Date)]
-        [DisplayName("Data")]
+        [DisplayName("Data:")]
         [Required]
         public DateTime Date { get; set; }
         [DisplayName("Avataras:")]
         public string Avatar { get; set; }
+        public bool NameVisibility { get; set; }
+        public bool SurnameVisibility { get; set; }
+        public bool DateVisibility { get; set; }
 
         public ICollection<ChannelUser> channelUsers { get; set; }
     }
