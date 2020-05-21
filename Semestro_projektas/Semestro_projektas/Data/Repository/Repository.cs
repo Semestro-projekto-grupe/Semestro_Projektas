@@ -271,8 +271,14 @@ namespace Semestro_projektas.Data.Repository
                     }
                     return false;
                 }
+                else if (change == "papild")
+                {
+                    result.NameVisibility = user.NameVisibility;
+                    result.SurnameVisibility = user.SurnameVisibility;
+                    result.DateVisibility = user.DateVisibility;
+                }
 
-                _ctx.SaveChanges();
+                    _ctx.SaveChanges();
                 return true;
             }
             return false;
