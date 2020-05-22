@@ -310,5 +310,10 @@ namespace Semestro_projektas.Data.Repository
 
         }
 
+
+        public void DeleteChannel(int channelId, string userName) {
+
+        }
+
     }
 }
