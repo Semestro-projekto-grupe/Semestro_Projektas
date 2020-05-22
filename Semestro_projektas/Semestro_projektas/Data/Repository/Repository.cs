@@ -177,7 +177,7 @@ namespace Semestro_projektas.Data.Repository
         public List<Channel> GetUserChannels(string userName)
         {
             // User user = _ctx.Users.FirstOrDefault(p => p.Name == userName);
-            string uid = GetUserIdByName(userName).Id;
+            string uid = GetUserByName(userName).Id;
             var channels = _ctx.Channels.Where(t => t.channelUsers.Any(s => s.User.Id == uid));
             //foreach (ChannelUser c in user.channelUsers) {
             // channels.Add(c.Channel);
@@ -188,7 +188,7 @@ namespace Semestro_projektas.Data.Repository
 
         public bool CheckIfChannelExists(string userName, int id)
         {
-            string uid = GetUserIdByName(userName).Id;
+            string uid = GetUserByName(userName).Id;
             var channels = _ctx.Channels.Where(t => t.channelUsers.Any(s => s.User.Id == uid));
             int index = channels.ToList().FindIndex(f => f.Id == id);
             if (index >= 0)
@@ -207,7 +207,7 @@ namespace Semestro_projektas.Data.Repository
         {
             if (CheckIfChannelExists(inviterName, channelId))
             {
-                string uid = GetUserIdByName(userName).Id;
+                string uid = GetUserByName(userName).Id;
                 User foundUser = _ctx.Users.FirstOrDefault(p => p.Id == uid);
                 Channel foundChannel = _ctx.Channels.FirstOrDefault(c => c.Id == channelId);
                 AddChannelUser(foundChannel, foundUser);
@@ -239,7 +239,7 @@ namespace Semestro_projektas.Data.Repository
 
         }
 
-        User GetUserIdByName(string name)
+        User GetUserByName(string name)
         {
             User usr = _ctx.Users.FirstOrDefault(u => u.UserName == name);
             return usr;
@@ -307,12 +307,36 @@ namespace Semestro_projektas.Data.Repository
         public void DeleteMessage(int messageId, string userName) {
             Message msg = _ctx.Messages.FirstOrDefault(m => m.Author == userName);
             _ctx.Messages.Remove(msg);
-
+            _ctx.SaveChanges();
         }
 
 
         public void DeleteChannel(int channelId, string userName) {
+            string uid = GetUserByName(userName).Id;
+            List<User> chUsers = _ctx.Users.Where(t => t.channelUsers.Any(s => s.ChannelId == channelId)).ToList();
 
+
+
+
+            List<Message> chMessages = _ctx.Messages.Where(m => m.ChannelId == channelId).ToList();
+
+            foreach (Message m in chMessages)
+            {
+                _ctx.Messages.Remove(m);
+            }
+
+            foreach (User u in chUsers)
+            {
+                KickChannelUser(u.Id, channelId);
+            }
+
+            Channel chn = _ctx.Channels.FirstOrDefault(c => c.Id == channelId);
+            _ctx.Channels.Remove(chn);
+        }
+
+
+       public Channel GetChannelSettings(int channelId) {
+            return _ctx.Channels.FirstOrDefault(c => c.Id == channelId);
         }
 
     }

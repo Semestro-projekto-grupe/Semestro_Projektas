@@ -44,5 +44,8 @@ namespace Semestro_projektas.Data.Repository
         void DeleteMessage(int messageId, string userName);
 
         void DeleteChannel(int channelId, string userName);
+
+        Channel GetChannelSettings(int channelId);
+
     }
 }

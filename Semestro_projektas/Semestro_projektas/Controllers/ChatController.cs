@@ -261,21 +261,39 @@ namespace Semestro_projektas.Controllers
 
         }
 
+
+        
+        [HttpPost]
+        public async Task<JsonResult> GetChannelSettings(int channelId, string userName)
+        {
+            if (User.Identity.Name == userName)
+            {
+                var ch = _repo.GetChannelSettings(channelId);
+                var json = JsonConvert.SerializeObject(ch);
+                return Json(json);
+            }
+            else {
+                return Json("fail read ch settings");
+            }
+
+        }
+
         [HttpPost]
         public async Task<JsonResult> DeleteChannel(int channelId, string userName)
         {
             if (User.Identity.Name == userName)
             {
                 _repo.DeleteChannel(channelId, userName);
+
             }
 
             if (await _repo.SaveChangesAsync())
             {
-                return Json("sent msg");
+                return Json("deleted chn");
             }
             else
             {
-                return Json("failed to save data");
+                return Json("failed to delete chn");
             }
 
         }

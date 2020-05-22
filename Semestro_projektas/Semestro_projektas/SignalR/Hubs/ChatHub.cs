@@ -47,5 +47,10 @@ namespace Semestro_projektas.SignalR.Hubs
             await Clients.All.SendAsync("DeleteMessage", id, channel);
         }
 
+        public async Task DeleteChannel(int id)
+        {
+            await Clients.All.SendAsync("DeleteChannel", id);
+        }
+
     }
 }
