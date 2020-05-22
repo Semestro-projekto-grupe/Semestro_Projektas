@@ -32,14 +32,14 @@
 
     .w-2 {
         position: relative;
-        left: 210px;
-        width: 90px;
+        left: 203px;
+        width: 100px;
         background-color: aqua;
     }
 
     .w-3 {
-        width: 100px;
-        left: 190px;
+        width: 95px;
+        left: 188px;
         background-color: aqua;
     }
 
@@ -61,6 +61,10 @@
     .pull-center {
         position: absolute;
     }
+    .bold {
+        color: black;
+        text-shadow: 1px 1px 2px black, 0 0 0px blue, 0 0 0px darkblue;
+    }
 </style>
 
 <form asp-controller="LoginRegister" asp-action="Login" method="post">
@@ -68,12 +72,12 @@
     <br><br>
     <nav class=" box-shadow">
         <div class="text-center">
-            <h1>Prisijungimas</h1>
+            <h1 class="bold">Prisijungimas</h1>
             <p></p>
         </div>
         @if (TempData["Success"] != null)
         {
-            <label class="pull-center" style="color:red; font-size:20px;">&#160 &#160 &#160 Registracija sėkminga!!!</label>
+            <label class="pull-center" style="color:red; font-size:20px;">&#160 &#160 &#160 @TempData["Success"]</label>
         }
         <dataInput>
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -92,8 +96,8 @@
                 </div>
             </div>
             <div class="row">
-                <button type="submit" class="form-control col-sm-2 w-3" name="submitButton" value="Regist">Registruotis</button>
-                <button type="submit" class="form-control col-sm-2 w-2" name="submitButton" value="Check">Prisijungti</button>
+                <button type="submit" class="form-control col-sm-2 w-3" name="submitButton" value="Check">Prisijungti</button>S
+                <button type="submit" class="form-control col-sm-2 w-2" name="submitButton" value="Regist">Registruotis</button>
             </div>
         </dataInput>
     </nav>

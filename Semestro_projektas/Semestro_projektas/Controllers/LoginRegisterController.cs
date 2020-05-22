@@ -137,7 +137,7 @@ namespace Semestro_projektas.Controllers
                         ModelState.AddModelError("NickName", "Toks vartotojo vardas jau egzistuoja!");
                         return View(user);
                     }
-                    TempData["Success"] = "Successful";
+                    TempData["Success"] = "Registracija sėkminga!!!";
                     return RedirectToAction("Login", "LoginRegister"); // Nukėlimas į kitą kontrolerį arba sekantį šio kontrolerio langą + registracija sėkminga galima prisijungti
                 }
                 return View(user); //Perkėlimas į sekančio kontrolerio vaizdą
