@@ -45,13 +45,36 @@ namespace Semestro_projektas.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Settings(User user, string pass, string password, string pass2, string data, string change, IFormFile file)
+        public async Task<IActionResult> Settings(User user, string pass, string password, string pass2, string pass3, string data, string change, IFormFile file)
         {
             DataBack(data);
             try
             {
                 user.Avatar = _repo.GetUser(user.Id).Avatar;
-                if (change == "data")
+                if (change == "Patvirtinti")
+                {
+                    var user2 = await userManager.GetUserAsync(User);
+                    bool result = await userManager.CheckPasswordAsync(user2, pass3);
+                    if (!result)
+                    {
+                        ViewData["del"] = "del";
+                        ModelState.AddModelError("pass3", "Neteisingas slaptažodis!");
+                        return View(user);
+                    }
+                     var rez = await userManager.DeleteAsync(user2);
+                    if (!rez.Succeeded)
+                    {
+                        ViewData["del"] = "del";
+                        ModelState.AddModelError("pass3", " Paskyra nepanaikinta!  ");
+                        return View(user);
+                    }
+                    DeleteAvatar(user2);
+                    await signInManager.SignOutAsync();
+                    await Logout();
+                    TempData["Success"] = "Paskyra panaikinta!!!";
+                    return RedirectToAction("Login", "LoginRegister");
+                }
+                else if (change == "data")
                 {
                     if (data.Contains("—") || data.Length == 1)
                     {
@@ -74,15 +97,8 @@ namespace Semestro_projektas.Controllers
                     {
                         if (user.Avatar == file.FileName || Regex.IsMatch(file.FileName, "((.png)|(.jpg))$"))
                         {
-                            if (user.Avatar != "student.png")
-                            {
-                                string delete = Path.Combine(
-                                 Directory.GetCurrentDirectory(), "wwwroot/avatars",
-                                 user.Avatar);
-                                FileInfo fi = new FileInfo(delete);
-                                System.IO.File.Delete(delete);
-                                fi.Delete();
-                            }
+
+                            DeleteAvatar(user);
                             string rename = user.NickName + file.FileName.Substring(file.FileName.Length - 4, 4);
                             user.Avatar = rename;
                             var path = Path.Combine(
@@ -117,11 +133,7 @@ namespace Semestro_projektas.Controllers
                     user.SecurityStamp = "editUserName";
                     await signInManager.SignInAsync(user, true);
                 }
-                else if (change == "papild") 
-                {
-                    _repo.EditUserData(user, change);
-                }
-                else
+                else if(change == "password")
                 {
                     ViewData["show"] = "t";
                     if (pass == null || password == null || pass2 == null)
@@ -162,6 +174,10 @@ namespace Semestro_projektas.Controllers
                         return View(user);
                     }
                 }
+                else if (change == "papild")
+                {
+                    _repo.EditUserData(user, change);
+                }
                 ViewData["Success2"] = "tt";
                 return View(user);
             }
@@ -180,6 +196,25 @@ namespace Semestro_projektas.Controllers
                 ViewData["day"] = temp[2].Contains("—") ? "0" : temp[2];
                 ViewData["year2"] = DateTime.Now.Year;
             }
+        }
+
+        public void DeleteAvatar(User user)
+        {
+            if (user.Avatar != "student.png")
+            {
+                string delete = Path.Combine(
+                 Directory.GetCurrentDirectory(), "wwwroot/avatars",
+                 user.Avatar);
+                FileInfo fi = new FileInfo(delete);
+                System.IO.File.Delete(delete);
+                fi.Delete();
+            }
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            await signInManager.SignOutAsync();
+            return RedirectToAction("Login", "LoginRegister");
         }
     }
 }

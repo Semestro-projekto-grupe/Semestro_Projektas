@@ -74,6 +74,10 @@
         position: relative;
         left: 185px;
     }
+    .bold {
+        color: black;
+        text-shadow: 1px 1px 2px black, 0 0 0px blue, 0 0 0px darkblue;
+    }
 </style>
 <!DOCTYPE html>
 <form asp-controller="LoginRegister" asp-action="Register" method="post">
@@ -130,7 +134,7 @@
         <br><br>
         <nav class=" box-shadow box">
             <div class="text-center">
-                <h1>Registracija</h1>
+                <h1 class="bold">Registracija</h1>
                 <p></p>
             </div>
             <dataInput>
