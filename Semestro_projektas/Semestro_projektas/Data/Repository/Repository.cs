@@ -153,7 +153,28 @@ namespace Semestro_projektas.Data.Repository
 
         public User GetUser(string id)
         {
-            return _ctx.Users.FirstOrDefault(p => p.Id == id);
+            User usr = _ctx.Users.FirstOrDefault(p => p.Id == id);
+            User nUsr = new User();
+            nUsr.Avatar = usr.Avatar;
+            nUsr.Date = usr.Date;
+            nUsr.Name = usr.Name;
+            nUsr.NickName = usr.NickName;
+            nUsr.Surname = usr.Surname;
+            nUsr.UserName = usr.UserName;
+            nUsr.Id = usr.Id;
+            if (usr.NameVisibility == false) {
+                nUsr.Name = "(Paslėpta)";
+            }
+
+            if(usr.SurnameVisibility == false)
+            {
+                nUsr.Surname = "(Paslėpta)";
+            }
+
+            if (usr.DateVisibility == false) {
+                nUsr.Date = new DateTime(1850, 1, 1);
+            }
+            return nUsr;
         }
 
         public void CreateChannel(Channel channel, string userName)
@@ -161,18 +182,22 @@ namespace Semestro_projektas.Data.Repository
             _ctx.Channels.Add(channel);
 
             User creator = _ctx.Users.FirstOrDefault(p => p.UserName == userName);
-            AddChannelUser(channel, creator);
+            AddChannelUser(channel, creator, RoleTypes.Creator);
         }
 
-        public void AddChannelUser(Channel channel, User user)
+        public void AddChannelUser(Channel channel, User user, RoleTypes role)
         {
             ChannelUser channelUser = new ChannelUser();
             channelUser.ChannelId = channel.Id;
             channelUser.Channel = channel;
             channelUser.UserId = user.Id;
+            channelUser.Role = role;
             _ctx.ChannelUsers.Add(channelUser);
             user.channelUsers.Add(channelUser);
+            channel.channelUsers.Add(channelUser);
+            
         }
+
 
         public List<Channel> GetUserChannels(string userName)
         {
@@ -210,7 +235,7 @@ namespace Semestro_projektas.Data.Repository
                 string uid = GetUserByName(userName).Id;
                 User foundUser = _ctx.Users.FirstOrDefault(p => p.Id == uid);
                 Channel foundChannel = _ctx.Channels.FirstOrDefault(c => c.Id == channelId);
-                AddChannelUser(foundChannel, foundUser);
+                AddChannelUser(foundChannel, foundUser, RoleTypes.User);
             }
         }
 
@@ -229,13 +254,22 @@ namespace Semestro_projektas.Data.Repository
 
         }
 
-        public void KickChannelUser(string userId, int channelId)
+        public void KickChannelUser(string userId, int channelId, string callerName)
         {
-             ChannelUser chUser = _ctx.ChannelUsers.FirstOrDefault(u => u.UserId == userId && u.ChannelId == channelId);
-
-            _ctx.Users.FirstOrDefault(u => u.Id == userId).channelUsers.Remove(chUser);
-            _ctx.Channels.FirstOrDefault(c => c.Id == channelId).channelUsers.Remove(chUser);
-            var rez = _ctx.ChannelUsers.Remove(chUser);
+            string callerUid = GetUserByName(callerName).Id;
+            ChannelUser chUser = _ctx.ChannelUsers.FirstOrDefault(u => u.UserId == userId && u.ChannelId == channelId);
+            ChannelUser callerChUser = _ctx.ChannelUsers.FirstOrDefault(u => u.UserId == callerUid && u.ChannelId == channelId);
+            if (callerChUser.Role != RoleTypes.User && chUser.Role != RoleTypes.Creator &&
+                callerChUser.Role != chUser.Role && chUser != callerChUser)
+            {
+                if (callerChUser.Role == RoleTypes.Creator || callerChUser.Role == RoleTypes.Admin ||
+                    (callerChUser.Role == RoleTypes.Moderator && chUser.Role == RoleTypes.User))
+                {
+                    _ctx.Users.FirstOrDefault(u => u.Id == userId).channelUsers.Remove(chUser);
+                    _ctx.Channels.FirstOrDefault(c => c.Id == channelId).channelUsers.Remove(chUser);
+                    var rez = _ctx.ChannelUsers.Remove(chUser);
+                }
+            }
 
         }
 
@@ -313,31 +347,51 @@ namespace Semestro_projektas.Data.Repository
 
         public void DeleteChannel(int channelId, string userName) {
             string uid = GetUserByName(userName).Id;
-            List<User> chUsers = _ctx.Users.Where(t => t.channelUsers.Any(s => s.ChannelId == channelId)).ToList();
-
-
-
-
-            List<Message> chMessages = _ctx.Messages.Where(m => m.ChannelId == channelId).ToList();
-
-            foreach (Message m in chMessages)
+            ChannelUser chUser = _ctx.ChannelUsers.FirstOrDefault(u => u.UserId == uid && u.ChannelId == channelId);
+            if (chUser.Role == RoleTypes.Creator)
             {
-                _ctx.Messages.Remove(m);
-            }
+                List<User> chUsers = _ctx.Users.Where(t => t.channelUsers.Any(s => s.ChannelId == channelId)).ToList();
+                List<Message> chMessages = _ctx.Messages.Where(m => m.ChannelId == channelId).ToList();
 
-            foreach (User u in chUsers)
-            {
-                KickChannelUser(u.Id, channelId);
-            }
+                foreach (Message m in chMessages)
+                {
+                    _ctx.Messages.Remove(m);
+                }
 
-            Channel chn = _ctx.Channels.FirstOrDefault(c => c.Id == channelId);
-            _ctx.Channels.Remove(chn);
+                foreach (User u in chUsers)
+                {
+                    KickChannelUser(u.Id, channelId, userName);
+                }
+
+                Channel chn = _ctx.Channels.FirstOrDefault(c => c.Id == channelId);
+                _ctx.Channels.Remove(chn);
+            }
         }
 
 
-       public Channel GetChannelSettings(int channelId) {
+        public Channel GetChannelSettings(int channelId) {
             return _ctx.Channels.FirstOrDefault(c => c.Id == channelId);
         }
+
+
+        public RoleTypes GetUserRole(string userId, int channelId) {
+            ChannelUser usr = _ctx.ChannelUsers.FirstOrDefault(u => u.UserId == userId && u.ChannelId == channelId);
+            return usr.Role;
+        }
+
+       public void AssignRole(string receiverId, string callerName, int channelId, int roleValue) {
+            User caller = GetUserByName(callerName);
+            User receiver = GetUser(receiverId);
+            ChannelUser callerChUser = _ctx.ChannelUsers.FirstOrDefault(u => u.UserId == caller.Id && u.ChannelId == channelId);
+            ChannelUser receiverChUser = _ctx.ChannelUsers.FirstOrDefault(u => u.UserId == receiver.Id && u.ChannelId == channelId);
+            if (callerChUser.Role == RoleTypes.Creator || callerChUser.Role == RoleTypes.Admin)
+            {
+                if (callerChUser.Role != receiverChUser.Role && receiverChUser.UserId != callerChUser.UserId && receiverChUser.Role != RoleTypes.Creator)
+                {
+                    receiverChUser.Role = (RoleTypes)roleValue;
+                }
+            }
+       }
 
     }
 }

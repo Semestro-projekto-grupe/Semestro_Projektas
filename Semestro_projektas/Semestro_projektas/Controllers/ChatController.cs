@@ -31,7 +31,11 @@ namespace Semestro_projektas.Controllers
             ViewData["User"] = _repo.GetUsers();
             //ViewData["userChannels"] = _repo.GetUserChannels(User.Identity.Name);
             var messages = _repo.GetChatMessages();
-
+            List<string> roles = new List<string>();
+            roles.Add("Administratorius");
+            roles.Add("Moderatorius");
+            roles.Add("Vartotojas");
+            ViewData["Roles"] = roles;
             return View(messages);
         }
 
@@ -219,9 +223,12 @@ namespace Semestro_projektas.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> KickChannelUser(int channelId, string userId)
+        public async Task<JsonResult> KickChannelUser(int channelId, string userId, string caller)
         {
-            _repo.KickChannelUser(userId, channelId);
+            if (User.Identity.Name == caller)
+            {
+                _repo.KickChannelUser(userId, channelId, caller);
+            }
             if (await _repo.SaveChangesAsync())
             {
                 return Json("sent msg " + "DELETE ChannelUsers FROM ChannelUsers WHERE ChannelUsers.UserId = '" + userId + "' AND ChannelUsers.ChannelId = " + channelId + ";");
@@ -234,10 +241,29 @@ namespace Semestro_projektas.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> GetUserProfile(string userId)
+        public async Task<JsonResult> GetUserProfile(string userId, int channelId)
         {
             var data = _repo.GetUser(userId);
-            var temp = Tuple.Create(data.UserName, data.Name, data.Surname, data.Date.ToString("yyyy-MM-dd"), data.Avatar);
+            var roleType = _repo.GetUserRole(userId, channelId);
+            string role = "Nėra";
+
+            switch (roleType)
+            {
+                case RoleTypes.Creator:
+                    role = "Kanalo kūrėjas";
+                    break;
+                case RoleTypes.Admin:
+                    role = "Administratorius";
+                    break;
+                case RoleTypes.Moderator:
+                    role = "Moderatorius";
+                    break;
+                case RoleTypes.User:
+                    role = "Vartotojas";
+                    break;
+            }
+
+            var temp = Tuple.Create(data.UserName, data.Name, data.Surname, data.Date.ToString("yyyy-MM-dd"), data.Avatar, role);
             return Json(temp);
         }
 
@@ -294,6 +320,26 @@ namespace Semestro_projektas.Controllers
             else
             {
                 return Json("failed to delete chn");
+            }
+
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> AssignRole(string receiverId, string callerName, int channelId, int roleValue)
+        {
+            if (User.Identity.Name == callerName)
+            {
+                _repo.AssignRole(receiverId, callerName, channelId, roleValue);
+
+            }
+
+            if (await _repo.SaveChangesAsync())
+            {
+                return Json("added role");
+            }
+            else
+            {
+                return Json("failed to add role");
             }
 
         }

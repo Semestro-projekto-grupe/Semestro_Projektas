@@ -13,5 +13,7 @@ namespace Semestro_projektas.Models
         public string UserId { get; set; }
        // [ForeignKey("UserId")]
         public User User { get; set; }
+        public RoleTypes Role { get; set; }
     }
+
 }
