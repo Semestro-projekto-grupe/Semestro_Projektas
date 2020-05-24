@@ -32,17 +32,29 @@ namespace Semestro_projektas.Data.Repository
 
         List<User> GetUsers();
         User GetUser(string id);
-
+        RoleTypes GetUserRole(string userId, int channelId);
         void CreateChannel(Channel channel, string userName);
         List<Channel> GetUserChannels(string userName);
         void AddUserToChannel(string userName, string inviterName, int channelId);
         List<User> GetChannelUsers(int chatId, string userName);
-        void KickChannelUser(string userId, int channelId);
+        void KickChannelUser(string userId, int channelId, string callerName);
 
         bool EditUserData(User user, string change, string pass = null, UserManager<User> userManager = null);
 
         void DeleteMessage(int messageId, string userName);
 
         void DeleteChannel(int channelId, string userName);
+
+        Channel GetChannelSettings(int channelId);
+
+        void AssignRole(string receiverId, string callerName, int channelId, int roleValue);
+
+        void LeaveChannel(int channelId, string userName);
+
+        User GetUserByName(string name);
+
+        void SendNotification(int channel, string userName);
+
+        void RemoveNotification(int channel, string userName);
     }
 }

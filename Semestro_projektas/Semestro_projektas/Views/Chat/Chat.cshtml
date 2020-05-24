@@ -7,6 +7,8 @@
 @{
     IEnumerable<User> users = ViewData["User"] as IEnumerable<User>;
     IEnumerable<Channel> userChannels = ViewData["userChannels"] as IEnumerable<Channel>;
+    IEnumerable<string> roles = ViewData["Roles"] as IEnumerable<string>;
+    int roleVal = 0;
 }
 
 
@@ -239,6 +241,8 @@
         width:100%;
     }
 
+
+
 </style>
 
 <div class="modal" id="userProfile" tabindex="-1">
@@ -252,7 +256,18 @@
                 <img src='@Url.Content("~/images/avatar.png")' id="pfp" style="width:150px;height:150px; float:left;">
                 <div id="userData" style="height:150px; padding-left: 160px;"></div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" style="height:130px">
+                <div style="position:absolute;">
+                    <p>Priskirti rolę: </p>
+                    <select class="form-control form-control-sm" id="rolesList">
+                        @foreach (string s in roles)
+                        {
+                            roleVal++;
+                            <option value="@roleVal">@s</option>
+                        }
+                    </select>
+                    <button class="btn btn-default" onclick="assignRole('')" id="assignRole" style="margin-top:5px;">Priskirti</button>
+                </div>
                 <button class="btn btn-default" onclick="callKick()" id="callKick">Išspirti</button>
                 <button class="btn btn-primary" data-dismiss="modal">Uždaryti</button>
             </div>
@@ -286,10 +301,11 @@
                 <h4 class="modal-title" id="channelName">Kanalas</h4>
             </div>
             <div class="modal-body">
-                <div id="channelData" style="height:150px; padding-left: 160px;"></div>
+                <div id="channelData" style="height:10px;"></div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-default" onclick="callDelete()" id="callDelete">Naikinti kanalą</button>
+                <button class="btn btn-default" onclick="callLeaveChannel()" id="callLeaveChannel">Palikti kanalą</button>
+                <button class="btn btn-default" onclick="callDeleteChannel()" id="callDelete">Naikinti kanalą</button>
                 <button class="btn btn-primary" data-dismiss="modal">Uždaryti</button>
             </div>
 
@@ -303,7 +319,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title" id="kickChannelName">Ar tikrai norite pašalinti kanalą?</h4>
+                <h4 class="modal-title" id="deleteChannelName">Ar tikrai norite pašalinti kanalą?</h4>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" data-dismiss="modal">Uždaryti</button>
@@ -313,6 +329,20 @@
     </div>
 </div>
 
+<div class="modal" id="leaveChannel" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="leaveChannelName">Ar tikrai norite palikti kanalą?</h4>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal">Uždaryti</button>
+                <button class="btn btn-default" onclick="leaveChannel(id)" id="leaveChn">Palikti kanalą</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <div class="row">
@@ -495,7 +525,7 @@
 
 
             connection.on('KickChannelUser', (userName, channel) => {
-                if ('@User.Identity.Name' === userName) {
+                if ('@User.Identity.Name' === userName && currentChannel === channel) {
                     getUserChannels();
                     getChannelUsers();
                     $('#discussion').empty();
@@ -531,6 +561,74 @@
                 }
             });
 
+            connection.on('DeleteChannel', (id) => {
+                let foundChn = false;
+                channels.forEach((element) => {
+                    if (element.Id === id) {
+                        foundChn = true;
+                    }
+                });
+                if (foundChn) {
+                    if (currentChannel === id) {
+                        $('#discussion').empty();
+                        $('#selectedChannel').empty();
+                        $('#ChannelUsers').empty();
+                        currentChannel = 0;
+                    }
+                    getUserChannels();
+                   // $("#channel" + id).remove();
+
+                }
+            });
+
+
+
+            connection.on('LeaveChannel', (id, userName) => {
+                if ('@User.Identity.Name' === userName) {
+                    let foundChn = false;
+                    channels.forEach((element) => {
+                        if (element.Id === id) {
+                            foundChn = true;
+                        }
+                    });
+                    if (foundChn) {
+                        if (currentChannel === id) {
+                            $('#discussion').empty();
+                            $('#selectedChannel').empty();
+                            $('#ChannelUsers').empty();
+                            currentChannel = 0;
+                        }
+                        getUserChannels();
+                        // $("#channel" + id).remove();
+
+                    }
+                }
+                else if (currentChannel === id) {
+                    getChannelUsers();
+                }
+            });
+
+            connection.on('SendNotification', (channelId) => {
+                if (channelId !== currentChannel) {
+
+                    $("#channel" + channelId).css("background-color", "yellow");
+
+                     $.ajax({
+                        url: '@Url.Action("SendNotification")',
+                        type: "POST",
+                         data: { channel: channelId, userName: "@User.Identity.Name" },
+                        dataType: "json",
+                        success: function (response) {
+                            console.log("success send notification! " + response);
+                        },
+                        failure: function (response) {
+                            console.log("failure send message!");
+                        }
+                    });
+
+                }
+            });
+
 
             //};
             // Get the user name and store it to prepend to messages.
@@ -548,6 +646,7 @@
                     // Call the Send method on the hub.
                 // chat.server.send($('#displayname').val(), $('#message').val());
                 connection.invoke('Send', userName, message, currentChannel);
+                connection.invoke('SendNotification', currentChannel);
                 // Clear text box and reset focus for next comment.
                 $('#message').val('').focus();
 
@@ -640,55 +739,57 @@
             element.scrollTop = element.scrollHeight + 100;
                 }
 
-                function selectChannel(id) {
-                    currentChannel = id;
-                    channels.forEach((element) => {
-                        if (element.Id === id) {
-                            $("#selectedChannel").text("Pasirinktas kanalas: " + element.Name);
-                        }
-                    });
-                    loadChatLog(currentChannel);
-                    getChannelUsers();
-
+        function selectChannel(id) {
+            currentChannel = id;
+            channels.forEach((element) => {
+                if (element.Id === id) {
+                    $("#selectedChannel").text("Pasirinktas kanalas: " + element.Name);
+                    $("#channel" + id).css("background-color", "#eee");
+                    removeNotification(id);
                 }
+            });
+            loadChatLog(currentChannel);
+            getChannelUsers();
+
+        }
 
 
-                function loadChatLog(channel) {
-                    $.ajax({
-                    url: '@Url.Action("GetChatMessages")',
-                        type: "POST",
-                        data: { chatId: channel, userName: "@User.Identity.Name" },
-                    dataType: "json",
-                    success: function (response) {
-                        console.log("success get messages! " + response + " response");
-                        msgs = JSON.parse(response);
-                        $('#discussion').empty()
-                        msgs.forEach((element) => {
-                            if ("@User.Identity.Name" === element.Author) {
-                                $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='@Url.Content("~/images/avatar.png")' style='width:40px;' id='profile-pic" +
-                                    element.Id + "'><strong>" + htmlEncode(element.Author) +
-                                    "</strong></th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Id +
-                                    "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Content) + "<textarea id='edit" +
-                                    element.Id + "' style='visibility: hidden; width: 0;'>" +
-                                    element.Content + "</textarea></th><th style='display:inline-flex;'><button id='saveEdit" +
-                                    element.Id + "' onclick='saveEdit(" + element.Id + ")' style='visibility: hidden; width: 0;'>Išsaugoti</button><button id='editMessage" +
-                                    element.Id + "' onclick='editMessage(" + element.Id + ")'  style='float:right;'>Redaguoti</button><button id='deleteMessage" +
-                                    element.Id + "' onclick='deleteMessage(" + element.Id + ")'  style='float:right;'>Trinti</button></th></tr>");
-                            }
-                            else {
-                                $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='@Url.Content("~/images/avatar.png")' style='width:40px;' id='profile-pic" +
-                                    element.Id + "'><strong>" + htmlEncode(element.Author) +
-                                    "</strong></th></tr><tr class='otherMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Id +
-                                    "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Content) + "</th><th></th></tr>");
-                            }
-                        });
-
-                    },
-                    failure: function (response) {
-                        console.log("failure getting messages!");
+        function loadChatLog(channel) {
+            $.ajax({
+            url: '@Url.Action("GetChatMessages")',
+                type: "POST",
+                data: { chatId: channel, userName: "@User.Identity.Name" },
+            dataType: "json",
+            success: function (response) {
+                console.log("success get messages! " + response + " response");
+                msgs = JSON.parse(response);
+                $('#discussion').empty()
+                msgs.forEach((element) => {
+                    if ("@User.Identity.Name" === element.AuthorName) {
+                        $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='@Url.Content("~/images/avatar.png")' style='width:40px;' id='profile-pic" +
+                            element.Id + "'><strong>" + htmlEncode(element.AuthorName) +
+                            "</strong></th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Id +
+                            "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Content) + "<textarea id='edit" +
+                            element.Id + "' style='visibility: hidden; width: 0;'>" +
+                            element.Content + "</textarea></th><th style='display:inline-flex;'><button id='saveEdit" +
+                            element.Id + "' onclick='saveEdit(" + element.Id + ")' style='visibility: hidden; width: 0;'>Išsaugoti</button><button id='editMessage" +
+                            element.Id + "' onclick='editMessage(" + element.Id + ")'  style='float:right;'>Redaguoti</button><button id='deleteMessage" +
+                            element.Id + "' onclick='deleteMessage(" + element.Id + ")'  style='float:right;'>Trinti</button></th></tr>");
                     }
+                    else {
+                        $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='@Url.Content("~/images/avatar.png")' style='width:40px;' id='profile-pic" +
+                            element.Id + "'><strong>" + htmlEncode(element.AuthorName) +
+                            "</strong></th></tr><tr class='otherMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Id +
+                            "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Content) + "</th><th></th></tr>");
+                    }
+                });
 
-                    });
+            },
+            failure: function (response) {
+                console.log("failure getting messages!");
+            }
+
+            });
         }
 
 
@@ -822,7 +923,7 @@
                  $.ajax({
                     url: '@Url.Action("KickChannelUser")',
                      type: "POST",
-                     data: { channelId: currentChannel, userId: uId },
+                     data: { channelId: currentChannel, userId: uId, caller: "@User.Identity.Name" },
                     dataType: "json",
                      success: function (response) {
                          console.log("kick user success " + response);
@@ -859,7 +960,7 @@
                         channels = JSON.parse(response);
                         $("#userChannels").empty();
                         channels.forEach((element) => {
-                            $("#userChannels").append("<tr onclick='selectChannel(" + element.Id + ")'><td>" + element.Name + "</td></tr>");
+                            $("#userChannels").append("<tr id='channel" + element.Id + "'><td onclick='selectChannel(" + element.Id + ")'>" + element.Name + "</td><td style='background:green;' onclick='getChannelSettings(" + element.Id + ")'></td></tr>");
                         });
                         //selectChannel(channels[0].Id);
 
@@ -931,23 +1032,30 @@
 
                 $.ajax({
                     url: '@Url.Action("GetUserProfile")',
-                        type: "POST",
-                     data: {userId: id},
+                    type: "POST",
+                    data: { userId: id, channelId: currentChannel },
                     dataType: "json",
                     success: function (response) {
                         $("#userProfile").modal();
                         console.log(response);
-                        //let user = JSON.parse(response);
+                       // let channel = JSON.parse(response);
                         console.log("success get messages! " + response + " response ilgis " + response.length);
                         $('#userData').empty();
                         $('#profileName').text("Vartotojo " + response.item1 + " profilis");
                         $('#userData').append("<p><b>Vardas: </b>" + response.item2 + "</p>");
                         $('#userData').append("<p><b>Pavardė: </b>" + response.item3 + "</p>");
-                        $('#userData').append("<p><b>Gimimo data: </b>" + response.item4 + "</p>");
+                        if (response.item4 === "1850-01-01") {
+                            $('#userData').append("<p><b>Gimimo data: </b>(Paslėpta)</p>");
+                        }
+                        else {
+                            $('#userData').append("<p><b>Gimimo data: </b>" + response.item4 + "</p>");
+                        }
+                        $('#userData').append("<p><b>Kanalo rolė: </b>" + response.item6 + "</p>");
                         $("#pfp").attr("src", "/avatars/" + response.item5);
                         $("#kickUsr").attr("onclick", "kickUser('" + id + "', '" + response.item1 + "')");
+                        $("#assignRole").attr("onclick", "assignRole('" + id + "')");
                         $('#kickUserName').text("Ar tikrai norite išspirti vartotoją " + response.item1);
-
+                        console.log("--------------- " + response.item7);
                     },
                     failure: function (response) {
                         console.log("failure getting messages!");
@@ -994,7 +1102,7 @@
                      data: { channelId: id, userName: "@User.Identity.Name" },
                     dataType: "json",
                      success: function (response) {
-                         console.log("kick user success " + response);
+                         console.log("delete channel success " + response);
                        /* let users = JSON.parse(response);
                         console.log("success get messages! " + msgs + " response ilgis " + msgs.length);
                         $('#ChannelUsers').empty()
@@ -1002,8 +1110,8 @@
 
                             $("#ChannelUsers").append("<tr><td>" + element.UserName + "</td> <td class='kickrow' onclick=\"kickUser('" + element.Id +  "')\">        </td></tr>");
                         });*/
-                         $('#kickUser').modal('toggle');
-                         connection.invoke('KickChannelUser', uName, currentChannel);
+                         $('#deleteChannel').modal('toggle');
+                         connection.invoke('DeleteChannel', id);
                     },
                     failure: function (response) {
                         console.log("failure getting messages!");
@@ -1013,11 +1121,98 @@
         }
 
         function callDeleteChannel() {
-            $('#userProfile').modal('toggle');
-            $("#kickUser").modal();
+            $('#channelProfile').modal('toggle');
+            $("#deleteChannel").modal();
         }
 
 
+        function getChannelSettings(id){
+             $.ajax({
+                    url: '@Url.Action("GetChannelSettings")',
+                     type: "POST",
+                     data: { channelId: id, userName: "@User.Identity.Name" },
+                    dataType: "json",
+                     success: function (response) {
+                         $("#channelProfile").modal();
+                         console.log(response);
+                         let channel = JSON.parse(response);
+                         console.log("success get messages! " + response + " response ilgis " + response.length);
+                         $('#channelData').empty();
+                         $('#channelName').text("Kanalas " + channel.Name);
+                        // $('#channelData').append("<p><b>Vardas: </b>" + response.item2 + "</p>");
+                      //   $('#channelData').append("<p><b>Pavardė: </b>" + response.item3 + "</p>");
+                        // $('#channelData').append("<p><b>Gimimo data: </b>" + response.item4 + "</p>");
+                         $("#deleteChn").attr("onclick", "deleteChannel(" + channel.Id + ")");
+                         $('#deleteChannelName').text("Ar tikrai norite pašalinti kanalą " + channel.Name + "?");
+
+                         $("#leaveChn").attr("onclick", "leaveChannel(" + channel.Id + ")");
+                         $('#leaveChannelName').text("Ar tikrai norite palikti kanalą " + channel.Name + "?");
+                         
+                    },
+                    failure: function (response) {
+                        console.log("failure getting messages!");
+                    }
+
+                    });
+        }
+
+
+        function assignRole(id) {
+            let selectVal = $("#rolesList").val();
+             $.ajax({
+                    url: '@Url.Action("AssignRole")',
+                 type: "POST",
+                 data: { receiverId: id, callerName: "@User.Identity.Name", channelId: currentChannel, roleValue: selectVal },
+                    dataType: "json",
+                     success: function (response) {
+                         $("#userProfile").modal('toggle');
+                         
+                    },
+                    failure: function (response) {
+                        console.log("failure getting messages!");
+                    }
+
+                    });
+        }
+
+     function leaveChannel(id) {
+            $.ajax({
+                    url: '@Url.Action("LeaveChannel")',
+                     type: "POST",
+                     data: { channelId: id, userName: "@User.Identity.Name" },
+                    dataType: "json",
+                     success: function (response) {
+                         $("#leaveChannel").modal('toggle');
+                         connection.invoke('LeaveChannel', id, "@User.Identity.Name");
+                    },
+                    failure: function (response) {
+                        console.log("failure getting messages!");
+                    }
+
+                    });
+        }
+
+        function callLeaveChannel() {
+            $('#channelProfile').modal('toggle');
+            $("#leaveChannel").modal();
+        }
+
+
+        function removeNotification(channelId) {
+             $.ajax({
+                        url: '@Url.Action("RemoveNotification")',
+                        type: "POST",
+                         data: { channel: channelId, userName: "@User.Identity.Name" },
+                        dataType: "json",
+                        success: function (response) {
+                            console.log("success send notification! " + response);
+                        },
+                        failure: function (response) {
+                            console.log("failure send message!");
+                        }
+                    });
+        }
+        
 
     </script>
 

@@ -11,5 +11,7 @@ namespace Semestro_projektas.Models
         public string Name { get; set; }
 
         public ICollection<ChannelUser> channelUsers { get; set; }
+        public ICollection<Message> messages { get; set; }
     }
 }
+

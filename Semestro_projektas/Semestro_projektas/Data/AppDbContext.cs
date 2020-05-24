@@ -40,6 +40,15 @@ namespace Semestro_projektas.Data
         .WithMany(t => t.channelUsers) // If you add `public ICollection<UserBook> UserBooks { get; set; }` navigation property to Book model class then replace `.WithMany()` with `.WithMany(b => b.UserBooks)`
         .HasForeignKey(c => c.ChannelId);
 
+        modelBuilder.Entity<Message>()
+            .HasOne(m => m.Author)
+            .WithMany(a => a.messages)
+            .HasForeignKey(k => k.AuthorId);
+
+        modelBuilder.Entity<Message>()
+                .HasOne(m => m.Channel)
+                .WithMany(c => c.messages)
+                .HasForeignKey(k => k.ChannelId);
 
         }
 

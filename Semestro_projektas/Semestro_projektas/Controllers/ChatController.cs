@@ -31,7 +31,11 @@ namespace Semestro_projektas.Controllers
             ViewData["User"] = _repo.GetUsers();
             //ViewData["userChannels"] = _repo.GetUserChannels(User.Identity.Name);
             var messages = _repo.GetChatMessages();
-
+            List<string> roles = new List<string>();
+            roles.Add("Administratorius");
+            roles.Add("Moderatorius");
+            roles.Add("Vartotojas");
+            ViewData["Roles"] = roles;
             return View(messages);
         }
 
@@ -41,10 +45,14 @@ namespace Semestro_projektas.Controllers
         public async Task<JsonResult> Send(string name, string text, int channelId)
         {
             Message msg = new Message();
-            msg.Author = name;
+            User author = _repo.GetUserByName(name);
+            Channel channel = _repo.GetChannelSettings(channelId);
+            msg.Author = author;
             msg.Content = text;
             msg.Created = DateTime.Now;
-            msg.ChannelId = channelId;
+            msg.Channel = channel;
+            msg.AuthorName = author.UserName;
+            msg.ChannelId = channel.Id;
             if (User.Identity.Name == name)
             {
                 _repo.SaveMessage(msg);
@@ -219,9 +227,12 @@ namespace Semestro_projektas.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> KickChannelUser(int channelId, string userId)
+        public async Task<JsonResult> KickChannelUser(int channelId, string userId, string caller)
         {
-            _repo.KickChannelUser(userId, channelId);
+            if (User.Identity.Name == caller)
+            {
+                _repo.KickChannelUser(userId, channelId, caller);
+            }
             if (await _repo.SaveChangesAsync())
             {
                 return Json("sent msg " + "DELETE ChannelUsers FROM ChannelUsers WHERE ChannelUsers.UserId = '" + userId + "' AND ChannelUsers.ChannelId = " + channelId + ";");
@@ -234,10 +245,29 @@ namespace Semestro_projektas.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> GetUserProfile(string userId)
+        public async Task<JsonResult> GetUserProfile(string userId, int channelId)
         {
             var data = _repo.GetUser(userId);
-            var temp = Tuple.Create(data.UserName, data.Name, data.Surname, data.Date.ToString("yyyy-MM-dd"), data.Avatar);
+            var roleType = _repo.GetUserRole(userId, channelId);
+            string role = "Nėra";
+
+            switch (roleType)
+            {
+                case RoleTypes.Creator:
+                    role = "Kanalo kūrėjas";
+                    break;
+                case RoleTypes.Admin:
+                    role = "Administratorius";
+                    break;
+                case RoleTypes.Moderator:
+                    role = "Moderatorius";
+                    break;
+                case RoleTypes.User:
+                    role = "Vartotojas";
+                    break;
+            }
+
+            var temp = Tuple.Create(data.UserName, data.Name, data.Surname, data.Date.ToString("yyyy-MM-dd"), data.Avatar, role);
             return Json(temp);
         }
 
@@ -261,21 +291,114 @@ namespace Semestro_projektas.Controllers
 
         }
 
+
+        
+        [HttpPost]
+        public async Task<JsonResult> GetChannelSettings(int channelId, string userName)
+        {
+            if (User.Identity.Name == userName)
+            {
+                var ch = _repo.GetChannelSettings(channelId);
+                var json = JsonConvert.SerializeObject(ch);
+                return Json(json);
+            }
+            else {
+                return Json("fail read ch settings");
+            }
+
+        }
+
         [HttpPost]
         public async Task<JsonResult> DeleteChannel(int channelId, string userName)
         {
             if (User.Identity.Name == userName)
             {
                 _repo.DeleteChannel(channelId, userName);
+
             }
 
             if (await _repo.SaveChangesAsync())
             {
-                return Json("sent msg");
+                return Json("deleted chn");
             }
             else
             {
-                return Json("failed to save data");
+                return Json("failed to delete chn");
+            }
+
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> AssignRole(string receiverId, string callerName, int channelId, int roleValue)
+        {
+            if (User.Identity.Name == callerName)
+            {
+                _repo.AssignRole(receiverId, callerName, channelId, roleValue);
+
+            }
+
+            if (await _repo.SaveChangesAsync())
+            {
+                return Json("added role");
+            }
+            else
+            {
+                return Json("failed to add role");
+            }
+
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> LeaveChannel(int channelId, string userName)
+        {
+            if (User.Identity.Name == userName)
+            {
+                _repo.LeaveChannel(channelId, userName);
+            }
+            if (await _repo.SaveChangesAsync())
+            {
+                return Json("sent msg " + "DELETE ChannelUsers FROM ChannelUsers WHERE ChannelUsers.UserId = '" + userName + "' AND ChannelUsers.ChannelId = " + channelId + ";");
+            }
+            else
+            {
+                return Json("failed to save data " + "DELETE ChannelUsers FROM ChannelUsers WHERE ChannelUsers.UserId = '" + userName + "' AND ChannelUsers.ChannelId = " + channelId + ";");
+            }
+
+        }
+
+
+        [HttpPost]
+        public async Task<JsonResult> SendNotification(int channel, string userName)
+        {
+            if (User.Identity.Name == userName)
+            {
+                _repo.SendNotification(channel, userName);
+            }
+            if (await _repo.SaveChangesAsync())
+            {
+                return Json("sent msg " + "DELETE ChannelUsers FROM");
+            }
+            else
+            {
+                return Json("failed to save data " + "DELETE ChannelUsers FROM");
+            }
+
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> RemoveNotification(int channel, string userName)
+        {
+            if (User.Identity.Name == userName)
+            {
+                _repo.RemoveNotification(channel, userName);
+            }
+            if (await _repo.SaveChangesAsync())
+            {
+                return Json("sent msg " + "DELETE ChannelUsers FROM ChannelUsers WHERE ");
+            }
+            else
+            {
+                return Json("failed to save data " + "DELETE ChannelUsers FROM ChannelUsers");
             }
 
         }
