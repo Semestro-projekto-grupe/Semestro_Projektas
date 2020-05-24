@@ -393,5 +393,17 @@ namespace Semestro_projektas.Data.Repository
             }
        }
 
+
+        public void LeaveChannel(int channelId, string userName) {
+            string userId = GetUserByName(userName).Id;
+            ChannelUser chUser = _ctx.ChannelUsers.FirstOrDefault(u => u.UserId == userId && u.ChannelId == channelId);
+            if (chUser.Role != RoleTypes.Creator)
+            {
+                _ctx.Users.FirstOrDefault(u => u.Id == userId).channelUsers.Remove(chUser);
+                _ctx.Channels.FirstOrDefault(c => c.Id == channelId).channelUsers.Remove(chUser);
+                var rez = _ctx.ChannelUsers.Remove(chUser);
+            }
+        }
+
     }
 }

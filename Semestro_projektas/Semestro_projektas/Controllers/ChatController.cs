@@ -344,6 +344,24 @@ namespace Semestro_projektas.Controllers
 
         }
 
+        [HttpPost]
+        public async Task<JsonResult> LeaveChannel(int channelId, string userName)
+        {
+            if (User.Identity.Name == userName)
+            {
+                _repo.LeaveChannel(channelId, userName);
+            }
+            if (await _repo.SaveChangesAsync())
+            {
+                return Json("sent msg " + "DELETE ChannelUsers FROM ChannelUsers WHERE ChannelUsers.UserId = '" + userName + "' AND ChannelUsers.ChannelId = " + channelId + ";");
+            }
+            else
+            {
+                return Json("failed to save data " + "DELETE ChannelUsers FROM ChannelUsers WHERE ChannelUsers.UserId = '" + userName + "' AND ChannelUsers.ChannelId = " + channelId + ";");
+            }
+
+        }
+
 
     }
 }
