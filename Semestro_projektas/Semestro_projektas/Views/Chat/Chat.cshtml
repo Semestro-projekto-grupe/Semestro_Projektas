@@ -4,19 +4,15 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer _localizer
 @model IEnumerable<Message>
-@{
+    @{
     IEnumerable<User> users = ViewData["User"] as IEnumerable<User>;
     IEnumerable<Channel> userChannels = ViewData["userChannels"] as IEnumerable<Channel>;
-    IEnumerable<string> roles = ViewData["Roles"] as IEnumerable<string>;
-    int roleVal = 0;
 }
 
-
-<!--EmojiOneArea -->
-<link href="Content/emojionearea.min.css" rel="stylesheet" />
-<script src="Scripts/emojionearea.js"></script>
-
-<style>
+    <!--EmojiOneArea -->
+    <link href="~/css/emojionearea.css" rel="stylesheet" />
+    <script src="~/js/emojionearea.js"></script>
+    <style>
     div.panel-body {
         overflow: scroll;
         background: url('http://subtlepatterns.com/patterns/geometry2.png');
@@ -254,18 +250,7 @@
                 <img src='@Url.Content("~/images/avatar.png")' id="pfp" style="width:150px;height:150px; float:left;">
                 <div id="userData" style="height:150px; padding-left: 160px;"></div>
             </div>
-            <div class="modal-footer" style="height:130px">
-                <div style="position:absolute;">
-                    <p>Priskirti rolę: </p>
-                    <select class="form-control form-control-sm" id="rolesList">
-                        @foreach (string s in roles)
-                        {
-                            roleVal++;
-                            <option value="@roleVal">@s</option>
-                        }
-                    </select>
-                    <button class="btn btn-default" onclick="assignRole('')" id="assignRole" style="margin-top:5px;">Priskirti</button>
-                </div>
+            <div class="modal-footer">
                 <button class="btn btn-default" onclick="callKick()" id="callKick">Išspirti</button>
                 <button class="btn btn-primary" data-dismiss="modal">Uždaryti</button>
             </div>
@@ -274,21 +259,20 @@
     </div>
 </div>
 
-
-<div class="modal" id="kickUser" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title" id="kickUserName">Ar tikrai norite išspirti vartotoją</h4>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary" data-dismiss="modal">Uždaryti</button>
-                <button class="btn btn-default" onclick="kickUser(id, name)" id="kickUsr">Išspirti</button>
+    <div class="modal" id="kickUser" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="kickUserName">Ar tikrai norite išspirti vartotoją</h4>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" data-dismiss="modal">Uždaryti</button>
+                    <button class="btn btn-default" onclick="kickUser(id, name)" id="kickUsr">Išspirti</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 
 <div class="modal" id="channelProfile" tabindex="-1">
@@ -299,11 +283,10 @@
                 <h4 class="modal-title" id="channelName">Kanalas</h4>
             </div>
             <div class="modal-body">
-                <div id="channelData" style="height:10px;"></div>
+                <div id="channelData" style="height:150px; padding-left: 160px;"></div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-default" onclick="callLeaveChannel()" id="callLeaveChannel">Palikti kanalą</button>
-                <button class="btn btn-default" onclick="callDeleteChannel()" id="callDelete">Naikinti kanalą</button>
+                <button class="btn btn-default" onclick="callDelete()" id="callDelete">Naikinti kanalą</button>
                 <button class="btn btn-primary" data-dismiss="modal">Uždaryti</button>
             </div>
 
@@ -317,7 +300,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title" id="deleteChannelName">Ar tikrai norite pašalinti kanalą?</h4>
+                <h4 class="modal-title" id="kickChannelName">Ar tikrai norite pašalinti kanalą?</h4>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" data-dismiss="modal">Uždaryti</button>
@@ -327,47 +310,34 @@
     </div>
 </div>
 
-<div class="modal" id="leaveChannel" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title" id="leaveChannelName">Ar tikrai norite palikti kanalą?</h4>
+
+        <ajaxToolkit:AsyncFileUpload OnClientUploadComplete="uploadComplete" runat="server" ID="AsyncFileUpload1" ThrobberID="imgLoader" OnUploadedComplete="FileUploadComplete" OnClientUploadStarted="uploadStarted" />
+
+    </span>
+
+
+    <div class="row">
+        <div class="column" style="width:15%;">
+
+            <div class="chat-channels">
+                <h3>Vartotojo kanalai</h3>
+                <div class="panel-body" id="chatChannels" style="height:250px;">
+                    <table class="table" id="userChannels"></table>
+                </div>
             </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary" data-dismiss="modal">Uždaryti</button>
-                <button class="btn btn-default" onclick="leaveChannel(id)" id="leaveChn">Palikti kanalą</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div class="row">
-    <div class="column" style="width:15%;">
-
-
-        <div class="chat-channels">
-
-            <h3>Vartotojo kanalai</h3>
-            <div class="panel-body" id="chatChannels" style="height:250px;">
-                <table class="table" id="userChannels"></table>
-            </div>
-        </div>
-        <br>
-        <p class="expand" id="expand-2"><input type="button" class="btn btn-warning btn-sm" id="getChannels" value="Naujas kanalas"></p>
-        <div class="expandable" id="expandable-2">
-            <input id="newChannel" type="text" class="form-control input-sm" placeholder="Kanalo pavadinimas" />
             <br>
-            <input type="button" class="btn btn-warning btn-sm" id="createChannel" value="Kurti kanalą">
+            <p class="expand" id="expand-2"><input type="button" class="btn btn-warning btn-sm" id="getChannels" value="Naujas kanalas"></p>
+            <div class="expandable" id="expandable-2">
+                <input id="newChannel" type="text" class="form-control input-sm" placeholder="Kanalo pavadinimas" />
+                <br>
+                <input type="button" class="btn btn-warning btn-sm" id="createChannel" value="Kurti kanalą">
+            </div>
         </div>
-
-    </div>
-    <div class="column" style="width:70%;">
-        <h2>Studentų Chat'as</h2>
-        <div class="chat-panel panel panel-default">
-            <div class="panel-heading">
-                @if (User.Identity.IsAuthenticated)
+        <div class="column" style="width:70%;">
+            <h2>Studentų Chat'as</h2>
+            <div class="chat-panel panel panel-default">
+                <div class="panel-heading">
+                    @if (User.Identity.IsAuthenticated)
                 {
                     <h3> Prisijungęs kaip @User.Identity.Name</h3>
                 }
@@ -376,87 +346,76 @@
                     <h3> Prisijungęs kaip Guest</h3>
                 }
 
-
-                <i class="fa fa-paper-plane fa-fw"></i>
-                <h3 id="selectedChannel"></h3>
-            </div>
-            <!-- /.panel-heading -->
-            <div class="panel-body" id="chat" style="height:250px;">
-                <input type="hidden" id="displayname" />
-
-                <table id="discussion"></table>
-            </div>
-            <!-- /.panel-body -->
-            <div class="panel-footer">
-                <div class="input-group">
-                    <input id="message" type="text" name="message" class="form-control input-sm" placeholder="Type your message here..." />
-
-                    <span class="input-group-btn">
-                        <input type="button" class="btn btn-warning btn-sm" id="sendmessage" value="Send">
-
-                    </span>
+                    <i class="fa fa-paper-plane fa-fw"></i>
+                    <h3 id="selectedChannel"></h3>
                 </div>
-            </div>
-
-            <div>
-                <p class="expand" id="expand-1">Registruoti vartotojai (išskleisti)</p>
-            </div>
-            <div class="expandable" id="expandable-1">
-                @foreach (var user in users)
+                <!-- /.panel-heading -->
+                <div class="panel-body" id="chat" style="height:250px;">
+                    <input type="hidden" id="displayname" />
+                    <table id="discussion"></table>
+                </div>
+                <!-- /.panel-body -->
+                <div class="panel-footer">
+                    <div class="input-group">
+                        <input id="message" type="text" name="message" class="form-control input-sm" placeholder="Type your message here..." />
+                        <span class="input-group-btn">
+                            <input type="button" class="btn btn-warning btn-sm" id="sendmessage" value="Send">
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <p class="expand" id="expand-1">Registruoti vartotojai (išskleisti)</p>
+                </div>
+                <div class="expandable" id="expandable-1">
+                    @foreach (var user in users)
                 {
                     <p>@user.UserName</p>
                     /*foreach (var userChannel in user.channelUsers) {
                         <p>@userChannel.Channel.Name</p>
                     }*/
                 }
-            </div>
-
-        </div>
-    </div>
-    <div class="column" style="width:15%;">
-
-        <div class="channel-users">
-
-            <h3>Vartotojai kanale</h3>
-            <div class="panel-body" id="chatChannelUsers" style="height:250px;">
-                <table class="table" id="ChannelUsers"></table>
+                </div>
             </div>
         </div>
-        <br>
-        <div class="searchcontainer">
-
-            <h3>Vartotojų paieška</h3>
-
-            <input type="text" id="searchInput">
-            <div id="results"></div>
+        <div class="column" style="width:15%;">
+            <div class="channel-users">
+                <h3>Vartotojai kanale</h3>
+                <div class="panel-body" id="chatChannelUsers" style="height:250px;">
+                    <table class="table" id="ChannelUsers"></table>
+                </div>
+            </div>
             <br>
-            <br>
+            <div class="searchcontainer">
+                <h3>Vartotojų paieška</h3>
+                <input type="text" id="searchInput">
+                <div id="results"></div>
+                <br>
+                <br>
 
-
+            </div>
+        </div>
+        <!--Emoji dropdown menu. Pakolkas nesuristas su emojionarea js ir css failais.-->
+    </div>
+    <div class="dropdown">
+        <button onclick="myFunction()" class="dropbtn">Emoji</button>
+        <div id="myDropdown" class="dropdown-content">
+            <a href="#">Link 1</a>
+            <a href="#">Link 2</a>
+            <a href="#">Link 3</a>
         </div>
     </div>
-    <!--Emoji dropdown menu. Pakolkas nesuristas su emojionarea js ir css failais.-->
-</div>
-<div class="dropdown">
-    <button onclick="myFunction()" class="dropbtn">Emoji</button>
-    <div id="myDropdown" class="dropdown-content">
-        <a href="#">Link 1</a>
-        <a href="#">Link 2</a>
-        <a href="#">Link 3</a>
-    </div>
-</div>
-
-@section scripts {
-    <!--Script references. -->
-    <!--The jQuery library is required and is referenced by default in _Layout.cshtml. -->
-    <!--Reference the SignalR library. -->
-    <script src="~/js/signalr/signalr.js"></script>
-    <!--Reference the autogenerated SignalR hub script. -->
-    <!--<script src="~/signalr/hubs"></script>-->
-    <!--SignalR script to update the chat page and send messages.-->
+    @section scripts {
+        <!--Script references. -->
+        <!--The jQuery library is required and is referenced by default in _Layout.cshtml. -->
+        <!--Reference the SignalR library. -->
+        <script src="~/js/signalr/signalr.js"></script>
+        <!--Reference the autogenerated SignalR hub script. -->
+        <!--<script src="~/signalr/hubs"></script>-->
+        <!--SignalR script to update the chat page and send messages.-->
 
 
-    <script>
+
+        <script>
         let channels = new Array();
         let currentChannel = 1;
         const connection = new signalR.HubConnectionBuilder()
@@ -644,8 +603,120 @@
                 });
                 updateScroll();
                 });
-            //});
-            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////Adds a emoji bar function
+            });
+            //Define textbox as emoji area.
+            $(function () {
+                $("#message").emojioneArea();
+            });
+        //Define the textbox through find.
+        var msgTextbox = $div.find("#message");
+        $(msgTextbox).emojioneArea();
+
+        //Find the emoji in message imput then output the image from the message
+        function ParseEmoji(div) {
+            var input = $(div).html();
+            var output = emojione.unicodeToImage(input);
+            $(div).html(output);
+        }
+        //Clear a temporary image path
+        function uploadStarted() {
+
+            $get("imgDisplay").style.display = "none";
+
+        }
+        //Check if file is a available for uploading. If the extension is acceptable and return a bool if allowed.
+        function IsValidateFile(fileF) {
+            var allowedFiles = [".doc", ".docx", ".pdf", ".txt", ".xlsx", ".xls", ".png", ".jpg", ".gif"];
+            var regex = new RegExp("([a-zA-Z0-9\s_\\.\-:])+(" + allowedFiles.join('|') + ")$");
+            if (!regex.test(fileF.toLowerCase())) {
+                alert("Please upload files having extensions: " + allowedFiles.join(', ') + " only.");
+                return false;
+            }
+            return true;
+        }
+
+
+
+
+            //Check if the uploaded file is an image.
+            function IsImageFile(fileF) {
+                var ImageFiles = [".png", ".jpg", ".gif"];
+                var regex = new RegExp("(" + ImageFiles.join('|') + ")$");
+                if (!regex.test(fileF.toLowerCase())) {
+                    return false;
+                }
+                return true;
+            }
+
+        //checks if an upload is complete
+        function uploadComplete(sender, args) {
+            var imgDisplay = $get("imgDisplay");
+            imgDisplay.src = "images/loading.gif";
+            imgDisplay.style.cssText = "";
+            var img = new Image();
+            img.onload = function () {
+                imgDisplay.style.cssText = "Display:none;";
+                imgDisplay.src = img.src;
+            };
+
+            imgDisplay.src = "<%# ResolveUrl(UploadFolderPath) %>" + args.get_fileName();
+            var chatHub = $.connection.ChatHub;
+            var userName = $('#hdUserName').val();
+            var date = GetCurrentDateTime(new Date());
+            var sizeKB = (args.get_length() / 1024).toFixed(2);
+
+            var msg1;
+
+            if (IsValidateFile(args.get_fileName())) {
+                if (IsImageFile(args.get_fileName())) {
+                    msg1 =
+                        '<div class="box-body">' +
+                        '<div class="attachment-block clearfix">' +
+                        '<a><img id="imgC" style="width:100px;" class="attachment-img" src="' + imgDisplay.src + '" alt="Attachment Image"></a>' +
+                        '<div class="attachment-pushed"> ' +
+                        '<h4 class="attachment-heading"><i class="fa fa-image">  ' + args.get_fileName() + ' </i></h4> <br />' +
+                        '<div id="at" class="attachment-text"> Dimensions : ' + imgDisplay.height + 'x' + imgDisplay.width + ', Type: ' + args.get_contentType() +
+
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '<a id="btnDownload" href="' + imgDisplay.src + '" class="btn btn-default btn-xs" download="' + args.get_fileName() + '"><i class="fa fa fa-download"></i> Download</a>' +
+                        '<button type="button" id="ShowModelImg"  value="' + imgDisplay.src + '"  class="btn btn-default btn-xs"><i class="fa fa-camera"></i> View</button>' +
+                        '<span class="pull-right text-muted">File Size : ' + sizeKB + ' Kb</span>' +
+                        '</div>';
+                }
+                else {
+
+                    msg1 =
+                        '<div class="box-body">' +
+                        '<div class="attachment-block clearfix">' +
+                        '<a><img id="imgC" style="width:100px;" class="attachment-img" src="images/file-icon.png" alt="Attachment Image"></a>' +
+                        '<div class="attachment-pushed"> ' +
+                        '<h4 class="attachment-heading"><i class="fa fa-file-o">  ' + args.get_fileName() + ' </i></h4> <br />' +
+                        '<div id="at" class="attachment-text"> Type: ' + args.get_contentType() +
+
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '<a id="btnDownload" href="' + imgDisplay.src + '" class="btn btn-default btn-xs" download="' + args.get_fileName() + '"><i class="fa fa fa-download"></i> Download</a>' +
+                        '<a href="' + imgDisplay.src + '" target="_blank" class="btn btn-default btn-xs"><i class="fa fa-camera"></i> View</a>' +
+                        '<span class="pull-right text-muted">File Size : ' + sizeKB + ' Kb</span>' +
+                        '</div>';
+                }
+                ChatHub.server.sendMessageToAll(userName, msg1, date);
+
+            }
+
+
+
+            imgDisplay.src = '';
+        }
+        ///Show a model of an uploaded file.
+        $(document).on('click', '#ShowModelImg', function () {
+            $get("ImgModal").src = this.value;
+            $('#ShowPictureModal').modal('show');
+        });
+
 
 
             $('#createChannel').click(function () {
@@ -1173,16 +1244,15 @@
         }
         
 
-    </script>
+        </script>
 
-
-    <!--//foreach (var msg in Model)
-        {
-            <script>
-     $('#discussion').append('<p style="color:green; text-align:left; width:500px"><strong>' +
-         htmlEncode('msg.Author') + ' :</strong> ' + htmlEncode('msg.Content') + '</p>');
-            </script>
-        }
-        <script>updateScroll();</script>
-    }-->
-}
+        <!--//foreach (var msg in Model)
+            {
+                <script>
+         $('#discussion').append('<p style="color:green; text-align:left; width:500px"><strong>' +
+             htmlEncode('msg.Author') + ' :</strong> ' + htmlEncode('msg.Content') + '</p>');
+                </script>
+            }
+            <script>updateScroll();</script>
+        }-->
+    }
