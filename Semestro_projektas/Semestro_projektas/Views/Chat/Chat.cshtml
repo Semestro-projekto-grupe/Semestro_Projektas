@@ -357,9 +357,9 @@
                 <!-- /.panel-body -->
                 <div class="panel-footer">
                     <div class="input-group">
-                        <input id="message" type="text" name="message" class="form-control input-sm" placeholder="Type your message here..." />
+                        <input id="message" type="text" name="message" class="form-control input-sm" placeholder="Jūsų žinutė..." />
                         <span class="input-group-btn">
-                            <input type="button" class="btn btn-warning btn-sm" id="sendmessage" value="Send">
+                            <input type="button" class="btn btn-warning btn-sm" id="sendmessage" value="Siųsti">
                         </span>
                     </div>
                 </div>
@@ -609,15 +609,20 @@
                 $("#message").emojioneArea();
             });
         //Define the textbox through find.
-        var msgTextbox = $div.find("#message");
-        $(msgTextbox).emojioneArea();
+        //var msgTextbox = $("#message");
+            //$("#message").emojioneArea();
 
         //Find the emoji in message imput then output the image from the message
         function ParseEmoji(div) {
             var input = $(div).html();
             var output = emojione.unicodeToImage(input);
             $(div).html(output);
-        }
+            }
+
+            function myFunction() {
+
+            }
+
         //Clear a temporary image path
         function uploadStarted() {
 
@@ -774,7 +779,7 @@
                     $('#results').empty();
                 }
             });
-        });
+        //});
         // This optional function html-encodes messages for display in the page.
         function htmlEncode(value) {
             var encodedValue = $('<div />').text(value).html();
