@@ -57,5 +57,10 @@ namespace Semestro_projektas.SignalR.Hubs
             await Clients.All.SendAsync("LeaveChannel", id, userName);
         }
 
+        public async Task SendNotification(int channelId)
+        {
+            await Clients.All.SendAsync("SendNotification", channelId);
+        }
+
     }
 }

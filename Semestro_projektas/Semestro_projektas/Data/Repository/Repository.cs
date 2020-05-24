@@ -32,19 +32,20 @@ namespace Semestro_projektas.Data.Repository
 
         public List<Message> GetChatMessagesByChat(int chatId, string user)
         {
-            if (CheckIfChannelExists(user, chatId))
-            {
-                return _ctx.Messages.Where(m => m.ChannelId == chatId).ToList();
-            }
-            else
-            {
-                return new List<Message>();
-            }
+           // if (CheckIfChannelExists(user, chatId))
+           // {
+                List<Message> messg = _ctx.Messages.Where(m => m.ChannelId == chatId).ToList();
+                return messg;
+           // }
+           // else
+           // {
+           //     return new List<Message>();
+           // }
         }
 
         public void SaveMessage(Message msg)
         {
-            if (CheckIfChannelExists(msg.Author, msg.ChannelId))
+            if (CheckIfChannelExists(msg.AuthorName, msg.ChannelId))
             {
                 _ctx.Messages.Add(msg);
             }
@@ -57,7 +58,8 @@ namespace Semestro_projektas.Data.Repository
         public void EditMessage(int id, string text, string user)
         {
             Message msg = _ctx.Messages.FirstOrDefault(m => m.Id == id);
-            if (msg.Author == user)
+            User usr = GetUserByName(user);
+            if (msg.Author == usr)
             {
                 msg.Content = text;
                 _ctx.Messages.Update(msg);
@@ -203,7 +205,7 @@ namespace Semestro_projektas.Data.Repository
         {
             // User user = _ctx.Users.FirstOrDefault(p => p.Name == userName);
             string uid = GetUserByName(userName).Id;
-            var channels = _ctx.Channels.Where(t => t.channelUsers.Any(s => s.User.Id == uid));
+            var channels = _ctx.Channels.Where(t => t.channelUsers.Any(s => s.UserId == uid));
             //foreach (ChannelUser c in user.channelUsers) {
             // channels.Add(c.Channel);
             // }
@@ -214,7 +216,7 @@ namespace Semestro_projektas.Data.Repository
         public bool CheckIfChannelExists(string userName, int id)
         {
             string uid = GetUserByName(userName).Id;
-            var channels = _ctx.Channels.Where(t => t.channelUsers.Any(s => s.User.Id == uid));
+            var channels = _ctx.Channels.Where(t => t.channelUsers.Any(s => s.UserId == uid));
             int index = channels.ToList().FindIndex(f => f.Id == id);
             if (index >= 0)
             {
@@ -273,7 +275,7 @@ namespace Semestro_projektas.Data.Repository
 
         }
 
-        User GetUserByName(string name)
+       public User GetUserByName(string name)
         {
             User usr = _ctx.Users.FirstOrDefault(u => u.UserName == name);
             return usr;
@@ -328,9 +330,10 @@ namespace Semestro_projektas.Data.Repository
 
             foreach (Message msg in messages)
             {
-                if (msg.Author == oldName)
+                User oldUsr = GetUserByName(oldName);
+                if (msg.Author == oldUsr)
                 {
-                    msg.Author = newName;
+                    msg.Author.Name = newName;
                     _ctx.Messages.Update(msg);
                 }
             }
@@ -339,7 +342,8 @@ namespace Semestro_projektas.Data.Repository
 
 
         public void DeleteMessage(int messageId, string userName) {
-            Message msg = _ctx.Messages.FirstOrDefault(m => m.Author == userName);
+            User usr = GetUserByName(userName);
+            Message msg = _ctx.Messages.FirstOrDefault(m => m.Author == usr);
             _ctx.Messages.Remove(msg);
             _ctx.SaveChanges();
         }
@@ -351,7 +355,8 @@ namespace Semestro_projektas.Data.Repository
             if (chUser.Role == RoleTypes.Creator)
             {
                 List<User> chUsers = _ctx.Users.Where(t => t.channelUsers.Any(s => s.ChannelId == channelId)).ToList();
-                List<Message> chMessages = _ctx.Messages.Where(m => m.ChannelId == channelId).ToList();
+                Channel chnName = GetChannelSettings(channelId);
+                List<Message> chMessages = _ctx.Messages.Where(m => m.Channel == chnName).ToList();
 
                 foreach (Message m in chMessages)
                 {
@@ -403,6 +408,22 @@ namespace Semestro_projektas.Data.Repository
                 _ctx.Channels.FirstOrDefault(c => c.Id == channelId).channelUsers.Remove(chUser);
                 var rez = _ctx.ChannelUsers.Remove(chUser);
             }
+        }
+
+
+        public void SendNotification(int channel, string userName) {
+            User usr = GetUserByName(userName);
+            Channel chn = GetChannelSettings(channel);
+            ChannelUser chUser = _ctx.ChannelUsers.FirstOrDefault(u => u.UserId == usr.Id && u.ChannelId == chn.Id);
+            chUser.ReceivedNotification = true;
+        }
+
+        public void RemoveNotification(int channel, string userName)
+        {
+            User usr = GetUserByName(userName);
+            Channel chn = GetChannelSettings(channel);
+            ChannelUser chUser = _ctx.ChannelUsers.FirstOrDefault(u => u.UserId == usr.Id && u.ChannelId == chn.Id);
+            chUser.ReceivedNotification = false;
         }
 
     }

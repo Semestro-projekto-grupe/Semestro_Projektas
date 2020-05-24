@@ -38,5 +38,6 @@ namespace Semestro_projektas.Models
         public bool DateVisibility { get; set; }
 
         public ICollection<ChannelUser> channelUsers { get; set; }
+        public ICollection<Message> messages { get; set; }
     }
 }

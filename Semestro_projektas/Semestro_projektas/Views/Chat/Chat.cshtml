@@ -241,6 +241,8 @@
         width:100%;
     }
 
+
+
 </style>
 
 <div class="modal" id="userProfile" tabindex="-1">
@@ -606,6 +608,26 @@
                 }
             });
 
+            connection.on('SendNotification', (channelId) => {
+                if (channelId !== currentChannel) {
+
+                    $("#channel" + channelId).css("background-color", "yellow");
+
+                     $.ajax({
+                        url: '@Url.Action("SendNotification")',
+                        type: "POST",
+                         data: { channel: channelId, userName: "@User.Identity.Name" },
+                        dataType: "json",
+                        success: function (response) {
+                            console.log("success send notification! " + response);
+                        },
+                        failure: function (response) {
+                            console.log("failure send message!");
+                        }
+                    });
+
+                }
+            });
 
 
             //};
@@ -624,6 +646,7 @@
                     // Call the Send method on the hub.
                 // chat.server.send($('#displayname').val(), $('#message').val());
                 connection.invoke('Send', userName, message, currentChannel);
+                connection.invoke('SendNotification', currentChannel);
                 // Clear text box and reset focus for next comment.
                 $('#message').val('').focus();
 
@@ -721,6 +744,8 @@
             channels.forEach((element) => {
                 if (element.Id === id) {
                     $("#selectedChannel").text("Pasirinktas kanalas: " + element.Name);
+                    $("#channel" + id).css("background-color", "#eee");
+                    removeNotification(id);
                 }
             });
             loadChatLog(currentChannel);
@@ -740,9 +765,9 @@
                 msgs = JSON.parse(response);
                 $('#discussion').empty()
                 msgs.forEach((element) => {
-                    if ("@User.Identity.Name" === element.Author) {
+                    if ("@User.Identity.Name" === element.AuthorName) {
                         $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='@Url.Content("~/images/avatar.png")' style='width:40px;' id='profile-pic" +
-                            element.Id + "'><strong>" + htmlEncode(element.Author) +
+                            element.Id + "'><strong>" + htmlEncode(element.AuthorName) +
                             "</strong></th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Id +
                             "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Content) + "<textarea id='edit" +
                             element.Id + "' style='visibility: hidden; width: 0;'>" +
@@ -753,7 +778,7 @@
                     }
                     else {
                         $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='@Url.Content("~/images/avatar.png")' style='width:40px;' id='profile-pic" +
-                            element.Id + "'><strong>" + htmlEncode(element.Author) +
+                            element.Id + "'><strong>" + htmlEncode(element.AuthorName) +
                             "</strong></th></tr><tr class='otherMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Id +
                             "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Content) + "</th><th></th></tr>");
                     }
@@ -1170,6 +1195,22 @@
         function callLeaveChannel() {
             $('#channelProfile').modal('toggle');
             $("#leaveChannel").modal();
+        }
+
+
+        function removeNotification(channelId) {
+             $.ajax({
+                        url: '@Url.Action("RemoveNotification")',
+                        type: "POST",
+                         data: { channel: channelId, userName: "@User.Identity.Name" },
+                        dataType: "json",
+                        success: function (response) {
+                            console.log("success send notification! " + response);
+                        },
+                        failure: function (response) {
+                            console.log("failure send message!");
+                        }
+                    });
         }
         
 

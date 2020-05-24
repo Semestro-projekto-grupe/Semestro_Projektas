@@ -45,10 +45,14 @@ namespace Semestro_projektas.Controllers
         public async Task<JsonResult> Send(string name, string text, int channelId)
         {
             Message msg = new Message();
-            msg.Author = name;
+            User author = _repo.GetUserByName(name);
+            Channel channel = _repo.GetChannelSettings(channelId);
+            msg.Author = author;
             msg.Content = text;
             msg.Created = DateTime.Now;
-            msg.ChannelId = channelId;
+            msg.Channel = channel;
+            msg.AuthorName = author.UserName;
+            msg.ChannelId = channel.Id;
             if (User.Identity.Name == name)
             {
                 _repo.SaveMessage(msg);
@@ -358,6 +362,43 @@ namespace Semestro_projektas.Controllers
             else
             {
                 return Json("failed to save data " + "DELETE ChannelUsers FROM ChannelUsers WHERE ChannelUsers.UserId = '" + userName + "' AND ChannelUsers.ChannelId = " + channelId + ";");
+            }
+
+        }
+
+
+        [HttpPost]
+        public async Task<JsonResult> SendNotification(int channel, string userName)
+        {
+            if (User.Identity.Name == userName)
+            {
+                _repo.SendNotification(channel, userName);
+            }
+            if (await _repo.SaveChangesAsync())
+            {
+                return Json("sent msg " + "DELETE ChannelUsers FROM");
+            }
+            else
+            {
+                return Json("failed to save data " + "DELETE ChannelUsers FROM");
+            }
+
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> RemoveNotification(int channel, string userName)
+        {
+            if (User.Identity.Name == userName)
+            {
+                _repo.RemoveNotification(channel, userName);
+            }
+            if (await _repo.SaveChangesAsync())
+            {
+                return Json("sent msg " + "DELETE ChannelUsers FROM ChannelUsers WHERE ");
+            }
+            else
+            {
+                return Json("failed to save data " + "DELETE ChannelUsers FROM ChannelUsers");
             }
 
         }

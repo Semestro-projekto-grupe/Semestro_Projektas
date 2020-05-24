@@ -14,6 +14,7 @@ namespace Semestro_projektas.Models
        // [ForeignKey("UserId")]
         public User User { get; set; }
         public RoleTypes Role { get; set; }
+        public bool ReceivedNotification { get; set; } = false;
     }
 
 }

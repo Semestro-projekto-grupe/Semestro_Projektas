@@ -50,5 +50,11 @@ namespace Semestro_projektas.Data.Repository
         void AssignRole(string receiverId, string callerName, int channelId, int roleValue);
 
         void LeaveChannel(int channelId, string userName);
+
+        User GetUserByName(string name);
+
+        void SendNotification(int channel, string userName);
+
+        void RemoveNotification(int channel, string userName);
     }
 }
