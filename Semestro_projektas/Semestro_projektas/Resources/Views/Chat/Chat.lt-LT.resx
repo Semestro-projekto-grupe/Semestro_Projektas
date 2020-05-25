@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Administratorius - vartotojas, kuris administruoja kanalą. Gali atlikti visus administravimo veiksmus, taip pat ir priskirti roles." xml:space="preserve">
+    <value>Administratorius - vartotojas, kuris administruoja kanalą. Gali atlikti visus administravimo veiksmus, taip pat ir priskirti roles.</value>
+  </data>
+  <data name="Administravimo komandos, kurias gali naudoti kanalo kūrėjas:" xml:space="preserve">
+    <value>Administravimo komandos, kurias gali naudoti kanalo kūrėjas:</value>
+  </data>
   <data name="Ar tikrai norite išspirti vartotoją" xml:space="preserve">
     <value>Ar tikrai norite išspirti vartotoją?</value>
   </data>
@@ -132,14 +138,23 @@
   <data name="Ar tikrai norite pašalinti kanalą?" xml:space="preserve">
     <value>Ar tikrai norite pašalinti kanalą?</value>
   </data>
+  <data name="Ieškoti" xml:space="preserve">
+    <value>Ieškoti</value>
+  </data>
   <data name="Ieškoti.." xml:space="preserve">
     <value>Ieškoti..</value>
   </data>
   <data name="Išspirti" xml:space="preserve">
     <value>Išspirti</value>
   </data>
+  <data name="Ištrina n žinučių" xml:space="preserve">
+    <value>Ištrina n žinučių</value>
+  </data>
   <data name="Kanalas" xml:space="preserve">
     <value>Kanalas</value>
+  </data>
+  <data name="Kanalo kūrėjas - vartotojas, kuris sukūrė kanalą. Gali atlikti visus administravimo veiksmus, taip pat ir ištrinti kanalą." xml:space="preserve">
+    <value>Kanalo kūrėjas - vartotojas, kuris sukūrė kanalą. Gali atlikti visus administravimo veiksmus, taip pat ir ištrinti kanalą.</value>
   </data>
   <data name="Kanalo pavadinimas" xml:space="preserve">
     <value>Kanalo pavadinimas</value>
@@ -147,8 +162,14 @@
   <data name="Kurti kanalą" xml:space="preserve">
     <value>Kurti kanalą</value>
   </data>
+  <data name="Moderatorius - vartotojas, kuris administruoja kanalą. Gali administruoti paparastų vartotojų žinutes." xml:space="preserve">
+    <value>Moderatorius - vartotojas, kuris administruoja kanalą. Gali administruoti paparastų vartotojų žinutes.</value>
+  </data>
   <data name="Naikinti kanalą" xml:space="preserve">
     <value>Naikinti kanalą</value>
+  </data>
+  <data name="Naudojimosi informacija" xml:space="preserve">
+    <value>Naudojimosi informacija</value>
   </data>
   <data name="Naujas kanalas" xml:space="preserve">
     <value>Naujas kanalas</value>
@@ -168,8 +189,14 @@
   <data name="Priskirti" xml:space="preserve">
     <value>Priskirti</value>
   </data>
+  <data name="Pvz." xml:space="preserve">
+    <value>Pvz.</value>
+  </data>
   <data name="Rašykite žinutę čia..." xml:space="preserve">
     <value>Rašykite žinutę čia...</value>
+  </data>
+  <data name="Rašyti žinutes galima tik prisijungus ir pasirinkus kanalą." xml:space="preserve">
+    <value>Rašyti žinutes galima tik prisijungus ir pasirinkus kanalą.</value>
   </data>
   <data name="Registruoti vartotojai (išskleisti)" xml:space="preserve">
     <value>Registruoti vartotojai (išskleisti)</value>
@@ -183,6 +210,12 @@
   <data name="Vartotojai kanale" xml:space="preserve">
     <value>Vartotojai kanale</value>
   </data>
+  <data name="Vartotojai turi roles:" xml:space="preserve">
+    <value>Vartotojai turi roles:</value>
+  </data>
+  <data name="Vartotojas - paprastas vartotojas, gali tik rašyti, trinti, redaguoti savo žinutes." xml:space="preserve">
+    <value>Vartotojas - paprastas vartotojas, gali tik rašyti, trinti, redaguoti savo žinutes.</value>
+  </data>
   <data name="Vartotojo kanalai" xml:space="preserve">
     <value>Vartotojo kanalai</value>
   </data>
@@ -191,5 +224,8 @@
   </data>
   <data name="Vartotojų paieška" xml:space="preserve">
     <value>Vartotojų paieška</value>
+  </data>
+  <data name="Žinučių filtravimui visi vartotojai gali naudotis žinučių paieškos funkcija" xml:space="preserve">
+    <value>Žinučių filtravimui visi vartotojai gali naudotis žinučių paieškos funkcija</value>
   </data>
 </root>

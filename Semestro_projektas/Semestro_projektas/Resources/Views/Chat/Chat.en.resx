@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Administratorius - vartotojas, kuris administruoja kanalą. Gali atlikti visus administravimo veiksmus, taip pat ir priskirti roles." xml:space="preserve">
+    <value>Administrator. Has all administrator actions available. Kick, remove, assign user roles etc...</value>
+  </data>
+  <data name="Administravimo komandos, kurias gali naudoti kanalo kūrėjas:" xml:space="preserve">
+    <value>Commands available to channel creator:</value>
+  </data>
   <data name="Ar tikrai norite išspirti vartotoją" xml:space="preserve">
     <value>Really kick the user?</value>
   </data>
@@ -132,14 +138,23 @@
   <data name="Ar tikrai norite pašalinti kanalą?" xml:space="preserve">
     <value>Are you sure about that?</value>
   </data>
+  <data name="Ieškoti" xml:space="preserve">
+    <value>Search</value>
+  </data>
   <data name="Ieškoti.." xml:space="preserve">
     <value>Search</value>
   </data>
   <data name="Išspirti" xml:space="preserve">
     <value>Kick</value>
   </data>
+  <data name="Ištrina n žinučių" xml:space="preserve">
+    <value>deletes n messages</value>
+  </data>
   <data name="Kanalas" xml:space="preserve">
     <value>Channel</value>
+  </data>
+  <data name="Kanalo kūrėjas - vartotojas, kuris sukūrė kanalą. Gali atlikti visus administravimo veiksmus, taip pat ir ištrinti kanalą." xml:space="preserve">
+    <value>Channel creator - has all actions available to administrator. Can delete channel.</value>
   </data>
   <data name="Kanalo pavadinimas" xml:space="preserve">
     <value>Channel name</value>
@@ -147,8 +162,14 @@
   <data name="Kurti kanalą" xml:space="preserve">
     <value>Create a channel</value>
   </data>
+  <data name="Moderatorius - vartotojas, kuris administruoja kanalą. Gali administruoti paparastų vartotojų žinutes." xml:space="preserve">
+    <value>Moderator. Has actions available for work in channel. Mainly removing / editing messages.</value>
+  </data>
   <data name="Naikinti kanalą" xml:space="preserve">
     <value>Delete the channel</value>
+  </data>
+  <data name="Naudojimosi informacija" xml:space="preserve">
+    <value>User guide</value>
   </data>
   <data name="Naujas kanalas" xml:space="preserve">
     <value>New channel</value>
@@ -168,8 +189,14 @@
   <data name="Priskirti" xml:space="preserve">
     <value>Assign role</value>
   </data>
+  <data name="Pvz." xml:space="preserve">
+    <value>for example:</value>
+  </data>
   <data name="Rašykite žinutę čia..." xml:space="preserve">
     <value>Your message...</value>
+  </data>
+  <data name="Rašyti žinutes galima tik prisijungus ir pasirinkus kanalą." xml:space="preserve">
+    <value>To be able to weire a message you need to be logged in and chose a channel.</value>
   </data>
   <data name="Registruoti vartotojai (išskleisti)" xml:space="preserve">
     <value>Registered Users (expand)</value>
@@ -183,6 +210,12 @@
   <data name="Vartotojai kanale" xml:space="preserve">
     <value>Users in Channel</value>
   </data>
+  <data name="Vartotojai turi roles:" xml:space="preserve">
+    <value>Users and roles:</value>
+  </data>
+  <data name="Vartotojas - paprastas vartotojas, gali tik rašyti, trinti, redaguoti savo žinutes." xml:space="preserve">
+    <value>User. Can post, edit, delete his own messages.</value>
+  </data>
   <data name="Vartotojo kanalai" xml:space="preserve">
     <value>User Channels</value>
   </data>
@@ -191,5 +224,8 @@
   </data>
   <data name="Vartotojų paieška" xml:space="preserve">
     <value>User Search</value>
+  </data>
+  <data name="Žinučių filtravimui visi vartotojai gali naudotis žinučių paieškos funkcija" xml:space="preserve">
+    <value>All users can use search option to filter messages</value>
   </data>
 </root>
