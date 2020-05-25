@@ -39,7 +39,7 @@ namespace Semestro_projektas.Data.Repository
            // }
            // else
            // {
-           //     return new List<Message>();
+            //    return new List<Message>();
            // }
         }
 
@@ -256,6 +256,24 @@ namespace Semestro_projektas.Data.Repository
 
         }
 
+
+
+        public ChannelUser GetChannelUser(int chatId, string userName)
+        {
+           // if (CheckIfChannelExists(userName, chatId))
+           // {
+                // List<ChannelUser> cu = _ctx.ChannelUsers.Any(c => c.ChannelId )
+                User usr = GetUserByName(userName);
+                return _ctx.ChannelUsers.FirstOrDefault(t => t.ChannelId == chatId && t.UserId == usr.Id);
+           // }
+            //else
+           // {
+             //   return new ChannelUser();
+           // }
+
+        }
+
+
         public void KickChannelUser(string userId, int channelId, string callerName)
         {
             string callerUid = GetUserByName(callerName).Id;
@@ -343,7 +361,7 @@ namespace Semestro_projektas.Data.Repository
 
         public void DeleteMessage(int messageId, string userName) {
             User usr = GetUserByName(userName);
-            Message msg = _ctx.Messages.FirstOrDefault(m => m.Author == usr);
+            Message msg = _ctx.Messages.FirstOrDefault(m => m.Author == usr && m.Id == messageId);
             _ctx.Messages.Remove(msg);
             _ctx.SaveChanges();
         }
@@ -424,6 +442,32 @@ namespace Semestro_projektas.Data.Repository
             Channel chn = GetChannelSettings(channel);
             ChannelUser chUser = _ctx.ChannelUsers.FirstOrDefault(u => u.UserId == usr.Id && u.ChannelId == chn.Id);
             chUser.ReceivedNotification = false;
+        }
+
+
+        public List<Message> SearchInChat(int channel, string userName, string searchWord) {
+            //if (CheckIfChannelExists(userName, channel))
+            //{
+                List<Message> messg = _ctx.Messages.Where(m => m.ChannelId == channel && m.Content.Contains(searchWord)).ToList();
+                return messg;
+          //  }
+           // else
+           // {
+           //     return new List<Message>();
+           // }
+        }
+
+
+        public void DeleteMessagesCommand(int channelId, string userName, int messageCount) {
+            string userId = GetUserByName(userName).Id;
+            ChannelUser chUser = _ctx.ChannelUsers.FirstOrDefault(u => u.UserId == userId && u.ChannelId == channelId);
+            if (chUser.Role == RoleTypes.Creator)
+            {
+                List<Message> msgs = GetChatMessagesByChat(channelId, userName);
+                foreach (var msg in msgs.Skip(Math.Max(0, msgs.Count - messageCount))) {
+                    _ctx.Messages.Remove(msg);
+                }
+            }
         }
 
     }

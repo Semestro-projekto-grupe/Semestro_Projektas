@@ -154,7 +154,7 @@
     .searchcontainer {
         width: 100%;
         margin: auto;
-        background-image: url('@Url.Content("~/images/header.png")');
+        background-image: url('http://subtlepatterns.com/patterns/geometry2.png');
         overflow: hidden;
         background-repeat: no-repeat;
         background-size: cover;
@@ -381,6 +381,8 @@
 
                 <i class="fa fa-paper-plane fa-fw"></i>
                 <h3 id="selectedChannel"></h3>
+                <input type="text" class="navbar-form" placeholder="Ieškoti.." id="searchbar">
+                <button class="btn btn-primary" onclick="searchMessages()">Ieškoti</button>
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body" id="chat" style="height:250px;">
@@ -391,10 +393,10 @@
             <!-- /.panel-body -->
             <div class="panel-footer">
                 <div class="input-group">
-                    <input id="message" type="text" name="message" class="form-control input-sm" placeholder="Type your message here..." />
+                    <input id="message" type="text" name="message" class="form-control input-sm" placeholder="Rašykite žinutę čia..." />
 
                     <span class="input-group-btn">
-                        <input type="button" class="btn btn-warning btn-sm" id="sendmessage" value="Send">
+                        <input type="button" class="btn btn-warning btn-sm" id="sendmessage" value="Siųsti">
 
                     </span>
                 </div>
@@ -427,7 +429,7 @@
         <br>
         <div class="searchcontainer">
 
-            <h3>Vartotojų paieška</h3>
+            <h3>Pridėti vartotoją</h3>
 
             <input type="text" id="searchInput">
             <div id="results"></div>
@@ -460,7 +462,7 @@
 
     <script>
         let channels = new Array();
-        let currentChannel = 1;
+        let currentChannel = 0;
         const connection = new signalR.HubConnectionBuilder()
                 .withUrl("/chatHub")
                 .build();
@@ -486,23 +488,7 @@
                 userName = "Guest";
                 }
                 if (channel === currentChannel) {
-                    if ("@User.Identity.Name" === name) {
-                                $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='@Url.Content("~/images/avatar.png")' style='width:40px;' id='profile-pic" +
-                                    name + "'><strong>" + htmlEncode(name) +
-                                    "</strong></th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + name +
-                                    "' style='word-break: break-word; width:100%;'>" + htmlEncode(message) + "<textarea id='edit" +
-                                    name + "' style='visibility: hidden; width: 0;'>" +
-                                    message + "</textarea></th><th style='display:inline-flex;'><button id='saveEdit" +
-                                    name + "' onclick='saveEdit(" + name + ")' style='visibility: hidden; width: 0;'>Išsaugoti</button><button id='editMessage" +
-                                    name + "' onclick='editMessage(" + name + ")'  style='float:right;'>Redaguoti</button><button id='deleteMessage" +
-                                    name + "' onclick='deleteMessage(" + name + ")'  style='float:right;'>Trinti</button></th></tr>");
-                            }
-                            else {
-                                $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='@Url.Content("~/images/avatar.png")' style='width:40px;' id='profile-pic" +
-                                    name + "'><strong>" + htmlEncode(name) +
-                                    "</strong></th></tr><tr class='otherMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + name +
-                                    "' style='word-break: break-word; width:100%;'>" + htmlEncode(message) + "</th><th></th></tr>");
-                            }
+                    loadChatLog(currentChannel);
                 }
 
             });
@@ -629,6 +615,24 @@
                 }
             });
 
+            connection.on('DeleteMessagesCommand', (channelId, count) => {
+                if (channelId === currentChannel) {
+                    let last1;
+                    let last2;
+                    for (i = 0; i < count * 2 + 2; i++) {
+                        if (i == 0) {
+                            last1 = $('#discussion tr:last');
+                        }
+                        if (i == 1) {
+                            last2 = $('#discussion tr:last');
+                        }
+                        $('#discussion tr:last').remove();
+                    }
+                    $('#discussion').append(last2);
+                    $('#discussion').append(last1);
+
+                }
+            });
 
             //};
             // Get the user name and store it to prepend to messages.
@@ -645,10 +649,12 @@
                     }
                     // Call the Send method on the hub.
                 // chat.server.send($('#displayname').val(), $('#message').val());
-                connection.invoke('Send', userName, message, currentChannel);
-                connection.invoke('SendNotification', currentChannel);
-                // Clear text box and reset focus for next comment.
-                $('#message').val('').focus();
+
+
+                if (message.startsWith("-delete")) {
+                    let count = message.split(" ")[1];
+                    deleteMessagesCommand(count);
+                }
 
                 //Save sent message in the database using ajax request
                 $.ajax({
@@ -658,6 +664,10 @@
                     dataType: "json",
                     success: function (response) {
                         console.log("success send message!");
+                        connection.invoke('Send', userName, message, currentChannel);
+                        connection.invoke('SendNotification', currentChannel);
+                        // Clear text box and reset focus for next comment.
+                        $('#message').val('').focus();
 
                     },
                     failure: function (response) {
@@ -665,6 +675,7 @@
                     }
 
                 });
+
                 updateScroll();
                 });
             //});
@@ -741,10 +752,11 @@
 
         function selectChannel(id) {
             currentChannel = id;
+            getUserChannels();
             channels.forEach((element) => {
                 if (element.Id === id) {
-                    $("#selectedChannel").text("Pasirinktas kanalas: " + element.Name);
-                    $("#channel" + id).css("background-color", "#eee");
+                   // $("#selectedChannel").text("Pasirinktas kanalas: " + element.Name);
+                   // $("#channel" + id).css("background-color", "#9999ff");
                     removeNotification(id);
                 }
             });
@@ -763,24 +775,24 @@
             success: function (response) {
                 console.log("success get messages! " + response + " response");
                 msgs = JSON.parse(response);
-                $('#discussion').empty()
+                $('#discussion').empty();
                 msgs.forEach((element) => {
-                    if ("@User.Identity.Name" === element.AuthorName) {
-                        $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='@Url.Content("~/images/avatar.png")' style='width:40px;' id='profile-pic" +
-                            element.Id + "'><strong>" + htmlEncode(element.AuthorName) +
-                            "</strong></th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Id +
-                            "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Content) + "<textarea id='edit" +
-                            element.Id + "' style='visibility: hidden; width: 0;'>" +
-                            element.Content + "</textarea></th><th style='display:inline-flex;'><button id='saveEdit" +
-                            element.Id + "' onclick='saveEdit(" + element.Id + ")' style='visibility: hidden; width: 0;'>Išsaugoti</button><button id='editMessage" +
-                            element.Id + "' onclick='editMessage(" + element.Id + ")'  style='float:right;'>Redaguoti</button><button id='deleteMessage" +
-                            element.Id + "' onclick='deleteMessage(" + element.Id + ")'  style='float:right;'>Trinti</button></th></tr>");
+                    if ("@User.Identity.Name" === element.Item2) {
+                        $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
+                            element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
+                            "</strong> " + " " + formatDate(element.Item4) + "</th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
+                            "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Item5) + "<textarea id='edit" +
+                            element.Item1 + "' style='visibility: hidden; width: 0;'>" +
+                            element.Item5 + "</textarea></th><th style='display:inline-flex;'><button id='saveEdit" +
+                            element.Item1 + "' onclick='saveEdit(" + element.Item1 + ")' style='visibility: hidden; width: 0;'>Išsaugoti</button><button id='editMessage" +
+                            element.Item1 + "' onclick='editMessage(" + element.Item1 + ")'  style='float:right;'>Redaguoti</button><button id='deleteMessage" +
+                            element.Item1 + "' onclick='deleteMessage(" + element.Item1 + ")'  style='float:right;'>Trinti</button></th></tr>");
                     }
                     else {
-                        $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='@Url.Content("~/images/avatar.png")' style='width:40px;' id='profile-pic" +
-                            element.Id + "'><strong>" + htmlEncode(element.AuthorName) +
-                            "</strong></th></tr><tr class='otherMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Id +
-                            "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Content) + "</th><th></th></tr>");
+                        $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
+                            element.Item1 + "'><strong>" + htmlEncode(element.Item2) +
+                            "</strong>" + " " + formatDate(element.Item4) + "</th></tr><tr class='otherMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
+                            "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Item5) + "</th><th></th></tr>");
                     }
                 });
 
@@ -905,7 +917,7 @@
                         $('#ChannelUsers').empty()
                         users.forEach((element) => {
                             //$("#ChannelUsers").append("<tr><td>" + element.UserName + "</td> <td class='kickrow' onclick=\"kickUser('" + element.Id + "')\">        </td></tr>");
-                            $("#ChannelUsers").append("<tr><td  onclick='getUserProfile(&quot;" + element.Id + "&quot;)'>" + element.UserName + "</td></tr>");
+                            $("#ChannelUsers").append("<tr><td style='word-break: break-word;'  onclick='getUserProfile(&quot;" + element.Id + "&quot;)'>" + element.UserName + "</td></tr>");
                         });
 
                     },
@@ -958,10 +970,20 @@
                     success: function (response) {
                         console.log("success send message! " + response + " response");
                         channels = JSON.parse(response);
+                        console.log("success send message! " + channels + " channels response " + channels.length);
                         $("#userChannels").empty();
-                        channels.forEach((element) => {
-                            $("#userChannels").append("<tr id='channel" + element.Id + "'><td onclick='selectChannel(" + element.Id + ")'>" + element.Name + "</td><td style='background:green;' onclick='getChannelSettings(" + element.Id + ")'></td></tr>");
-                        });
+                        for (i = 0; i < channels.length; i++) {
+                            console.log(channels[i]);
+                            if (channels[i].Item3 === false && channels[i].Item1 !== currentChannel) {
+                                $("#userChannels").append("<tr id='channel" + channels[i].Item1 + "'><td style='word-break: break-word;' onclick='selectChannel(" + channels[i].Item1 + ")'>" + channels[i].Item2 + "</td><td style='background:green; width:25px;' onclick='getChannelSettings(" + channels[i].Item1 + ")'></td></tr>");
+                            }
+                            else if (channels[i].Item1 === currentChannel) {
+                                $("#userChannels").append("<tr style='background-color:#9999ff' id='channel" + channels[i].Item1 + "'><td style='word-break: break-word;' onclick='selectChannel(" + channels[i].Item1 + ")'>" + channels[i].Item2 + "</td><td style='background:green; width:25px;' onclick='getChannelSettings(" + channels[i].Item1 + ")'></td></tr>");
+                            }
+                            else {
+                                $("#userChannels").append("<tr style='background-color:yellow' id='channel" + channels[i].Item1 + "'><td style='word-break: break-word;' onclick='selectChannel(" + channels[i].Item1 + ")'>" + channels[i].Item2 + "</td><td style='background:green; width:25px;' onclick='getChannelSettings(" + channels[i].Item1 + ")'></td></tr>");
+                            }
+                        }
                         //selectChannel(channels[0].Id);
 
                     },
@@ -1147,7 +1169,7 @@
 
                          $("#leaveChn").attr("onclick", "leaveChannel(" + channel.Id + ")");
                          $('#leaveChannelName').text("Ar tikrai norite palikti kanalą " + channel.Name + "?");
-                         
+
                     },
                     failure: function (response) {
                         console.log("failure getting messages!");
@@ -1166,7 +1188,7 @@
                     dataType: "json",
                      success: function (response) {
                          $("#userProfile").modal('toggle');
-                         
+
                     },
                     failure: function (response) {
                         console.log("failure getting messages!");
@@ -1212,7 +1234,87 @@
                         }
                     });
         }
-        
+
+
+        function searchMessages() {
+            let value = $("#searchbar").val();
+            $.ajax({
+                url: '@Url.Action("SearchInChat")',
+                type: "POST",
+                data: { channel: currentChannel, userName: "@User.Identity.Name", searchWord: value },
+                dataType: "json",
+                success: function (response) {
+                    let msgs = JSON.parse(response);
+                    $('#discussion').empty()
+                    msgs.forEach((element) => {
+                        if ("@User.Identity.Name" === element.AuthorName) {
+                            $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='@Url.Content("~/images/avatar.png")' style='width:40px;' id='profile-pic" +
+                                element.Id + "'><strong>" + htmlEncode(element.AuthorName) +
+                                "</strong></th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Id +
+                                "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Content) + "<textarea id='edit" +
+                                element.Id + "' style='visibility: hidden; width: 0;'>" +
+                                element.Content + "</textarea></th><th style='display:inline-flex;'><button id='saveEdit" +
+                                element.Id + "' onclick='saveEdit(" + element.Id + ")' style='visibility: hidden; width: 0;'>Išsaugoti</button><button id='editMessage" +
+                                element.Id + "' onclick='editMessage(" + element.Id + ")'  style='float:right;'>Redaguoti</button><button id='deleteMessage" +
+                                element.Id + "' onclick='deleteMessage(" + element.Id + ")'  style='float:right;'>Trinti</button></th></tr>");
+                        }
+                        else {
+                            $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='@Url.Content("~/images/avatar.png")' style='width:40px;' id='profile-pic" +
+                                element.Id + "'><strong>" + htmlEncode(element.AuthorName) +
+                                "</strong></th></tr><tr class='otherMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Id +
+                                "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Content) + "</th><th></th></tr>");
+                        }
+                    });
+                },
+                failure: function (response) {
+                    console.log("failure send message!");
+                }
+            });
+        }
+
+        function deleteMessagesCommand(count) {
+            $.ajax({
+                url: '@Url.Action("DeleteMessagesCommand")',
+                    type: "POST",
+                    data: { channelId: currentChannel, userName: "@User.Identity.Name", messageCount: count },
+                dataType: "json",
+                    success: function (response) {
+                        console.log("kick user success " + response);
+                    /* let users = JSON.parse(response);
+                    console.log("success get messages! " + msgs + " response ilgis " + msgs.length);
+                    $('#ChannelUsers').empty()
+                    msgs.forEach((element) => {
+
+                        $("#ChannelUsers").append("<tr><td>" + element.UserName + "</td> <td class='kickrow' onclick=\"kickUser('" + element.Id +  "')\">        </td></tr>");
+                    });*/
+                        //connection.invoke('DeleteMessage', id, currentChannel);
+                        connection.invoke('DeleteMessagesCommand', currentChannel, count);
+
+                },
+                failure: function (response) {
+                    console.log("failure getting messages!");
+                }
+
+                });
+        }
+
+        function formatDate(date) {
+            var d = new Date(date),
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear(),
+                hour = d.getHours(),
+                minute = d.getMinutes();
+                    
+
+            if (month.length < 2)
+                month = '0' + month;
+            if (day.length < 2)
+                day = '0' + day;
+
+            return [year, month, day].join('-') + " " + hour + ":" + minute;
+        }
+
 
     </script>
 

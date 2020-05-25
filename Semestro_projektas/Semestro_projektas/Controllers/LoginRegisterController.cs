@@ -34,6 +34,10 @@ namespace Semestro_projektas.Controllers
 
         public ActionResult Login()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Chat", "Chat");
+            }
             User user = new User();
             return View(user);
         }

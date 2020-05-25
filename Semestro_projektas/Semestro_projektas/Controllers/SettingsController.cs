@@ -36,6 +36,12 @@ namespace Semestro_projektas.Controllers
         }
         public async Task<IActionResult> Settings()
         {
+
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "LoginRegister");
+            }
+
             User user = await userManager.GetUserAsync(User);
             ViewData["year"] = user.Date.Year;
             ViewData["month"] = user.Date.Month;

@@ -28,6 +28,9 @@ namespace Semestro_projektas.Controllers
 
         public IActionResult Chat()
         {
+            if (!User.Identity.IsAuthenticated) {
+                return RedirectToAction("Login", "LoginRegister");
+            }
             ViewData["User"] = _repo.GetUsers();
             //ViewData["userChannels"] = _repo.GetUserChannels(User.Identity.Name);
             var messages = _repo.GetChatMessages();
@@ -80,9 +83,16 @@ namespace Semestro_projektas.Controllers
         public async Task<JsonResult> GetChatMessages(int chatId, string userName)
         {
             List<Message> messages = null;
+            //<(Id, AuthorName, Avatar, Created, Content, Role)>
+            List <(int, string, string, DateTime, string, int)> messagesToGet = new List<(int, string, string, DateTime, string, int)>();
             if (User.Identity.Name == userName)
             {
                 messages = _repo.GetChatMessagesByChat(chatId, userName);
+                foreach (Message msg in messages) {
+                    User usr = _repo.GetUserByName(msg.AuthorName);
+                    ChannelUser chUsr = _repo.GetChannelUser(chatId, userName);
+                    messagesToGet.Add((msg.Id, msg.AuthorName, usr.Avatar, msg.Created, msg.Content, (int)chUsr.Role));
+                }
             }
             else {
                 messages = null;
@@ -90,7 +100,7 @@ namespace Semestro_projektas.Controllers
             // foreach (var c in chn) {
             //chnNames.Add("{c.nam}"c.Name);
             // }
-            var json = JsonConvert.SerializeObject(messages);
+            var json = JsonConvert.SerializeObject(messagesToGet);
             return Json(json);
             /*if (await _repo.SaveChangesAsync())
             {
@@ -158,11 +168,13 @@ namespace Semestro_projektas.Controllers
             if (User.Identity.Name == userName)
             {
                 List<Channel> chn = _repo.GetUserChannels(userName);
-                List<string> chnNames = new List<string>();
-                // foreach (var c in chn) {
-                //chnNames.Add("{c.nam}"c.Name);
-                // }
-                var json = JsonConvert.SerializeObject(chn);
+                List<(int, string, bool)> chnData = new List<(int, string, bool)>();
+                User usr = _repo.GetUserByName(userName);
+                foreach (Channel c in chn) {
+                    ChannelUser cUser = _repo.GetChannelUser(c.Id, userName);
+                    chnData.Add((c.Id, c.Name, cUser.ReceivedNotification));
+                }
+                var json = JsonConvert.SerializeObject(chnData);
                 return Json(json);
             }
             else {
@@ -403,6 +415,47 @@ namespace Semestro_projektas.Controllers
 
         }
 
+        
+        [HttpPost]
+        public async Task<JsonResult> SearchInChat(int channel, string userName, string searchWord)
+        {
+            List<Message> messages = null;
+            
+            if (User.Identity.Name == userName)
+            {
+                messages = _repo.SearchInChat(channel, userName, searchWord);
+            }
+            else
+            {
+                messages = null;
+            }
+            // foreach (var c in chn) {
+            //chnNames.Add("{c.nam}"c.Name);
+            // }
+            var json = JsonConvert.SerializeObject(messages);
+            return Json(json);
+
+        }
+
+
+        [HttpPost]
+        public async Task<JsonResult> DeleteMessagesCommand(int channelId, string userName, int messageCount)
+        {
+
+            if (User.Identity.Name == userName)
+            {
+                _repo.DeleteMessagesCommand(channelId, userName, messageCount);
+            }
+            if (await _repo.SaveChangesAsync())
+            {
+                return Json("sent msg " + "DELETE ChannelUsers FROM ChannelUsers WHERE ");
+            }
+            else
+            {
+                return Json(new { success = false, responseText = "The attached file is not supported." });
+            }
+
+        }
 
     }
 }
