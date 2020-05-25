@@ -117,49 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Ar tikrai norite išspirti vartotoją" xml:space="preserve">
-    <value>Really kick the user?</value>
+  <data name="Atsijungti" xml:space="preserve">
+    <value>Logout</value>
   </data>
-  <data name="Išspirti" xml:space="preserve">
-    <value>Kick</value>
+  <data name="Nustatymai" xml:space="preserve">
+    <value>Settings</value>
   </data>
-  <data name="Kanalas" xml:space="preserve">
-    <value>Channel</value>
-  </data>
-  <data name="Kanalo pavadinimas" xml:space="preserve">
-    <value>Channel_Name</value>
-  </data>
-  <data name="Kurti kanalą" xml:space="preserve">
-    <value>Create_Channel</value>
-  </data>
-  <data name="Naikinti kanalą" xml:space="preserve">
-    <value>Delete Channel</value>
-  </data>
-  <data name="Naujas kanalas" xml:space="preserve">
-    <value>New_Channel</value>
-  </data>
-  <data name="Prisijungęs kaip" xml:space="preserve">
-    <value>Logged as </value>
-  </data>
-  <data name="Prisijungęs kaip Guest" xml:space="preserve">
-    <value>Logges as Guest</value>
-  </data>
-  <data name="Registruoti vartotojai (išskleisti)" xml:space="preserve">
-    <value>Registered Users(expand)</value>
-  </data>
-  <data name="Uždaryti" xml:space="preserve">
-    <value>Close</value>
-  </data>
-  <data name="Vartotojai kanale" xml:space="preserve">
-    <value>Users in Channel</value>
-  </data>
-  <data name="Vartotojo kanalai" xml:space="preserve">
-    <value>User Channels</value>
-  </data>
-  <data name="Vartotojo profilis" xml:space="preserve">
-    <value>User Profile</value>
-  </data>
-  <data name="Vartotojų paieška" xml:space="preserve">
-    <value>User Search</value>
+  <data name="Prisijungimas" xml:space="preserve">
+    <value>Login</value>
   </data>
 </root>

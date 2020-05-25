@@ -1,9 +1,13 @@
 ﻿<!DOCTYPE html>
+
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizer
+
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Semestro_projektas</title>
+    <title>@ViewData["Title"] - Semestro projektas</title>
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -26,29 +30,29 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Chat" asp-action="Chat" class="navbar-brand">Semestro_projektas</a>
+                <a asp-area="" asp-controller="Chat" asp-action="Chat" class="navbar-brand">Semestro projektas</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Chat" asp-action="Chat">Chat</a></li>
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li><a asp-area="" asp-controller="Settings" asp-action="Settings">Nustatymai</a></li>
+                        <li><a asp-area="" asp-controller="Settings" asp-action="Settings">@_localizer.GetString("Nustatymai")</a></li>
                     }
                     @if (!User.Identity.IsAuthenticated)
                     {
-                        <li><a asp-area="" asp-controller="LoginRegister" asp-action="Login">Prisijungimas</a></li>
+                        <li><a asp-area="" asp-controller="LoginRegister" asp-action="Login">@_localizer.GetString("Prisijungimas")</a></li>
                     }
                     else
                     {
-                        <li><a asp-area="" asp-controller="LoginRegister" asp-action="Logout">Atsijungti</a></li>
+                        <li><a asp-area="" asp-controller="LoginRegister" asp-action="Logout">@_localizer.GetString("Atsijungti")</a></li>
                     }
-                        <!--<li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-        <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-        <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-        <li><a asp-area="" asp-controller="Home" asp-action="DbPost">DB Test</a></li>-->
+                    <!--<li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="DbPost">DB Test</a></li>-->
 
-                    </ul>
+                </ul>
             </div>
         </div>
     </nav>

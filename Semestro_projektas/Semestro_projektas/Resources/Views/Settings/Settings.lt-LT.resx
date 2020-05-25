@@ -132,6 +132,9 @@
   <data name="Pakartoti-Slaptažodį" xml:space="preserve">
     <value>Pakartoti-Slaptažodį</value>
   </data>
+  <data name="Pakeitimas patvirtintas!!!" xml:space="preserve">
+    <value>Pakeitimas patvirtintas!!!</value>
+  </data>
   <data name="Papildomi nustatymai: matomumas" xml:space="preserve">
     <value>Papildomi nustatymai: matomumas</value>
   </data>
@@ -140,6 +143,9 @@
   </data>
   <data name="Senas-Slaptažodis" xml:space="preserve">
     <value>Senas-Slaptažodis</value>
+  </data>
+  <data name="Slaptažodis" xml:space="preserve">
+    <value>Slaptažodis</value>
   </data>
   <data name="Slapyvardis" xml:space="preserve">
     <value>Slapyvardis</value>

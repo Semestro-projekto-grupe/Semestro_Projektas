@@ -123,11 +123,29 @@
   <data name="Išspirti" xml:space="preserve">
     <value>Išspirti</value>
   </data>
+  <data name="Kanalas" xml:space="preserve">
+    <value>Kanalas</value>
+  </data>
+  <data name="Kanalo pavadinimas" xml:space="preserve">
+    <value>Kanalo_pavadinimas</value>
+  </data>
+  <data name="Kurti kanalą" xml:space="preserve">
+    <value>Kurti_kanalą</value>
+  </data>
+  <data name="Naikinti kanalą" xml:space="preserve">
+    <value>Naikinti kanalą</value>
+  </data>
+  <data name="Naujas kanalas" xml:space="preserve">
+    <value>Naujas_kanalas</value>
+  </data>
   <data name="Prisijungęs kaip" xml:space="preserve">
-    <value>Prisijungęs kaip</value>
+    <value>Prisijungęs kaip </value>
   </data>
   <data name="Prisijungęs kaip Guest" xml:space="preserve">
     <value>Prisijungęs kaip Guest</value>
+  </data>
+  <data name="Registruoti vartotojai (išskleisti)" xml:space="preserve">
+    <value>Registruoti vartotojai (išskleisti)</value>
   </data>
   <data name="Uždaryti" xml:space="preserve">
     <value>Uždaryti</value>

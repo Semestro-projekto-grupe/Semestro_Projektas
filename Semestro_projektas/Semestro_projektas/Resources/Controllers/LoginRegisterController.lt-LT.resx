@@ -126,6 +126,9 @@
   <data name="Pateikta neteisinga gimimo data!" xml:space="preserve">
     <value>Pateikta neteisinga gimimo data!</value>
   </data>
+  <data name="Registracija sėkminga!!!" xml:space="preserve">
+    <value>Registracija sėkminga!!!</value>
+  </data>
   <data name="Slaptažodis negali būti sudarytas iš vienodų simbolių!" xml:space="preserve">
     <value>Slaptažodis negali būti sudarytas iš vienodų simbolių!</value>
   </data>

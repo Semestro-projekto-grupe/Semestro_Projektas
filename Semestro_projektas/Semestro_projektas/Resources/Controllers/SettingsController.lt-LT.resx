@@ -120,6 +120,9 @@
   <data name="Galimi formatai:" xml:space="preserve">
     <value>Galimi formatai:</value>
   </data>
+  <data name="Galimi formatai: (.jpg, .png)!" xml:space="preserve">
+    <value>Galimi formatai: (.jpg, .png)!</value>
+  </data>
   <data name="Neteisingas slaptažodis!" xml:space="preserve">
     <value>Neteisingas slaptažodis!</value>
   </data>

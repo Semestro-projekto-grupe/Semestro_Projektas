@@ -22,12 +22,12 @@ namespace Semestro_projektas.Controllers
         private IRepository _repo;
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
-        private readonly IStringLocalizer<HomeController> _localizer;
+        private readonly IStringLocalizer<SettingsController> _localizer;
 
         public SettingsController(  UserManager<User> userManager,
                                     SignInManager<User> signInManager,
                                     IRepository repo,
-                                    IStringLocalizer<HomeController> localizer)
+                                    IStringLocalizer<SettingsController> localizer)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -58,27 +58,27 @@ namespace Semestro_projektas.Controllers
                     if (!result)
                     {
                         ViewData["del"] = "del";
-                        ModelState.AddModelError("pass3", "Neteisingas slaptažodis!");
+                        ModelState.AddModelError("pass3", _localizer["Neteisingas slaptažodis!"]);
                         return View(user);
                     }
                      var rez = await userManager.DeleteAsync(user2);
                     if (!rez.Succeeded)
                     {
                         ViewData["del"] = "del";
-                        ModelState.AddModelError("pass3", " Paskyra nepanaikinta!  ");
+                        ModelState.AddModelError("pass3", _localizer["Paskyra nepanaikinta!"]);
                         return View(user);
                     }
                     DeleteAvatar(user2);
                     await signInManager.SignOutAsync();
                     await Logout();
-                    TempData["Success"] = "Paskyra panaikinta!!!";
+                    TempData["Success"] = _localizer["Paskyra panaikinta!!!"];
                     return RedirectToAction("Login", "LoginRegister");
                 }
                 else if (change == "data")
                 {
                     if (data.Contains("—") || data.Length == 1)
                     {
-                        ModelState.AddModelError("Date", "Pateikta neteisinga gimimo data!");
+                        ModelState.AddModelError("Date", _localizer["Pateikta neteisinga gimimo data!"]);
                         return View(user);
                     }
                     user.Date = Convert.ToDateTime(data); //Užkraunama data į objektą
@@ -113,7 +113,7 @@ namespace Semestro_projektas.Controllers
                         }
                         else
                         {
-                            ModelState.AddModelError("Avatar", "Galimi formatai: (.jpg, .png)!");
+                            ModelState.AddModelError("Avatar", _localizer["Galimi formatai: (.jpg, .png)!"]);
                         }
 
                     }
@@ -127,7 +127,7 @@ namespace Semestro_projektas.Controllers
                     bool result = _repo.EditUserData(user, change, pass2);
                     if (!result)
                     {
-                        ModelState.AddModelError("NickName", "Toks slapyvardis jau yra!");
+                        ModelState.AddModelError("NickName", _localizer["Toks slapyvardis jau yra!"]);
                         return View(user);
                     }
                     user.SecurityStamp = "editUserName";
@@ -140,28 +140,28 @@ namespace Semestro_projektas.Controllers
                     {
                         if (pass2 == null)
                         {
-                            ModelState.AddModelError("pass", "Neįvestas slaptažodis!");
+                            ModelState.AddModelError("pass", _localizer["Neįvestas slaptažodis!"]);
                             ModelState.AddModelError("Password", " ");
                             return View(user);
                         }
-                        ModelState.AddModelError("Password", "Neįvestas slaptažodis!");
+                        ModelState.AddModelError("Password", _localizer["Neįvestas slaptažodis!"]);
                         return View(user);
                     }
                     if (pass != password) //patikrinimas ar įvesti slaptažodžiai sutampa
                     {
-                        ModelState.AddModelError("Password", "Slaptažodžiai nesutampa!");
+                        ModelState.AddModelError("Password", _localizer["Slaptažodžiai nesutampa!"]);
                         // return RedirectToAction("Chat", "Chat");
                         return View(user);
                     }
                     string temp = pass.Substring(0, 1);
                     if (Regex.Matches(pass, "[^a-zA-Z]").Count == pass.Length) //Patikra dėl neraidžių naudojimo (turi būti bent viena raidė)
                     {
-                        ModelState.AddModelError("Password", "Slaptažodyje privalo būti bent viena raidė!");
+                        ModelState.AddModelError("Password", _localizer["Slaptažodyje privalo būti bent viena raidė!"]);
                         return View(user);
                     }
                     else if (Regex.Matches(pass, temp).Count == pass.Length) //Vienodų simbolių naudojimo atvejis slaptažodyje
                     {
-                        ModelState.AddModelError("Password", "Slaptažodis negali būti sudarytas iš vienodų simbolių!");
+                        ModelState.AddModelError("Password", _localizer["Slaptažodis negali būti sudarytas iš vienodų simbolių!"]);
                         return View(user);
                     }
                     ModelState.AddModelError("Password", " ");
@@ -170,7 +170,7 @@ namespace Semestro_projektas.Controllers
                     user.Name = result.ToString();
                     if (!result.Succeeded)
                     {
-                        ModelState.AddModelError("pass", "Neteisingas slaptažodis!");
+                        ModelState.AddModelError("pass", _localizer["Neteisingas slaptažodis!"]);
                         return View(user);
                     }
                 }

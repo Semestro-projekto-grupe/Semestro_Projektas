@@ -117,31 +117,58 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Avataras" xml:space="preserve">
-    <value>Avataras</value>
+  <data name="Avataras:" xml:space="preserve">
+    <value>Avataras:</value>
   </data>
-  <data name="Data" xml:space="preserve">
-    <value>Data</value>
+  <data name="Data:" xml:space="preserve">
+    <value>Data:</value>
+  </data>
+  <data name="Maksimalus pavardes ilgis 30 simbolių!" xml:space="preserve">
+    <value>Maksimalus pavardes ilgis 30 simbolių!</value>
   </data>
   <data name="Maksimalus slaptažodžio ilgis 20 simbolių!" xml:space="preserve">
     <value>Maksimalus slaptažodžio ilgis 20 simbolių!</value>
   </data>
+  <data name="Maksimalus slapyvardzio ilgis 30 simbolių!" xml:space="preserve">
+    <value>Maksimalus slapyvardzio ilgis 30 simbolių!</value>
+  </data>
+  <data name="Maksimalus vardo ilgis 30 simbolių!" xml:space="preserve">
+    <value>Maksimalus vardo ilgis 30 simbolių!</value>
+  </data>
+  <data name="Minimalus pavardes ilgis 2 simboliai!" xml:space="preserve">
+    <value>Minimalus pavardes ilgis 2 simboliai!</value>
+  </data>
   <data name="Minimalus slaptažodžio ilgis 6 simboliai!" xml:space="preserve">
     <value>Minimalus slaptažodžio ilgis 6 simboliai!</value>
+  </data>
+  <data name="Minimalus slapyvardzio ilgis 2 simboliai!" xml:space="preserve">
+    <value>Minimalus slapyvardzio ilgis 2 simboliai!</value>
+  </data>
+  <data name="Minimalus vardo ilgis 2 simboliai!" xml:space="preserve">
+    <value>Minimalus vardo ilgis 2 simboliai!</value>
+  </data>
+  <data name="Neįvesta pavarde!" xml:space="preserve">
+    <value>Neįvesta pavarde!</value>
   </data>
   <data name="Neįvestas slaptažodis!" xml:space="preserve">
     <value>Neįvestas slaptažodis!</value>
   </data>
-  <data name="Pavardė" xml:space="preserve">
-    <value>Pavardė</value>
+  <data name="Neįvestas slapyvardis!" xml:space="preserve">
+    <value>Neįvestas slapyvardis!</value>
   </data>
-  <data name="Slaptažodis" xml:space="preserve">
-    <value>Slaptažodis</value>
+  <data name="Neįvestas vardas!" xml:space="preserve">
+    <value>Neįvestas vardas!</value>
   </data>
-  <data name="Slapyvardis" xml:space="preserve">
-    <value>Slapyvardis</value>
+  <data name="Pavardė:" xml:space="preserve">
+    <value>Pavardė:</value>
   </data>
-  <data name="Vardas" xml:space="preserve">
-    <value>Vardas</value>
+  <data name="Slaptažodis:" xml:space="preserve">
+    <value>Slaptažodis:</value>
+  </data>
+  <data name="Slapyvardis:" xml:space="preserve">
+    <value>Slapyvardis:</value>
+  </data>
+  <data name="Vardas:" xml:space="preserve">
+    <value>Vardas:</value>
   </data>
 </root>

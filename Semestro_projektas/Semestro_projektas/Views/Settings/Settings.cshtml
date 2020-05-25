@@ -1,8 +1,11 @@
 ﻿@model Semestro_projektas.Models.User
 
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizer
+
 @{
     ViewData["Title"] = "Index";
-    string password = "", pass = "", pass2 = "", pass3="";
+    string password = "", pass = "", pass2 = "", pass3 = "";
 }
 <style>
         body {
@@ -142,180 +145,181 @@
 
     <body>
         <br><br>
-            <nav class=" box-shadow box">
-                <div class="text-center">
+        <nav class=" box-shadow box">
+            <div class="text-center">
 
-                    <h1 class="bold">Asmeninės informacijos redagavimas</h1>
+                <h1 class="bold">@_localizer["Asmeninės informacijos redagavimas"]</h1>
+                <p></p>
+            </div>
+            @if (ViewData["Success2"] != null)
+            {
+        <label class="pull-center" id="verify" style="position:absolute; color:red; font-size:20px;">
+            &#160 &#160 &#160 @_localizer["Pakeitimas patvirtintas!!!"]</label>
+            <script>
+                $(document).ready(function () {
+                    setTimeout(function () {
+                        var myobj = document.getElementById("verify");
+                        myobj.remove();
+                    }, 4000);
+                });
+            </script>
+            }
+            <input hidden="hidden" id="dll" value="1">
+            <dataInput>
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.Avatar, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-md-10">
+                        <input type="button" id="back1" class="form-control delete" onclick="visible()" style="background-color: dodgerblue;" value="Naikinti paskyrą" input />
+                        @Html.EditorFor(model => pass3, new { htmlAttributes = new { @class = "form-control delete", @id = "del", @minlength = "6", @maxlength = "20", @placeholder = @_localizer.GetString("Slaptažodis"), @type = "password", @style = "visibility:hidden; top:40px; background-color: dodgerblue;" } })
+                        @if (ViewData["del"] == null)
+                        {
+                            @Html.ValidationMessage("pass3", new { @class = "text-danger delete", @id = "delms", @style = "top:77px; width:164px; left:222px; visibility:hidden;" })
+                            <input type="submit" id="del2" class="form-control delete" name="change" value="Patvirtinti" style="visibility:hidden; top:80px; background-color:dodgerblue;" input />
+                        }
+                        else
+                        {
+                            @Html.ValidationMessage("pass3", new { @class = "text-danger delete", @id = "delms", @style = "top:77px; width:164px; left:222px; visibility:hidden;" })
+                            <input type="submit" id="del2" class="form-control delete" name="change" value="Patvirtinti" style=" top:100px; background-color:dodgerblue; visibility:hidden;" input />
+                            <script>
+                                document.getElementById("del2").style.visibility = "visible";
+                                document.getElementById("del").style.visibility = "visible";
+                                document.getElementById("delms").style.visibility = "visible";
+                                document.getElementById("back1").value = "Suskleisti";
+                                document.getElementById("dll").value = "2";
+                            </script>
+                        }
+                        <img src="~/avatars/@Model.Avatar" style="position:relative; right:15px" width="200" height="200" />
+                        <input type="file" name="file" style="position:relative; right:15px" />
+                        @Html.ValidationMessageFor(model => model.Avatar, "", new { @class = "text-danger validation" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Vardas" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger validation" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.Surname, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control caption", @placeholder = "Pavardė" } })
+                        @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger validation" })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 col-form-label">Gimimo data:</label>
+                    <select class="form-control col-sm-2 w-date left2" onchange="setDay()" id="year">
+
+                        <option value=—>——</option>
+                        @for (int i = DateTime.Today.Year - 14; i >= DateTime.Today.Year - 100; i--)
+                        {
+                            <option value=@i>@i</option>
+                        }
+                    </select>
+                    <select class="form-control col-sm-2 w-2 left2" onchange="setDay()" id="month">
+                        <option value=—>—</option>
+                        @for (int i = 1; i <= 12; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                    <select class="form-control w-2 left2" onchange="date()" id="day">
+                        <option value=—>—</option>
+                        @for (int i = 1; i <= 31; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group row validation2">
+                    @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger right" })
+                </div>
+                <div class="form-group row w-2 left">
+                    <button type="submit" class="form-control button" name="change" value="data">Išsaugoti</button>
+                </div>
+                <input hidden id="data" value="-" name="data" />
+                <input hidden name="id" value=@Model.Id />
+                <div class="text-left" style="position:relative; left:50px">
+                    <h1 class="bold">Slapyvardžio keitimas</h1>
                     <p></p>
                 </div>
-                @if (ViewData["Success2"] != null)
-                {
-                    <label class="pull-center" id="verify" style="position:absolute; color:red; font-size:20px;">&#160 &#160 &#160 Pakeitimas patvirtintas!!!</label>
-                    <script>
-                        $(document).ready(function () {
-                            setTimeout(function () {
-                                var myobj = document.getElementById("verify");
-                                myobj.remove();
-                            }, 4000);
-                        });
-                    </script>
-                }
-                <input hidden="hidden" id="dll" value="1">
-                <dataInput>
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                    <div class="form-group row">
-                        @Html.LabelFor(model => model.Avatar, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
-                        <div class="col-md-10">
-                            <input type="button" id="back1" class="form-control delete" onclick="visible()" style="background-color: dodgerblue;" value="Naikinti paskyrą" input />
-                            @Html.EditorFor(model => pass3, new { htmlAttributes = new { @class = "form-control delete", @id = "del", @minlength = "6", @maxlength = "20", @placeholder = "Slaptažodis", @type = "password", @style = "visibility:hidden; top:40px; background-color: dodgerblue;" } })
-                            @if (ViewData["del"] == null)
-                            {
-                                @Html.ValidationMessage("pass3", new { @class = "text-danger delete", @id = "delms", @style = "top:77px; width:164px; left:222px; visibility:hidden;" })
-                                <input type="submit" id="del2" class="form-control delete" name="change" value="Patvirtinti" style="visibility:hidden; top:80px; background-color:dodgerblue;" input />
-                             }
-                            else
-                            {
-                                @Html.ValidationMessage("pass3", new { @class = "text-danger delete", @id = "delms", @style = "top:77px; width:164px; left:222px; visibility:hidden;" })
-                                <input type="submit" id="del2" class="form-control delete" name="change" value="Patvirtinti" style=" top:100px; background-color:dodgerblue; visibility:hidden;" input />
-                                <script>
-                                    document.getElementById("del2").style.visibility = "visible";
-                                    document.getElementById("del").style.visibility = "visible";
-                                    document.getElementById("delms").style.visibility = "visible";
-                                    document.getElementById("back1").value = "Suskleisti";
-                                    document.getElementById("dll").value = "2";
-                                </script>
-                            }
-                            <img src="~/avatars/@Model.Avatar" style="position:relative; right:15px" width="200" height="200" />
-                            <input type="file" name="file" style="position:relative; right:15px" />
-                            @Html.ValidationMessageFor(model => model.Avatar, "", new { @class = "text-danger validation" })
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Vardas" } })
-                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger validation" })
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        @Html.LabelFor(model => model.Surname, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control caption", @placeholder = "Pavardė" } })
-                            @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger validation" })
-                        </div>
-                    </div>
 
-                    <div class="row">
-                        <label class="col-sm-2 col-form-label">Gimimo data:</label>
-                        <select class="form-control col-sm-2 w-date left2" onchange="setDay()" id="year">
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.NickName, htmlAttributes: new { @class = "col-sm-2 col-form-label caption" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.NickName, new { htmlAttributes = new { @class = "form-control caption", @placeholder = "Slapyvardis" } })
+                        @Html.ValidationMessageFor(model => model.NickName, "", new { @class = "text-danger validation" })
+                    </div>
+                </div>
 
-                            <option value=—>——</option>
-                            @for (int i = DateTime.Today.Year - 14; i >= DateTime.Today.Year - 100; i--)
-                            {
-                                <option value=@i>@i</option>
-                            }
-                        </select>
-                        <select class="form-control col-sm-2 w-2 left2" onchange="setDay()" id="month">
-                            <option value=—>—</option>
-                            @for (int i = 1; i <= 12; i++)
-                            {
-                                <option value="@i">@i</option>
-                            }
-                        </select>
-                        <select class="form-control w-2 left2" onchange="date()" id="day">
-                            <option value=—>—</option>
-                            @for (int i = 1; i <= 31; i++)
-                            {
-                                <option value="@i">@i</option>
-                            }
-                        </select>
-                    </div>
-                    <div class="form-group row validation2">
-                        @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger right" })
-                    </div>
-                    <div class="form-group row w-2 left">
-                        <button type="submit" class="form-control button" name="change" value="data">Išsaugoti</button>
-                    </div>
-                    <input hidden id="data" value="-" name="data" />
-                    <input hidden name="id" value=@Model.Id />
-                    <div class="text-left" style="position:relative; left:50px">
-                        <h1 class="bold">Slapyvardžio keitimas</h1>
-                        <p></p>
-                    </div>
+                <div class="form-group row w-2 left">
+                    <button type="submit" class="form-control button" name="change" value="nick">Išsaugoti</button>
+                </div>
 
-                    <div class="form-group row">
-                        @Html.LabelFor(model => model.NickName, htmlAttributes: new { @class = "col-sm-2 col-form-label caption" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.NickName, new { htmlAttributes = new { @class = "form-control caption", @placeholder = "Slapyvardis" } })
-                            @Html.ValidationMessageFor(model => model.NickName, "", new { @class = "text-danger validation" })
-                        </div>
-                    </div>
+                <div class="text-left" style="position:relative; left:50px">
+                    <h1 class="bold">Slaptažodžio keitimas</h1>
+                    <p></p>
+                </div>
 
-                    <div class="form-group row w-2 left">
-                        <button type="submit" class="form-control button" name="change" value="nick">Išsaugoti</button>
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => pass2, new { htmlAttributes = new { @class = "form-control", @minlength = "6", @maxlength = "20", @placeholder = "Senas-Slaptažodis", @type = "password" } })
+                        @if (ViewData["show"] != null)
+                        {
+                            @Html.ValidationMessage("pass", new { @class = "text-danger validation" });
+                        }
                     </div>
+                </div>
 
-                    <div class="text-left" style="position:relative; left:50px">
-                        <h1 class="bold">Slaptažodžio keitimas</h1>
-                        <p></p>
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => pass, new { htmlAttributes = new { @class = "form-control", @minlength = "6", @maxlength = "20", @placeholder = "Naujas-Slaptažodis", @type = "password" } })
+                        @if (ViewData["show"] != null)
+                        {
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger validation" })
+                            @Html.ValidationMessage("pass2", new { @class = "text-danger validation" });
+                        }
                     </div>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => password, new { htmlAttributes = new { @class = "form-control", @minlength = "6", @type = "password", @maxlength = "20", @placeholder = "Pakartoti-Slaptažodį" } })
+                        @if (ViewData["show"] != null)
+                        {
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger validation" })
+                        }
+                    </div>
+                </div>
+                <div class="form-group row w-2 left">
+                    <button type="submit" class="form-control button" name="change" value="password">Išsaugoti</button>
+                </div>
 
-                    <div class="form-group row">
-                        @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => pass2, new { htmlAttributes = new { @class = "form-control", @minlength = "6", @maxlength = "20", @placeholder = "Senas-Slaptažodis", @type = "password" } })
-                            @if (ViewData["show"] != null)
-                            {
-                                @Html.ValidationMessage("pass", new { @class = "text-danger validation" });
-                            }
-                        </div>
-                    </div>
+                <div class="text-left">
+                    <h2 class="bold">Papildomi nustatymai: matomumas</h2>
+                    <p></p>
+                </div>
 
-                    <div class="form-group row">
-                        @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => pass, new { htmlAttributes = new { @class = "form-control", @minlength = "6", @maxlength = "20", @placeholder = "Naujas-Slaptažodis", @type = "password" } })
-                            @if (ViewData["show"] != null)
-                            {
-                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger validation" })
-                                @Html.ValidationMessage("pass2", new { @class = "text-danger validation" });
-                            }
-                        </div>
+                <div class="form-group row">
+                    <div class="col-md-10" style="position:relative; left:145px">
+                        @Html.LabelFor(model => model.Name)
+                        @Html.CheckBoxFor(model => model.NameVisibility)&#160 &#160 &#160
+                        @Html.LabelFor(model => model.Surname)
+                        @Html.CheckBoxFor(model => model.SurnameVisibility)&#160 &#160 &#160
+                        @Html.LabelFor(model => model.Date)
+                        @Html.CheckBoxFor(model => model.DateVisibility)
                     </div>
-                    <div class="form-group row">
-                        @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => password, new { htmlAttributes = new { @class = "form-control", @minlength = "6", @type = "password", @maxlength = "20", @placeholder = "Pakartoti-Slaptažodį" } })
-                            @if (ViewData["show"] != null)
-                            {
-                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger validation" })
-                            }
-                        </div>
-                    </div>
-                    <div class="form-group row w-2 left">
-                        <button type="submit" class="form-control button" name="change" value="password">Išsaugoti</button>
-                    </div>
-
-                    <div class="text-left">
-                        <h2 class="bold">Papildomi nustatymai: matomumas</h2>
-                        <p></p>
-                    </div>
-
-                    <div class="form-group row">
-                        <div class="col-md-10" style="position:relative; left:145px">
-                            @Html.LabelFor(model => model.Name)
-                            @Html.CheckBoxFor(model => model.NameVisibility)&#160 &#160 &#160
-                            @Html.LabelFor(model => model.Surname)
-                            @Html.CheckBoxFor(model => model.SurnameVisibility)&#160 &#160 &#160
-                            @Html.LabelFor(model => model.Date)
-                            @Html.CheckBoxFor(model => model.DateVisibility)
-                        </div>
-                    </div>
-                    <div class="form-group row w-2 left">
-                        <button type="submit" class="form-control button" name="change" value="papild">Išsaugoti</button>
-                    </div>
-                </dataInput>
-            </nav>
+                </div>
+                <div class="form-group row w-2 left">
+                    <button type="submit" class="form-control button" name="change" value="papild">Išsaugoti</button>
+                </div>
+            </dataInput>
+</nav>
     </body>
 </html>
 </form>
@@ -331,7 +335,7 @@
                 dl.value = "Naikinti paskyrą";
                 turn.value = "1";
             }
-            else{
+            else {
                 document.getElementById("del").style.visibility = "visible";
                 document.getElementById("del2").style.visibility = "visible";
                 document.getElementById("delms").style.visibility = "visible";
