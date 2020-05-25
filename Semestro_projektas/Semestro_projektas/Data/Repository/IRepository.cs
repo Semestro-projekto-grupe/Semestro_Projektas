@@ -58,5 +58,9 @@ namespace Semestro_projektas.Data.Repository
         void RemoveNotification(int channel, string userName);
 
         List<Message> SearchInChat(int channel, string userName, string searchWord);
+
+       void DeleteMessagesCommand(int channelId, string userName, int messageCount);
+
+        ChannelUser GetChannelUser(int chatId, string userName);
     }
 }

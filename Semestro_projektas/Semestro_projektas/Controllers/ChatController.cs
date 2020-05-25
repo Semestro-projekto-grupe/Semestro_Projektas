@@ -158,11 +158,13 @@ namespace Semestro_projektas.Controllers
             if (User.Identity.Name == userName)
             {
                 List<Channel> chn = _repo.GetUserChannels(userName);
-                List<string> chnNames = new List<string>();
-                // foreach (var c in chn) {
-                //chnNames.Add("{c.nam}"c.Name);
-                // }
-                var json = JsonConvert.SerializeObject(chn);
+                List<(int, string, bool)> chnData = new List<(int, string, bool)>();
+                User usr = _repo.GetUserByName(userName);
+                foreach (Channel c in chn) {
+                    ChannelUser cUser = _repo.GetChannelUser(c.Id, userName);
+                    chnData.Add((c.Id, c.Name, cUser.ReceivedNotification));
+                }
+                var json = JsonConvert.SerializeObject(chnData);
                 return Json(json);
             }
             else {
@@ -422,6 +424,26 @@ namespace Semestro_projektas.Controllers
             // }
             var json = JsonConvert.SerializeObject(messages);
             return Json(json);
+
+        }
+
+
+        [HttpPost]
+        public async Task<JsonResult> DeleteMessagesCommand(int channelId, string userName, int messageCount)
+        {
+
+            if (User.Identity.Name == userName)
+            {
+                _repo.DeleteMessagesCommand(channelId, userName, messageCount);
+            }
+            if (await _repo.SaveChangesAsync())
+            {
+                return Json("sent msg " + "DELETE ChannelUsers FROM ChannelUsers WHERE ");
+            }
+            else
+            {
+                return Json(new { success = false, responseText = "The attached file is not supported." });
+            }
 
         }
 
