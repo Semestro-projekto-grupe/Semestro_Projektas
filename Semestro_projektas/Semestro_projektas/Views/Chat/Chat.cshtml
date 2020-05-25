@@ -1,8 +1,6 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@using Microsoft.AspNetCore.Mvc.Localization
+﻿@using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer _localizer
+
 @model IEnumerable<Message>
 @{
     IEnumerable<User> users = ViewData["User"] as IEnumerable<User>;
@@ -257,7 +255,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title" id="profileName">Vartotojo profilis</h4>
+                <h4 class="modal-title" id="profileName">@_localizer.GetString("Vartotojo profilis")</h4>
             </div>
             <div class="modal-body">
                 <img src='@Url.Content("~/images/avatar.png")' id="pfp" style="width:150px;height:150px; float:left;">
@@ -273,10 +271,10 @@
                             <option value="@roleVal">@s</option>
                         }
                     </select>
-                    <button class="btn btn-default" onclick="assignRole('')" id="assignRole" style="margin-top:5px;">Priskirti</button>
+                    <button class="btn btn-default" onclick="assignRole('')" id="assignRole" style="margin-top:5px;">@_localizer.GetString("Priskirti")</button>
                 </div>
-                <button class="btn btn-default" onclick="callKick()" id="callKick">Išspirti</button>
-                <button class="btn btn-primary" data-dismiss="modal">Uždaryti</button>
+                <button class="btn btn-default" onclick="callKick()" id="callKick">@_localizer.GetString("Išspirti")</button>
+                <button class="btn btn-primary" data-dismiss="modal">@_localizer.GetString("Uždaryti")</button>
             </div>
 
         </div>
@@ -289,11 +287,11 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title" id="kickUserName">Ar tikrai norite išspirti vartotoją</h4>
+                <h4 class="modal-title" id="kickUserName">@_localizer.GetString("Ar tikrai norite išspirti vartotoją")</h4>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" data-dismiss="modal">Uždaryti</button>
-                <button class="btn btn-default" onclick="kickUser(id, name)" id="kickUsr">Išspirti</button>
+                <button class="btn btn-primary" data-dismiss="modal">@_localizer.GetString("Uždaryti")</button>
+                <button class="btn btn-default" onclick="kickUser(id, name)" id="kickUsr">@_localizer.GetString("Išspirti")</button>
             </div>
         </div>
     </div>
@@ -305,15 +303,15 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title" id="channelName">Kanalas</h4>
+                <h4 class="modal-title" id="channelName">@_localizer.GetString("Kanalas")</h4>
             </div>
             <div class="modal-body">
                 <div id="channelData" style="height:10px;"></div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-default" onclick="callLeaveChannel()" id="callLeaveChannel">Palikti kanalą</button>
-                <button class="btn btn-default" onclick="callDeleteChannel()" id="callDelete">Naikinti kanalą</button>
-                <button class="btn btn-primary" data-dismiss="modal">Uždaryti</button>
+                <button class="btn btn-default" onclick="callLeaveChannel()" id="callLeaveChannel">@_localizer.GetString("Palikti kanalą")</button>
+                <button class="btn btn-default" onclick="callDeleteChannel()" id="callDelete">@_localizer.GetString("Naikinti kanalą")</button>
+                <button class="btn btn-primary" data-dismiss="modal">@_localizer.GetString("Uždaryti")</button>
             </div>
 
         </div>
@@ -326,11 +324,11 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title" id="deleteChannelName">Ar tikrai norite pašalinti kanalą?</h4>
+                <h4 class="modal-title" id="deleteChannelName">@_localizer.GetString("Ar tikrai norite pašalinti kanalą?")</h4>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" data-dismiss="modal">Uždaryti</button>
-                <button class="btn btn-default" onclick="deleteChannel(id)" id="deleteChn">Naikinti kanalą</button>
+                <button class="btn btn-primary" data-dismiss="modal">@_localizer.GetString("Uždaryti")</button>
+                <button class="btn btn-default" onclick="deleteChannel(id)" id="deleteChn">@_localizer.GetString("Naikinti kanalą")</button>
             </div>
         </div>
     </div>
@@ -341,11 +339,11 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title" id="leaveChannelName">Ar tikrai norite palikti kanalą?</h4>
+                <h4 class="modal-title" id="leaveChannelName">@_localizer.GetString("Ar tikrai norite palikti kanalą?")</h4>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" data-dismiss="modal">Uždaryti</button>
-                <button class="btn btn-default" onclick="leaveChannel(id)" id="leaveChn">Palikti kanalą</button>
+                <button class="btn btn-primary" data-dismiss="modal">@_localizer.GetString("Uždaryti")</button>
+                <button class="btn btn-default" onclick="leaveChannel(id)" id="leaveChn">@_localizer.GetString("Palikti kanalą")</button>
             </div>
         </div>
     </div>
@@ -360,16 +358,16 @@
 
             
             <div class="panel-body" id="chatChannels" style="height:250px;">
-                <h3>Vartotojo kanalai</h3>
+                <h3>@_localizer.GetString("Vartotojo kanalai")</h3>
                 <table class="table" id="userChannels"></table>
             </div>
         </div>
         <br>
-        <p class="expand" id="expand-2"><input type="button" class="btn btn-warning btn-sm" id="getChannels" value="Naujas kanalas"></p>
+        <p class="expand" id="expand-2"><input type="button" class="btn btn-warning btn-sm" id="getChannels" value="@_localizer.GetString("Naujas kanalas")"></p>
         <div class="expandable" id="expandable-2">
-            <input id="newChannel" type="text" class="form-control input-sm" placeholder="Kanalo pavadinimas" />
+            <input id="newChannel" type="text" class="form-control input-sm" placeholder="@_localizer.GetString("Kanalo pavadinimas")" />
             <br>
-            <input type="button" class="btn btn-warning btn-sm" id="createChannel" value="Kurti kanalą">
+            <input type="button" class="btn btn-warning btn-sm" id="createChannel" value="@_localizer.GetString("Kurti kanalą")">
         </div>
 
     </div>
@@ -379,18 +377,19 @@
             <div class="panel-heading">
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <h3> Prisijungęs kaip @User.Identity.Name</h3>
+                    string laik = @_localizer.GetString("Prisijungęs kaip");
+                    <h3> @laik @User.Identity.Name</h3>
                 }
                 else
                 {
-                    <h3> Prisijungęs kaip Guest</h3>
+            <h3>@_localizer.GetString("Prisijungęs kaip Guest") </h3>
                 }
 
 
                 <i class="fa fa-paper-plane fa-fw"></i>
                 <h3 id="selectedChannel"></h3>
-                <input type="text" class="navbar-form" placeholder="Ieškoti.." id="searchbar">
-                <button class="btn btn-primary" onclick="searchMessages()">Ieškoti</button>
+                <input type="text" class="navbar-form" placeholder="@_localizer.GetString("Ieškoti..")" id="searchbar">
+                <button class="btn btn-primary" onclick="searchMessages()">@_localizer.GetString("Ieškoti")</button>
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body" id="chat" style="height:250px;">
@@ -401,10 +400,10 @@
             <!-- /.panel-body -->
             <div class="panel-footer">
                 <div class="input-group">
-                    <input id="message" type="text" name="message" class="form-control input-sm" placeholder="Rašykite žinutę čia..." />
+                    <input id="message" type="text" name="message" class="form-control input-sm" placeholder="@_localizer.GetString("Rašykite žinutę čia...")" />
 
                     <span class="input-group-btn">
-                        <input type="button" class="btn btn-warning btn-sm" id="sendmessage" value="Siųsti">
+                        <input type="button" class="btn btn-warning btn-sm" id="sendmessage" value="@_localizer.GetString("Siųsti")">
 
                     </span>
                 </div>
@@ -440,14 +439,14 @@
 
         <div class="channel-users">           
             <div class="panel-body" id="chatChannelUsers" style="height:250px;">
-                <h3>Vartotojai kanale</h3>
+                <h3>@_localizer.GetString("Vartotojai kanale")</h3>
                 <table class="table" id="ChannelUsers"></table>
             </div>
         </div>
         <br>
         <div class="searchcontainer">
 
-            <h3>Pridėti vartotoją</h3>
+            <h3>@_localizer.GetString("Pridėti vartotoją")</h3>
 
             <input type="text" id="searchInput">
             <div id="results"></div>
