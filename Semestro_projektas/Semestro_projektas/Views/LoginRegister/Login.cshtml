@@ -4,7 +4,7 @@
 @inject IViewLocalizer _localizer
 
 @{
-    ViewData["Title"] = "Prisijungimas";
+    ViewData["Title"] = _localizer["Prisijungimas"];
 }
 <style>
     body {
@@ -76,7 +76,7 @@
     <nav class=" box-shadow">
         <div class="text-center">
             <!--<h1 style="text-align: center;"><span style="color: #000000; background-color: #ffffff;"><em><strong>Prisijungimas</strong></em></span></h1>-->
-            <h1 style="text-align: center;"><strong><em>Prisijungimas</em></strong></h1>
+            <h1 style="text-align: center;"><strong><em>@_localizer["Prisijungimas"]</em></strong></h1>
             <p></p>
         </div>
         @if (TempData["Success"] != null)
@@ -88,20 +88,20 @@
             <div class="form-group row">
                 @Html.LabelFor(model => model.NickName, htmlAttributes: new { @class = "col-sm-2 col-form-label caption" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.NickName, new { htmlAttributes = new { @class = "form-control caption", @placeholder = "Slapyvardis" } })
+                    @Html.EditorFor(model => model.NickName, new { htmlAttributes = new { @class = "form-control caption", @placeholder = _localizer.GetString("Slapyvardis") } })
                     @Html.ValidationMessageFor(model => model.NickName, "", new { @class = "text-danger validation" })
                 </div>
             </div>
             <div class="form-group row">
                 @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @type = "password", @placeholder = "Slaptažodis" } })
+                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @type = "password", @placeholder = _localizer.GetString("Slapyvardis") } })
                     @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger validation" })
                 </div>
             </div>
             <div class="row">
-                <button type="submit" class="form-control col-sm-2 w-3" name="submitButton" value="Check">Prisijungti</button>S
-                <button type="submit" class="form-control col-sm-2 w-2" name="submitButton" value="Regist">Registruotis</button>
+                <button type="submit" class="form-control col-sm-2 w-3" name="submitButton" value="Check">@_localizer.GetString("Prisijungti")</button>@*S*@
+                <button type="submit" class="form-control col-sm-2 w-2" name="submitButton" value="Regist">@_localizer.GetString("Registruotis")</button>
             </div>
         </dataInput>
     </nav>
