@@ -17,6 +17,14 @@
 <script src="Scripts/emojionearea.js"></script>
 
 <style>
+
+    body {
+            background-image: url('@Url.Content("~/images/index.jpg")');
+            background-position: center center fixed;
+            background-size: cover;
+            overflow-x: hidden;
+        }
+
     div.panel-body {
         overflow: scroll;
         background: url('http://subtlepatterns.com/patterns/geometry2.png');
@@ -351,8 +359,9 @@
 
         <div class="chat-channels">
 
-            <h3>Vartotojo kanalai</h3>
+            
             <div class="panel-body" id="chatChannels" style="height:250px;">
+                <h3>Vartotojo kanalai</h3>
                 <table class="table" id="userChannels"></table>
             </div>
         </div>
@@ -366,8 +375,8 @@
 
     </div>
     <div class="column" style="width:70%;">
-        <h2>Studentų Chat'as</h2>
         <div class="chat-panel panel panel-default">
+            <h2>Studentų Chat'as</h2>
             <div class="panel-heading">
                 @if (User.Identity.IsAuthenticated)
                 {
@@ -419,10 +428,9 @@
     </div>
     <div class="column" style="width:15%;">
 
-        <div class="channel-users">
-
-            <h3>Vartotojai kanale</h3>
+        <div class="channel-users">           
             <div class="panel-body" id="chatChannelUsers" style="height:250px;">
+                <h3>Vartotojai kanale</h3>
                 <table class="table" id="ChannelUsers"></table>
             </div>
         </div>
