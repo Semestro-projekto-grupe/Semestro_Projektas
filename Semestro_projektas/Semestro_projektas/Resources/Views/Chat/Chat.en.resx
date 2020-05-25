@@ -117,17 +117,65 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Ar tikrai norite išspirti vartotoją" xml:space="preserve">
+  <data name="Ar tikrai norite išspirti vartotoją?" xml:space="preserve">
     <value>Really kick the user?</value>
+  </data>
+  <data name="Ar tikrai norite palikti kanalą" xml:space="preserve">
+    <value>Leave the channel</value>
+  </data>
+  <data name="Ar tikrai norite palikti kanalą?" xml:space="preserve">
+    <value>Leave the channel?</value>
+  </data>
+  <data name="Ar tikrai norite pašalinti kanalą" xml:space="preserve">
+    <value>Delete the channel</value>
+  </data>
+  <data name="Ar tikrai norite pašalinti kanalą?" xml:space="preserve">
+    <value>Are you sure about that?</value>
+  </data>
+  <data name="Ieškoti.." xml:space="preserve">
+    <value>Search</value>
   </data>
   <data name="Išspirti" xml:space="preserve">
     <value>Kick</value>
+  </data>
+  <data name="Kanalas" xml:space="preserve">
+    <value>Channel</value>
+  </data>
+  <data name="Kanalo pavadinimas" xml:space="preserve">
+    <value>Channel name</value>
+  </data>
+  <data name="Kurti kanalą" xml:space="preserve">
+    <value>Create a channel</value>
+  </data>
+  <data name="Naikinti kanalą" xml:space="preserve">
+    <value>Delete the channel</value>
+  </data>
+  <data name="Naujas kanalas" xml:space="preserve">
+    <value>New channel</value>
+  </data>
+  <data name="Palikti kanalą" xml:space="preserve">
+    <value>Leave channel</value>
+  </data>
+  <data name="Pridėti vartotoją" xml:space="preserve">
+    <value>Add user</value>
   </data>
   <data name="Prisijungęs kaip" xml:space="preserve">
     <value>Logged as</value>
   </data>
   <data name="Prisijungęs kaip Guest" xml:space="preserve">
     <value>Logges as Guest</value>
+  </data>
+  <data name="Priskirti" xml:space="preserve">
+    <value>Assign role</value>
+  </data>
+  <data name="Rašykite žinutę čia..." xml:space="preserve">
+    <value>Your message...</value>
+  </data>
+  <data name="Registruoti vartotojai (išskleisti)" xml:space="preserve">
+    <value>Registered Users (expand)</value>
+  </data>
+  <data name="Siųsti" xml:space="preserve">
+    <value>Send</value>
   </data>
   <data name="Uždaryti" xml:space="preserve">
     <value>Close</value>
