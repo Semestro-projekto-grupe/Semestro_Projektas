@@ -147,6 +147,9 @@
   <data name="Minimalus vardo ilgis 3 simboliai!" xml:space="preserve">
     <value>Minimum name length - 3</value>
   </data>
+  <data name="Neįvesta pavardė!" xml:space="preserve">
+    <value>Surname missing!</value>
+  </data>
   <data name="Neįvestas slaptažodis!" xml:space="preserve">
     <value>Missing Password!</value>
   </data>

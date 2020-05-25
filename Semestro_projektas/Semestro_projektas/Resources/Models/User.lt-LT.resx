@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Avataras:" xml:space="preserve">
-    <value>Avataras</value>
+    <value>Avataras:</value>
   </data>
   <data name="Data:" xml:space="preserve">
-    <value>Data</value>
+    <value>Data:</value>
   </data>
   <data name="Maksimalus pavardės ilgis 30 simbolių!" xml:space="preserve">
     <value>Maksimalus pavardės ilgis 30 simbolių!</value>
@@ -147,6 +147,9 @@
   <data name="Minimalus vardo ilgis 3 simboliai!" xml:space="preserve">
     <value>Minimalus vardo ilgis 3 simboliai!</value>
   </data>
+  <data name="Neįvesta pavardė!" xml:space="preserve">
+    <value>Neįvesta pavardė!</value>
+  </data>
   <data name="Neįvestas slaptažodis!" xml:space="preserve">
     <value>Neįvestas slaptažodis!</value>
   </data>
@@ -157,15 +160,15 @@
     <value>Neįvestas vardas!</value>
   </data>
   <data name="Pavardė:" xml:space="preserve">
-    <value>Pavardė</value>
+    <value>Pavardė:</value>
   </data>
   <data name="Slaptažodis:" xml:space="preserve">
-    <value>Slaptažodis</value>
+    <value>Slaptažodis:</value>
   </data>
   <data name="Slapyvardis:" xml:space="preserve">
-    <value>Slapyvardis</value>
+    <value>Slapyvardis:</value>
   </data>
   <data name="Vardas:" xml:space="preserve">
-    <value>Vardas</value>
+    <value>Vardas:</value>
   </data>
 </root>

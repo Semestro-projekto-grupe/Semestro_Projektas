@@ -130,6 +130,6 @@
     <value>Password</value>
   </data>
   <data name="Slapyvardis" xml:space="preserve">
-    <value>NickName</value>
+    <value>Username</value>
   </data>
 </root>

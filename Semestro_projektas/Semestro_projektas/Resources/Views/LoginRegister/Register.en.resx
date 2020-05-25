@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Gimimo data:" xml:space="preserve">
+    <value>Birthday</value>
+  </data>
   <data name="Pakartoti-slaptažodį" xml:space="preserve">
     <value>Repeat Password</value>
   </data>
@@ -126,11 +129,14 @@
   <data name="Registracija" xml:space="preserve">
     <value>Register</value>
   </data>
+  <data name="Registruotis" xml:space="preserve">
+    <value>Register</value>
+  </data>
   <data name="Slaptažodis" xml:space="preserve">
     <value>Password</value>
   </data>
   <data name="Slapyvardis" xml:space="preserve">
-    <value>Nickname</value>
+    <value>Username</value>
   </data>
   <data name="Vardas" xml:space="preserve">
     <value>Name</value>
