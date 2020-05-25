@@ -28,6 +28,9 @@ namespace Semestro_projektas.Controllers
 
         public IActionResult Chat()
         {
+            if (!User.Identity.IsAuthenticated) {
+                return RedirectToAction("Login", "LoginRegister");
+            }
             ViewData["User"] = _repo.GetUsers();
             //ViewData["userChannels"] = _repo.GetUserChannels(User.Identity.Name);
             var messages = _repo.GetChatMessages();
@@ -80,9 +83,16 @@ namespace Semestro_projektas.Controllers
         public async Task<JsonResult> GetChatMessages(int chatId, string userName)
         {
             List<Message> messages = null;
+            //<(Id, AuthorName, Avatar, Created, Content, Role)>
+            List <(int, string, string, DateTime, string, int)> messagesToGet = new List<(int, string, string, DateTime, string, int)>();
             if (User.Identity.Name == userName)
             {
                 messages = _repo.GetChatMessagesByChat(chatId, userName);
+                foreach (Message msg in messages) {
+                    User usr = _repo.GetUserByName(msg.AuthorName);
+                    ChannelUser chUsr = _repo.GetChannelUser(chatId, userName);
+                    messagesToGet.Add((msg.Id, msg.AuthorName, usr.Avatar, msg.Created, msg.Content, (int)chUsr.Role));
+                }
             }
             else {
                 messages = null;
@@ -90,7 +100,7 @@ namespace Semestro_projektas.Controllers
             // foreach (var c in chn) {
             //chnNames.Add("{c.nam}"c.Name);
             // }
-            var json = JsonConvert.SerializeObject(messages);
+            var json = JsonConvert.SerializeObject(messagesToGet);
             return Json(json);
             /*if (await _repo.SaveChangesAsync())
             {

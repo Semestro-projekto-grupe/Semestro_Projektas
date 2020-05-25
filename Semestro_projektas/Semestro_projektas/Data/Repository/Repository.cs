@@ -257,6 +257,7 @@ namespace Semestro_projektas.Data.Repository
         }
 
 
+
         public ChannelUser GetChannelUser(int chatId, string userName)
         {
            // if (CheckIfChannelExists(userName, chatId))

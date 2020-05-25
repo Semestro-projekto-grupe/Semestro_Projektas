@@ -154,7 +154,7 @@
     .searchcontainer {
         width: 100%;
         margin: auto;
-        background-image: url('@Url.Content("~/images/header.png")');
+        background-image: url('http://subtlepatterns.com/patterns/geometry2.png');
         overflow: hidden;
         background-repeat: no-repeat;
         background-size: cover;
@@ -393,10 +393,10 @@
             <!-- /.panel-body -->
             <div class="panel-footer">
                 <div class="input-group">
-                    <input id="message" type="text" name="message" class="form-control input-sm" placeholder="Type your message here..." />
+                    <input id="message" type="text" name="message" class="form-control input-sm" placeholder="Rašykite žinutę čia..." />
 
                     <span class="input-group-btn">
-                        <input type="button" class="btn btn-warning btn-sm" id="sendmessage" value="Send">
+                        <input type="button" class="btn btn-warning btn-sm" id="sendmessage" value="Siųsti">
 
                     </span>
                 </div>
@@ -429,7 +429,7 @@
         <br>
         <div class="searchcontainer">
 
-            <h3>Vartotojų paieška</h3>
+            <h3>Pridėti vartotoją</h3>
 
             <input type="text" id="searchInput">
             <div id="results"></div>
@@ -649,7 +649,7 @@
                     }
                     // Call the Send method on the hub.
                 // chat.server.send($('#displayname').val(), $('#message').val());
-               
+
 
                 if (message.startsWith("-delete")) {
                     let count = message.split(" ")[1];
@@ -775,24 +775,24 @@
             success: function (response) {
                 console.log("success get messages! " + response + " response");
                 msgs = JSON.parse(response);
-                $('#discussion').empty()
+                $('#discussion').empty();
                 msgs.forEach((element) => {
-                    if ("@User.Identity.Name" === element.AuthorName) {
-                        $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='@Url.Content("~/images/avatar.png")' style='width:40px;' id='profile-pic" +
-                            element.Id + "'><strong>" + htmlEncode(element.AuthorName) +
-                            "</strong></th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Id +
-                            "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Content) + "<textarea id='edit" +
-                            element.Id + "' style='visibility: hidden; width: 0;'>" +
-                            element.Content + "</textarea></th><th style='display:inline-flex;'><button id='saveEdit" +
-                            element.Id + "' onclick='saveEdit(" + element.Id + ")' style='visibility: hidden; width: 0;'>Išsaugoti</button><button id='editMessage" +
-                            element.Id + "' onclick='editMessage(" + element.Id + ")'  style='float:right;'>Redaguoti</button><button id='deleteMessage" +
-                            element.Id + "' onclick='deleteMessage(" + element.Id + ")'  style='float:right;'>Trinti</button></th></tr>");
+                    if ("@User.Identity.Name" === element.Item2) {
+                        $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
+                            element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
+                            "</strong> " + " " + formatDate(element.Item4) + "</th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
+                            "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Item5) + "<textarea id='edit" +
+                            element.Item1 + "' style='visibility: hidden; width: 0;'>" +
+                            element.Item5 + "</textarea></th><th style='display:inline-flex;'><button id='saveEdit" +
+                            element.Item1 + "' onclick='saveEdit(" + element.Item1 + ")' style='visibility: hidden; width: 0;'>Išsaugoti</button><button id='editMessage" +
+                            element.Item1 + "' onclick='editMessage(" + element.Item1 + ")'  style='float:right;'>Redaguoti</button><button id='deleteMessage" +
+                            element.Item1 + "' onclick='deleteMessage(" + element.Item1 + ")'  style='float:right;'>Trinti</button></th></tr>");
                     }
                     else {
-                        $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='@Url.Content("~/images/avatar.png")' style='width:40px;' id='profile-pic" +
-                            element.Id + "'><strong>" + htmlEncode(element.AuthorName) +
-                            "</strong></th></tr><tr class='otherMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Id +
-                            "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Content) + "</th><th></th></tr>");
+                        $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
+                            element.Item1 + "'><strong>" + htmlEncode(element.Item2) +
+                            "</strong>" + " " + formatDate(element.Item4) + "</th></tr><tr class='otherMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
+                            "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Item5) + "</th><th></th></tr>");
                     }
                 });
 
@@ -1169,7 +1169,7 @@
 
                          $("#leaveChn").attr("onclick", "leaveChannel(" + channel.Id + ")");
                          $('#leaveChannelName').text("Ar tikrai norite palikti kanalą " + channel.Name + "?");
-                         
+
                     },
                     failure: function (response) {
                         console.log("failure getting messages!");
@@ -1188,7 +1188,7 @@
                     dataType: "json",
                      success: function (response) {
                          $("#userProfile").modal('toggle');
-                         
+
                     },
                     failure: function (response) {
                         console.log("failure getting messages!");
@@ -1264,7 +1264,7 @@
                                 "</strong></th></tr><tr class='otherMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Id +
                                 "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Content) + "</th><th></th></tr>");
                         }
-                    }); 
+                    });
                 },
                 failure: function (response) {
                     console.log("failure send message!");
@@ -1298,8 +1298,23 @@
                 });
         }
 
-        
-        
+        function formatDate(date) {
+            var d = new Date(date),
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear(),
+                hour = d.getHours(),
+                minute = d.getMinutes();
+                    
+
+            if (month.length < 2)
+                month = '0' + month;
+            if (day.length < 2)
+                day = '0' + day;
+
+            return [year, month, day].join('-') + " " + hour + ":" + minute;
+        }
+
 
     </script>
 
