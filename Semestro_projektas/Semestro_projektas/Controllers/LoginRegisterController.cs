@@ -17,13 +17,13 @@ namespace Semestro_projektas.Controllers
         private SignInManager<User> signInManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private IRepository _repo; //Database repo
-        private readonly IStringLocalizer<HomeController> _localizer;
+        private readonly IStringLocalizer<LoginRegisterController> _localizer;
 
         public LoginRegisterController( UserManager<User> userManager,
                                         RoleManager<IdentityRole> roleManager,
                                         SignInManager<User> signInManager,
                                         IRepository repo,
-                                        IStringLocalizer<HomeController> localizer)
+                                        IStringLocalizer<LoginRegisterController> localizer)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
@@ -52,29 +52,29 @@ namespace Semestro_projektas.Controllers
 
                     if (user.NickName == null && user.Password == null) //-- papildyti
                     {
-                        ModelState.AddModelError("NickName", "Vartotojas tokiu slapyvardžiu nerastas!");
-                        ModelState.AddModelError("Password", "Neteisingas slaptažodis!");
+                        ModelState.AddModelError("NickName", _localizer["Vartotojas tokiu slapyvardžiu nerastas!"]);
+                        ModelState.AddModelError("Password", _localizer["Neteisingas slaptažodis!"]);
                         return View(user);
                     }
                     else if (user.NickName == null)
                     {
-                        ModelState.AddModelError("NickName", "Vartotojas tokiu slapyvardžiu nerastas!");
+                        ModelState.AddModelError("NickName", _localizer["Vartotojas tokiu slapyvardžiu nerastas!"]);
                         return View(user);
                     }
                     else if (user.Password == null)
                     {
-                        ModelState.AddModelError("Password", "Neteisingas slaptažodis!");
+                        ModelState.AddModelError("Password", _localizer["Neteisingas slaptažodis!"]);
                         return View(user);
                     }
                     else if (user.Password.Length < 6)
                     {
-                        ModelState.AddModelError("Password", "Minimalus slaptažodžio ilgis 6 simboliai!");
+                        ModelState.AddModelError("Password", _localizer["Minimalus slaptažodžio ilgis 6 simboliai!"]);
                         return View(user);
                     }
                     var result = await signInManager.PasswordSignInAsync(user.NickName, user.Password, false, false);
                     if (!result.Succeeded)
                     {
-                        ModelState.AddModelError("Password", "Įvesti neteisingi prisijungimo duomenys!");
+                        ModelState.AddModelError("Password", _localizer["Įvesti neteisingi prisijungimo duomenys!"]);
                         return View(user);
                     }
                     return RedirectToAction("Chat", "Chat"); //-- teisingo patvirtino atveju nukreipimas į kitą valdiklį 
@@ -104,16 +104,16 @@ namespace Semestro_projektas.Controllers
                 //Index.@HTML pateiktos tik readonly reikšmės, kurių automatiškai pakeisti be validacijos iš back-endo pusės neina.
                 if (pass != password) //patikrinimas ar įvesti slaptažodžiai sutampa
                 {
-                    ModelState.AddModelError("Password", "Slaptažodžiai nesutampa!");
+                    ModelState.AddModelError("Password", _localizer["Slaptažodžiai nesutampa!"]);
                     if (data.Contains("—") || data.Length == 1)
                     {
-                        ModelState.AddModelError("Date", "Pateikta neteisinga gimimo data!");
+                        ModelState.AddModelError("Date", _localizer["Pateikta neteisinga gimimo data!"]);
                     }
                     return View(user);
                 }
                 if (data.Contains("—") || data.Length == 1)
                 {
-                    ModelState.AddModelError("Date", "Pateikta neteisinga gimimo data!");
+                    ModelState.AddModelError("Date", _localizer["Pateikta neteisinga gimimo data!"]);
                     return View(user);
                 }
                 if (ModelState.IsValid)
@@ -122,12 +122,12 @@ namespace Semestro_projektas.Controllers
                     string temp = pass.Substring(0, 1);
                     if (Regex.Matches(pass, "[^a-zA-Z]").Count == pass.Length) //Patikra dėl neraidžių naudojimo (turi būti bent viena raidė)
                     {
-                        ModelState.AddModelError("Password", "Slaptažodyje privalo būti bent viena raidė!");
+                        ModelState.AddModelError("Password", _localizer["Slaptažodyje privalo būti bent viena raidė!"]);
                         return View(user);
                     }
                     else if (Regex.Matches(pass, temp).Count == pass.Length) //Vienodų simbolių naudojimo atvejis slaptažodyje
                     {
-                        ModelState.AddModelError("Password", "Slaptažodis negali būti sudarytas iš vienodų simbolių!");
+                        ModelState.AddModelError("Password", _localizer["Slaptažodis negali būti sudarytas iš vienodų simbolių!"]);
                         return View(user);
                     }
                     user.Password = pass; //Užkraunamas slaptažodis į objektą
@@ -144,9 +144,12 @@ namespace Semestro_projektas.Controllers
                     bool register = _repo.RegisterUser(user, user.Password, userManager, roleManager);
                     if (!register)
                     {
-                        ModelState.AddModelError("NickName", "Toks vartotojo vardas jau egzistuoja!");
+                        ModelState.AddModelError("NickName", _localizer["Toks vartotojo vardas jau egzistuoja!"]);
                         return View(user);
                     }
+                    //turetu but panasiai
+                    //TempData["Success"] = _localizer.GetString("Registracija sėkminga!!!");
+                    //bandant priskirt luzta, lieka neisversta
                     TempData["Success"] = "Registracija sėkminga!!!";
                     return RedirectToAction("Login", "LoginRegister"); // Nukėlimas į kitą kontrolerį arba sekantį šio kontrolerio langą + registracija sėkminga galima prisijungti
                 }

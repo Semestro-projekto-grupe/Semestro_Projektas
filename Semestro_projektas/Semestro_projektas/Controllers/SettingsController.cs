@@ -22,12 +22,12 @@ namespace Semestro_projektas.Controllers
         private IRepository _repo;
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
-        private readonly IStringLocalizer<HomeController> _localizer;
+        private readonly IStringLocalizer<SettingsController> _localizer;
 
         public SettingsController(  UserManager<User> userManager,
                                     SignInManager<User> signInManager,
                                     IRepository repo,
-                                    IStringLocalizer<HomeController> localizer)
+                                    IStringLocalizer<SettingsController> localizer)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
