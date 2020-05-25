@@ -370,6 +370,7 @@
             <input type="button" class="btn btn-warning btn-sm" id="createChannel" value="@_localizer.GetString("Kurti kanalą")">
         </div>
 
+
     </div>
     <div class="column" style="width:70%;">
         <div class="chat-panel panel panel-default">
@@ -1183,10 +1184,17 @@
                         // $('#channelData').append("<p><b>Gimimo data: </b>" + response.item4 + "</p>");
                          $("#deleteChn").attr("onclick", "deleteChannel(" + channel.Id + ")");
                          $('#deleteChannelName').text("Ar tikrai norite pašalinti kanalą " + channel.Name + "?");
-
                          $("#leaveChn").attr("onclick", "leaveChannel(" + channel.Id + ")");
                          $('#leaveChannelName').text("Ar tikrai norite palikti kanalą " + channel.Name + "?");
 
+                         //liktu isverst, "Kanalas", "Ar tikrai norite pasalinti/palikti kanala"
+                         //tie patys kintamieji ir i ekrana keliauja ir naudojami uzklausoje
+                         //pradejus verst "pradingsta" funkcionalumas. Norint 100% isverst galima zaist dar
+                         //vieno zodzio "Kanalas"
+                         //$('#channelName').text(@_localizer.GetString("Kanalas ") +  " "  + channel.Name);
+                         //$('#deleteChannelName').text(@_localizer.GetString("Ar tikrai norite pašalinti kanalą") + " " + channel.Name + "?");
+                         //$('#leaveChannelName').text(@_localizer.GetString("Ar tikrai norite palikti kanalą") + " " + channel.Name + "?");
+                         //plius nepamirs reiksmiu resursu faile (kol kas irasytos)
                     },
                     failure: function (response) {
                         console.log("failure getting messages!");
@@ -1322,7 +1330,7 @@
                 year = d.getFullYear(),
                 hour = d.getHours(),
                 minute = d.getMinutes();
-                    
+
 
             if (month.length < 2)
                 month = '0' + month;

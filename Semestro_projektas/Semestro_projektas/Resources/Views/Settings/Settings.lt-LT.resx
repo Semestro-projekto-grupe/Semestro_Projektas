@@ -120,11 +120,20 @@
   <data name="Asmeninės informacijos redagavimas" xml:space="preserve">
     <value>Asmeninės informacijos redagavimas</value>
   </data>
-  <data name="Gimimo data" xml:space="preserve">
-    <value>Gimimo data</value>
+  <data name="Dabartinis slaptažodis" xml:space="preserve">
+    <value>Dabartinis slaptažodis</value>
+  </data>
+  <data name="Gimimo data:" xml:space="preserve">
+    <value>Gimimo data:</value>
   </data>
   <data name="Išsaugoti" xml:space="preserve">
     <value>Išsaugoti</value>
+  </data>
+  <data name="Naikinti paskyrą" xml:space="preserve">
+    <value>Naikinti paskyrą</value>
+  </data>
+  <data name="Naujas slaptažodis" xml:space="preserve">
+    <value>Naujas slaptažodis</value>
   </data>
   <data name="Naujas-Slaptažodis" xml:space="preserve">
     <value>Naujas-Slaptažodis</value>
@@ -132,14 +141,26 @@
   <data name="Pakartoti-Slaptažodį" xml:space="preserve">
     <value>Pakartoti-Slaptažodį</value>
   </data>
+  <data name="Pakeitimas patvirtintas!!!" xml:space="preserve">
+    <value>Pakeitimas patvirtintas!!!</value>
+  </data>
   <data name="Papildomi nustatymai: matomumas" xml:space="preserve">
     <value>Papildomi nustatymai: matomumas</value>
+  </data>
+  <data name="Patvirtinti" xml:space="preserve">
+    <value>Patvirtinti</value>
   </data>
   <data name="Pavardė" xml:space="preserve">
     <value>Pavardė</value>
   </data>
   <data name="Senas-Slaptažodis" xml:space="preserve">
     <value>Senas-Slaptažodis</value>
+  </data>
+  <data name="Slaptažodis" xml:space="preserve">
+    <value>Slaptažodis</value>
+  </data>
+  <data name="Slaptažodžio keitimas" xml:space="preserve">
+    <value>Slaptažodžio keitimas</value>
   </data>
   <data name="Slapyvardis" xml:space="preserve">
     <value>Slapyvardis</value>
