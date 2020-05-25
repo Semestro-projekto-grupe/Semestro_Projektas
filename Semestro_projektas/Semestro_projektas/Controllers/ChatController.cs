@@ -15,11 +15,11 @@ namespace Semestro_projektas.Controllers
         private IRepository _repo;
 
         //naudojama lokalizacijai
-        //naudojimas: _localizer["pvz"]
+        //naudojimas: _localizer["pvz"] / arba per ILocalizer metodus
         //"isvercia" "pvz" i current culture nustatyta kalba
-        private readonly IStringLocalizer<HomeController> _localizer;
+        private readonly IStringLocalizer<ChatController> _localizer;
 
-        public ChatController(IRepository repo, IStringLocalizer<HomeController> localizer)
+        public ChatController(IRepository repo, IStringLocalizer<ChatController> localizer)
         {
             _repo = repo;
             _localizer = localizer;
