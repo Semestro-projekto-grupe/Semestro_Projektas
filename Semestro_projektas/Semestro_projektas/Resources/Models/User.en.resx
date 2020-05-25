@@ -117,31 +117,55 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Avataras" xml:space="preserve">
-    <value>Avatar</value>
+  <data name="Avataras:" xml:space="preserve">
+    <value>Avatar:</value>
   </data>
-  <data name="Data" xml:space="preserve">
-    <value>Date</value>
+  <data name="Data:" xml:space="preserve">
+    <value>Date:</value>
+  </data>
+  <data name="Maksimalus pavardės ilgis 30 simbolių!" xml:space="preserve">
+    <value>Maximum surnamelength - 30</value>
   </data>
   <data name="Maksimalus slaptažodžio ilgis 20 simbolių!" xml:space="preserve">
     <value>Maximum password length - 20</value>
   </data>
+  <data name="Maksimalus slapyvardžio ilgis 30 simbolių!" xml:space="preserve">
+    <value>Maximum username length - 30</value>
+  </data>
+  <data name="Maksimalus vardo ilgis 30 simbolių!" xml:space="preserve">
+    <value>Maximum name length - 30</value>
+  </data>
+  <data name="Minimalus pavardės ilgis 3 simboliai!" xml:space="preserve">
+    <value>Minimum surname length - 3</value>
+  </data>
   <data name="Minimalus slaptažodžio ilgis 6 simboliai!" xml:space="preserve">
     <value>Minimum password length - 6</value>
   </data>
+  <data name="Minimalus slapyvardžio ilgis 6 simboliai!" xml:space="preserve">
+    <value>Minimum username length - 3</value>
+  </data>
+  <data name="Minimalus vardo ilgis 3 simboliai!" xml:space="preserve">
+    <value>Minimum name length - 3</value>
+  </data>
   <data name="Neįvestas slaptažodis!" xml:space="preserve">
-    <value>Missing Password!!!</value>
+    <value>Missing Password!</value>
   </data>
-  <data name="Pavardė" xml:space="preserve">
-    <value>Surname</value>
+  <data name="Neįvestas slapyvardis!" xml:space="preserve">
+    <value>Username missing!</value>
   </data>
-  <data name="Slaptažodis" xml:space="preserve">
-    <value>Password</value>
+  <data name="Neįvestas vardas!" xml:space="preserve">
+    <value>Name missing!</value>
   </data>
-  <data name="Slapyvardis" xml:space="preserve">
-    <value>Nick Name</value>
+  <data name="Pavardė:" xml:space="preserve">
+    <value>Surname:</value>
   </data>
-  <data name="Vardas" xml:space="preserve">
-    <value>Name</value>
+  <data name="Slaptažodis:" xml:space="preserve">
+    <value>Password:</value>
+  </data>
+  <data name="Slapyvardis:" xml:space="preserve">
+    <value>Username:</value>
+  </data>
+  <data name="Vardas:" xml:space="preserve">
+    <value>Name:</value>
   </data>
 </root>

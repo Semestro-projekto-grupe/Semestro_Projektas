@@ -12,13 +12,19 @@ namespace Semestro_projektas.Models
     public class User : IdentityUser
     {
         [DisplayName("Slapyvardis:")]
-        [Required]
+        [Required(ErrorMessage = "Neįvestas slapyvardis!")]
+        [MinLength(3, ErrorMessage = "Minimalus slapyvardžio ilgis 6 simboliai!")]
+        [MaxLength(30, ErrorMessage = "Maksimalus slapyvardžio ilgis 30 simbolių!")]
         public string NickName { get; set; }
         [DisplayName("Vardas:")]
-        [Required]
+        [Required(ErrorMessage = "Neįvestas vardas!")]
+        [MinLength(3, ErrorMessage = "Minimalus vardo ilgis 3 simboliai!")]
+        [MaxLength(30, ErrorMessage = "Maksimalus vardo ilgis 30 simbolių!")]
         public string Name { get; set; }
         [DisplayName("Pavardė:")]
-        [Required]
+        [Required(ErrorMessage = "Neįvesta pavardė!")]
+        [MinLength(3, ErrorMessage = "Minimalus pavardės ilgis 3 simboliai!")]
+        [MaxLength(30, ErrorMessage = "Maksimalus pavardės ilgis 30 simbolių!")]
         public string Surname { get; set; }
         [DataType(DataType.Password)]
         [DisplayName("Slaptažodis:")]
