@@ -39,7 +39,7 @@ namespace Semestro_projektas.Data.Repository
            // }
            // else
            // {
-           //     return new List<Message>();
+            //    return new List<Message>();
            // }
         }
 
@@ -424,6 +424,19 @@ namespace Semestro_projektas.Data.Repository
             Channel chn = GetChannelSettings(channel);
             ChannelUser chUser = _ctx.ChannelUsers.FirstOrDefault(u => u.UserId == usr.Id && u.ChannelId == chn.Id);
             chUser.ReceivedNotification = false;
+        }
+
+
+        public List<Message> SearchInChat(int channel, string userName, string searchWord) {
+            //if (CheckIfChannelExists(userName, channel))
+            //{
+                List<Message> messg = _ctx.Messages.Where(m => m.ChannelId == channel && m.Content.Contains(searchWord)).ToList();
+                return messg;
+          //  }
+           // else
+           // {
+           //     return new List<Message>();
+           // }
         }
 
     }

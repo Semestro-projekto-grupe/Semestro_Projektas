@@ -403,6 +403,27 @@ namespace Semestro_projektas.Controllers
 
         }
 
+        
+        [HttpPost]
+        public async Task<JsonResult> SearchInChat(int channel, string userName, string searchWord)
+        {
+            List<Message> messages = null;
+            
+            if (User.Identity.Name == userName)
+            {
+                messages = _repo.SearchInChat(channel, userName, searchWord);
+            }
+            else
+            {
+                messages = null;
+            }
+            // foreach (var c in chn) {
+            //chnNames.Add("{c.nam}"c.Name);
+            // }
+            var json = JsonConvert.SerializeObject(messages);
+            return Json(json);
+
+        }
 
     }
 }

@@ -381,6 +381,8 @@
 
                 <i class="fa fa-paper-plane fa-fw"></i>
                 <h3 id="selectedChannel"></h3>
+                <input type="text" class="navbar-form" placeholder="Ieškoti.." id="searchbar">
+                <button class="btn btn-primary" onclick="searchMessages()">Ieškoti</button>
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body" id="chat" style="height:250px;">
@@ -1211,6 +1213,44 @@
                             console.log("failure send message!");
                         }
                     });
+        }
+
+
+        function searchMessages() {
+            let value = $("#searchbar").val();
+              $.ajax({
+                        url: '@Url.Action("SearchInChat")',
+                        type: "POST",
+                        data: { channel: currentChannel, userName: "@User.Identity.Name", searchWord: value },
+                        dataType: "json",
+                        success: function (response) {
+                           let msgs = JSON.parse(response);
+                            $('#discussion').empty()
+                            msgs.forEach((element) => {
+                                if ("@User.Identity.Name" === element.AuthorName) {
+                                    $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='@Url.Content("~/images/avatar.png")' style='width:40px;' id='profile-pic" +
+                                        element.Id + "'><strong>" + htmlEncode(element.AuthorName) +
+                                        "</strong></th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Id +
+                                        "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Content) + "<textarea id='edit" +
+                                        element.Id + "' style='visibility: hidden; width: 0;'>" +
+                                        element.Content + "</textarea></th><th style='display:inline-flex;'><button id='saveEdit" +
+                                        element.Id + "' onclick='saveEdit(" + element.Id + ")' style='visibility: hidden; width: 0;'>Išsaugoti</button><button id='editMessage" +
+                                        element.Id + "' onclick='editMessage(" + element.Id + ")'  style='float:right;'>Redaguoti</button><button id='deleteMessage" +
+                                        element.Id + "' onclick='deleteMessage(" + element.Id + ")'  style='float:right;'>Trinti</button></th></tr>");
+                                }
+                                else {
+                                    $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='@Url.Content("~/images/avatar.png")' style='width:40px;' id='profile-pic" +
+                                        element.Id + "'><strong>" + htmlEncode(element.AuthorName) +
+                                        "</strong></th></tr><tr class='otherMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Id +
+                                        "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Content) + "</th><th></th></tr>");
+                                }
+                            });
+                        },
+                        failure: function (response) {
+                            console.log("failure send message!");
+                        }
+                    });
+
         }
         
 

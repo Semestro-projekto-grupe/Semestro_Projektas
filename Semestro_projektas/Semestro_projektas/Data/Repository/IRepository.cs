@@ -56,5 +56,7 @@ namespace Semestro_projektas.Data.Repository
         void SendNotification(int channel, string userName);
 
         void RemoveNotification(int channel, string userName);
+
+        List<Message> SearchInChat(int channel, string userName, string searchWord);
     }
 }
