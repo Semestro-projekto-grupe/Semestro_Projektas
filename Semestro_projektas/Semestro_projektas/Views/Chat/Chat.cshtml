@@ -5,6 +5,7 @@
 @inject IViewLocalizer _localizer
 @model IEnumerable<Message>
     @{
+<<<<<<< Updated upstream
     IEnumerable<User> users = ViewData["User"] as IEnumerable<User>;
     IEnumerable<Channel> userChannels = ViewData["userChannels"] as IEnumerable<Channel>;
 }
@@ -13,6 +14,8 @@
     <link href="~/css/emojionearea.css" rel="stylesheet" />
     <script src="~/js/emojionearea.js"></script>
     <style>
+        IEnumerable<Channel> userChannels = ViewData["userChannels"] as IEnumerable<Channel>;
+>>>>>>> Stashed changes
     div.panel-body {
         overflow: scroll;
         background: url('http://subtlepatterns.com/patterns/geometry2.png');
@@ -237,6 +240,7 @@
         width:100%;
     }
 
+<<<<<<< Updated upstream
 </style>
 
 <div class="modal" id="userProfile" tabindex="-1">
@@ -254,27 +258,72 @@
                 <button class="btn btn-default" onclick="callKick()" id="callKick">Išspirti</button>
                 <button class="btn btn-primary" data-dismiss="modal">Uždaryti</button>
             </div>
+=======
 
+
+    </style>
+
+    <div class="modal" id="userProfile" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="profileName">@_localizer.GetString("Vartotojo profilis")</h4>
+                </div>
+                <div class="modal-body">
+                    <img src='@Url.Content("~/images/avatar.png")' id="pfp" style="width:150px;height:150px; float:left;">
+                    <div id="userData" style="height:150px; padding-left: 160px;"></div>
+                </div>
+                <div class="modal-footer" style="height:130px">
+                    <div style="position:absolute;">
+                        <p>Priskirti rolę: </p>
+                        <select class="form-control form-control-sm" id="rolesList">
+                            @foreach (string s in roles)
+                            {
+                                roleVal++;
+                                <option value="@roleVal">@s</option>
+                            }
+                        </select>
+                        <button class="btn btn-default" onclick="assignRole('')" id="assignRole" style="margin-top:5px;">@_localizer.GetString("Priskirti")</button>
+                    </div>
+                    <button class="btn btn-default" onclick="callKick()" id="callKick">@_localizer.GetString("Išspirti")</button>
+                    <button class="btn btn-primary" data-dismiss="modal">@_localizer.GetString("Uždaryti")</button>
+                </div>
+>>>>>>> Stashed changes
+
+            </div>
         </div>
     </div>
-</div>
 
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
     <div class="modal" id="kickUser" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button class="close" data-dismiss="modal">&times;</button>
+<<<<<<< Updated upstream
                     <h4 class="modal-title" id="kickUserName">Ar tikrai norite išspirti vartotoją</h4>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary" data-dismiss="modal">Uždaryti</button>
                     <button class="btn btn-default" onclick="kickUser(id, name)" id="kickUsr">Išspirti</button>
+=======
+                    <h4 class="modal-title" id="kickUserName">@_localizer.GetString("Ar tikrai norite išspirti vartotoją")</h4>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" data-dismiss="modal">@_localizer.GetString("Uždaryti")</button>
+                    <button class="btn btn-default" onclick="kickUser(id, name)" id="kickUsr">@_localizer.GetString("Išspirti")</button>
+>>>>>>> Stashed changes
                 </div>
             </div>
         </div>
     </div>
 
 
+<<<<<<< Updated upstream
 <div class="modal" id="channelProfile" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -289,12 +338,30 @@
                 <button class="btn btn-default" onclick="callDelete()" id="callDelete">Naikinti kanalą</button>
                 <button class="btn btn-primary" data-dismiss="modal">Uždaryti</button>
             </div>
+=======
+    <div class="modal" id="channelProfile" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="channelName">@_localizer.GetString("Kanalas")</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="channelData" style="height:10px;"></div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" onclick="callLeaveChannel()" id="callLeaveChannel">@_localizer.GetString("Palikti kanalą")</button>
+                    <button class="btn btn-default" onclick="callDeleteChannel()" id="callDelete">@_localizer.GetString("Naikinti kanalą")</button>
+                    <button class="btn btn-primary" data-dismiss="modal">@_localizer.GetString("Uždaryti")</button>
+                </div>
+>>>>>>> Stashed changes
 
+            </div>
         </div>
     </div>
-</div>
 
 
+<<<<<<< Updated upstream
 <div class="modal" id="deleteChannel" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -310,9 +377,41 @@
     </div>
 </div>
 
+=======
+    <div class="modal" id="deleteChannel" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="deleteChannelName">@_localizer.GetString("Ar tikrai norite pašalinti kanalą?")</h4>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" data-dismiss="modal">@_localizer.GetString("Uždaryti")</button>
+                    <button class="btn btn-default" onclick="deleteChannel(id)" id="deleteChn">@_localizer.GetString("Naikinti kanalą")</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="leaveChannel" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="leaveChannelName">@_localizer.GetString("Ar tikrai norite palikti kanalą?")</h4>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" data-dismiss="modal">@_localizer.GetString("Uždaryti")</button>
+                    <button class="btn btn-default" onclick="leaveChannel(id)" id="leaveChn">@_localizer.GetString("Palikti kanalą")</button>
+                </div>
+            </div>
+        </div>
+    </div>
+>>>>>>> Stashed changes
 
         <ajaxToolkit:AsyncFileUpload OnClientUploadComplete="uploadComplete" runat="server" ID="AsyncFileUpload1" ThrobberID="imgLoader" OnUploadedComplete="FileUploadComplete" OnClientUploadStarted="uploadStarted" />
 
+<<<<<<< Updated upstream
     </span>
 
 
@@ -322,10 +421,22 @@
             <div class="chat-channels">
                 <h3>Vartotojo kanalai</h3>
                 <div class="panel-body" id="chatChannels" style="height:250px;">
+=======
+    <div class="row">
+        <div class="column" style="width:15%;">
+
+
+            <div class="chat-channels">
+
+
+                <div class="panel-body" id="chatChannels" style="height:250px;">
+                    <h3>@_localizer.GetString("Vartotojo kanalai")</h3>
+>>>>>>> Stashed changes
                     <table class="table" id="userChannels"></table>
                 </div>
             </div>
             <br>
+<<<<<<< Updated upstream
             <p class="expand" id="expand-2"><input type="button" class="btn btn-warning btn-sm" id="getChannels" value="Naujas kanalas"></p>
             <div class="expandable" id="expandable-2">
                 <input id="newChannel" type="text" class="form-control input-sm" placeholder="Kanalo pavadinimas" />
@@ -348,15 +459,50 @@
 
                     <i class="fa fa-paper-plane fa-fw"></i>
                     <h3 id="selectedChannel"></h3>
+=======
+            <p class="expand" id="expand-2"><input type="button" class="btn btn-warning btn-sm" id="getChannels" value="@_localizer.GetString("Naujas kanalas")"></p>
+            <div class="expandable" id="expandable-2">
+                <input id="newChannel" type="text" class="form-control input-sm" placeholder="@_localizer.GetString("Kanalo pavadinimas")" />
+                <br>
+                <input type="button" class="btn btn-warning btn-sm" id="createChannel" value="@_localizer.GetString("Kurti kanalą")">
+            </div>
+
+
+        </div>
+        <div class="column" style="width:70%;">
+            <div class="chat-panel panel panel-default">
+                <h2>Studentų Chat'as</h2>
+                <div class="panel-heading">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        string laik = @_localizer.GetString("Prisijungęs kaip");
+                        <h3> @laik @User.Identity.Name</h3>
+                    }
+                    else
+                    {
+                        <h3>@_localizer.GetString("Prisijungęs kaip Guest") </h3>
+                    }
+
+
+                    <i class="fa fa-paper-plane fa-fw"></i>
+                    <h3 id="selectedChannel"></h3>
+                    <input type="text" class="navbar-form" placeholder="@_localizer.GetString("Ieškoti..")" id="searchbar">
+                    <button class="btn btn-primary" onclick="searchMessages()">@_localizer.GetString("Ieškoti")</button>
+>>>>>>> Stashed changes
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body" id="chat" style="height:250px;">
                     <input type="hidden" id="displayname" />
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
                     <table id="discussion"></table>
                 </div>
                 <!-- /.panel-body -->
                 <div class="panel-footer">
                     <div class="input-group">
+<<<<<<< Updated upstream
                         <input id="message" type="text" name="message" class="form-control input-sm" placeholder="Jūsų žinutė..." />
                         <span class="input-group-btn">
                             <input type="button" class="btn btn-warning btn-sm" id="sendmessage" value="Siųsti">
@@ -381,16 +527,68 @@
             <div class="channel-users">
                 <h3>Vartotojai kanale</h3>
                 <div class="panel-body" id="chatChannelUsers" style="height:250px;">
+=======
+                        <input id="message" type="text" name="message" class="form-control input-sm" placeholder="@_localizer.GetString("Rašykite žinutę čia...")" />
+
+                        <span class="input-group-btn">
+                            <input type="button" class="btn btn-warning btn-sm" id="sendmessage" value="@_localizer.GetString("Siųsti")">
+
+                        </span>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="expand" id="expand-1">@_localizer.GetString("Naudojimosi informacija")</p>
+                </div>
+                <div class="expandable" id="expandable-1">
+                    <p>
+                        <b>@_localizer.GetString("Rašyti žinutes galima tik prisijungus ir pasirinkus kanalą.")</b><br>
+                        <b>@_localizer.GetString("Vartotojai turi roles:")</b><br>
+                        @_localizer.GetString("Kanalo kūrėjas - vartotojas, kuris sukūrė kanalą. Gali atlikti visus administravimo veiksmus, taip pat ir ištrinti kanalą.")<br>
+                        @_localizer.GetString("Administratorius - vartotojas, kuris administruoja kanalą. Gali atlikti visus administravimo veiksmus, taip pat ir priskirti roles.")<br>
+                        @_localizer.GetString("Moderatorius - vartotojas, kuris administruoja kanalą. Gali administruoti paparastų vartotojų žinutes.")<br>
+                        @_localizer.GetString("Vartotojas - paprastas vartotojas, gali tik rašyti, trinti, redaguoti savo žinutes.")<br>
+                        <hr>
+                        <b>@_localizer.GetString("Administravimo komandos, kurias gali naudoti kanalo kūrėjas:") </b><br>
+                        <i>-delete n</i><br>
+                        @_localizer.GetString("Ištrina n žinučių")<br>
+                        @_localizer.GetString("Pvz.") <br>
+                        delete 10<br>
+                        delete 5<br>
+                        delete 1000<br>
+                        <br>
+                        @_localizer.GetString("Žinučių filtravimui visi vartotojai gali naudotis žinučių paieškos funkcija")<br>
+                    </p>
+                </div>
+
+            </div>
+        </div>
+        <div class="column" style="width:15%;">
+
+            <div class="channel-users">
+                <div class="panel-body" id="chatChannelUsers" style="height:250px;">
+                    <h3>@_localizer.GetString("Vartotojai kanale")</h3>
+>>>>>>> Stashed changes
                     <table class="table" id="ChannelUsers"></table>
                 </div>
             </div>
             <br>
             <div class="searchcontainer">
+<<<<<<< Updated upstream
                 <h3>Vartotojų paieška</h3>
+=======
+
+                <h3>@_localizer.GetString("Pridėti vartotoją")</h3>
+
+>>>>>>> Stashed changes
                 <input type="text" id="searchInput">
                 <div id="results"></div>
                 <br>
                 <br>
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 
             </div>
         </div>
@@ -404,6 +602,7 @@
             <a href="#">Link 3</a>
         </div>
     </div>
+<<<<<<< Updated upstream
     @section scripts {
         <!--Script references. -->
         <!--The jQuery library is required and is referenced by default in _Layout.cshtml. -->
@@ -413,6 +612,17 @@
         <!--<script src="~/signalr/hubs"></script>-->
         <!--SignalR script to update the chat page and send messages.-->
 
+=======
+
+    @section scripts {
+        <!--Script references. -->
+        <!--The jQuery library is required and is referenced by default in _Layout.cshtml. -->
+        <!--Reference the SignalR library. -->
+        <script src="~/js/signalr/signalr.js"></script>
+        <!--Reference the autogenerated SignalR hub script. -->
+        <!--<script src="~/signalr/hubs"></script>-->
+        <!--SignalR script to update the chat page and send messages.-->
+>>>>>>> Stashed changes
 
 
         <script>
@@ -537,7 +747,9 @@
 
                 }
             });
-
+        function checkURL(url) {
+    return(url.match(/\.(jpeg|jpg|gif|png)$/) != null);
+}
 
 
             connection.on('LeaveChannel', (id, userName) => {
@@ -802,6 +1014,57 @@
             loadChatLog(currentChannel);
             getChannelUsers();
 
+        }
+        //Checks a url string if it's a valid
+
+        function validURL(str) {
+            var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
+                '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+                '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+                '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+                '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+                '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
+            return !!pattern.test(str);
+        }
+
+        //Checks the url to find out if it's an image.
+        function checkURL(url) {
+            return (url.match(/\.(jpeg|jpg|gif|png)$/) != null);
+        }
+        //Calls the url to test if the image exists.
+        function testImage(url, callback, timeout) {
+            timeout = timeout || 5000;
+            var timedOut = false, timer;
+            var img = new Image();
+            img.onerror = img.onabort = function () {
+                if (!timedOut) {
+                    clearTimeout(timer);
+                    callback(url, "error");
+                }
+            };
+            img.onload = function () {
+                if (!timedOut) {
+                    clearTimeout(timer);
+                    callback(url, "success");
+                }
+            };
+            img.src = url;
+            timer = setTimeout(function () {
+                timedOut = true;
+                // reset .src to invalid URL so it stops previous
+                // loading, but doesn't trigger new load
+                img.src = "//!!!!/test.jpg";
+                callback(url, "timeout");
+            }, timeout);
+        }
+
+        ///Creates an image element. Src -source/url.
+        function img_create(src, alt, title) {
+            var img = IEWIN ? new Image() : document.createElement('img');
+            img.src = src;
+            if (alt != null) img.alt = alt;
+            if (title != null) img.title = title;
+            return img;
         }
 
 
@@ -1251,6 +1514,125 @@
 
         </script>
 
+<<<<<<< Updated upstream
+=======
+        function removeNotification(channelId) {
+             $.ajax({
+                        url: '@Url.Action("RemoveNotification")',
+                        type: "POST",
+                         data: { channel: channelId, userName: "@User.Identity.Name" },
+                        dataType: "json",
+                        success: function (response) {
+                            console.log("success send notification! " + response);
+                        },
+                        failure: function (response) {
+                            console.log("failure send message!");
+                        }
+                    });
+        }
+
+
+        function searchMessages() {
+            let value = $("#searchbar").val();
+            $.ajax({
+                url: '@Url.Action("SearchInChat")',
+                type: "POST",
+                data: { channel: currentChannel, userName: "@User.Identity.Name", searchWord: value },
+                dataType: "json",
+                success: function (response) {
+                    let msgs = JSON.parse(response);
+                    $('#discussion').empty()
+                    msgs.forEach((element) => {
+                        if (checkURL(element.toString()) != null)//Checks for the correct extension
+                        {
+                            if (testImage(element.toString(), null, 500) == "success")//Pings the url and gives it's availability
+                            {
+                                var leftDiv = document.createElement("div"); //Create left div
+                                leftDiv.id = "left"; //Assign div id
+                                leftDiv.setAttribute("style", "float:left; width:66.5%; line-height: 26px; text-align:left; font-size:12pt; padding-left:8px; height:26px;"); //Set div attributes
+                                leftDiv.style.background = "#FF0000";
+                                a = document.createElement('a');
+                                a.href = img_create(element.toString(), null, element.toString()); // Insted of calling setAttribute
+                                a.innerHTML = "Link" // <a>INNER_TEXT</a>
+                                leftDiv.appendChild(a); // Append the link to the div
+                                document.body.appendChild(leftDiv); // And append the div to the document body
+                            }
+
+                        }
+                        if ("@User.Identity.Name" === element.AuthorName) {
+                            $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='@Url.Content("~/images/avatar.png")' style='width:40px;' id='profile-pic" +
+                                element.Id + "'><strong>" + htmlEncode(element.AuthorName) +
+                                "</strong></th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Id +
+                                "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Content) + "<textarea id='edit" +
+                                element.Id + "' style='visibility: hidden; width: 0;'>" +
+                                element.Content + "</textarea></th><th style='display:inline-flex;'><button id='saveEdit" +
+                                element.Id + "' onclick='saveEdit(" + element.Id + ")' style='visibility: hidden; width: 0;'>Išsaugoti</button><button id='editMessage" +
+                                element.Id + "' onclick='editMessage(" + element.Id + ")'  style='float:right;'>Redaguoti</button><button id='deleteMessage" +
+                                element.Id + "' onclick='deleteMessage(" + element.Id + ")'  style='float:right;'>Trinti</button></th></tr>");
+                        }
+                        else {
+                            $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='@Url.Content("~/images/avatar.png")' style='width:40px;' id='profile-pic" +
+                                element.Id + "'><strong>" + htmlEncode(element.AuthorName) +
+                                "</strong></th></tr><tr class='otherMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Id +
+                                "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Content) + "</th><th></th></tr>");
+                        }
+                    });
+                },
+                failure: function (response) {
+                    console.log("failure send message!");
+                }
+                }
+            });
+        }
+
+        function deleteMessagesCommand(count) {
+            $.ajax({
+                url: '@Url.Action("DeleteMessagesCommand")',
+                    type: "POST",
+                    data: { channelId: currentChannel, userName: "@User.Identity.Name", messageCount: count },
+                dataType: "json",
+                    success: function (response) {
+                        console.log("kick user success " + response);
+                    /* let users = JSON.parse(response);
+                    console.log("success get messages! " + msgs + " response ilgis " + msgs.length);
+                    $('#ChannelUsers').empty()
+                    msgs.forEach((element) => {
+
+                        $("#ChannelUsers").append("<tr><td>" + element.UserName + "</td> <td class='kickrow' onclick=\"kickUser('" + element.Id +  "')\">        </td></tr>");
+                    });*/
+                        //connection.invoke('DeleteMessage', id, currentChannel);
+                        connection.invoke('DeleteMessagesCommand', currentChannel, count);
+
+                },
+                failure: function (response) {
+                    console.log("failure getting messages!");
+                }
+
+                });
+        }
+
+        function formatDate(date) {
+            var d = new Date(date),
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear(),
+                hour = d.getHours(),
+                minute = d.getMinutes();
+
+
+            if (month.length < 2)
+                month = '0' + month;
+            if (day.length < 2)
+                day = '0' + day;
+
+            return [year, month, day].join('-') + " " + hour + ":" + minute;
+        }
+
+
+        </script>
+
+
+>>>>>>> Stashed changes
         <!--//foreach (var msg in Model)
             {
                 <script>
