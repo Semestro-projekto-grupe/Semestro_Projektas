@@ -29,7 +29,7 @@ Programa sujungiama su serveriu. Chat'o lange rodomi visi prisijungę naudotojai
 **v0.3**  
 "Programėlė chat'as" virsta "Žinučių siuntimo programėle". Pridėtas atsijungimo pasirinkimas.  
 **v0.4**  
-Įdėtas nustatymų langas. UI pataisymai. 
+Įdėtas nustatymų langas. UI pataisymai.   
 **v0.4.1**  
 Nustatymų langas sujungtas su serveriu.  
 **v0.5**  
@@ -37,7 +37,7 @@ Pridėti su žinutėmis susiję veiksmai(redagavimas ir trynimas).
 **v0.5.1**  
 Pridėtas asinchroninis programos veikimas. Įdiegtas vartotojo vardo, slaptažodžio ir t.t keitimas.  
 **v0.6**  
-Ištaisytos klaidos vartotojo paveiksliukų vienodais pavadinimais kėlime. Pridėtas "emoji" mygtukas. Ruošiamasi kalbos keitimo įdiegimui. 
+Ištaisytos klaidos vartotojo paveiksliukų vienodais pavadinimais kėlime. Pridėtas "emoji" mygtukas. Ruošiamasi kalbos keitimo įdiegimui.  
 **v0.7**  
 Papildytos chat'o lango funkcijos. Pataisytas žynučių trynimas. Pridėtas vartotojo "išspyrimo" veiksmas.  
 **v0.8**  
