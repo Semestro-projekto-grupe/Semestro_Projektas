@@ -359,11 +359,18 @@ namespace Semestro_projektas.Data.Repository
         }
 
 
-        public void DeleteMessage(int messageId, string userName) {
-            User usr = GetUserByName(userName);
-            Message msg = _ctx.Messages.FirstOrDefault(m => m.Author == usr && m.Id == messageId);
-            _ctx.Messages.Remove(msg);
-            _ctx.SaveChanges();
+        public void DeleteMessage(int messageId, string userName, string caller, int channelId) {
+
+            User callerUsr = GetUserByName(caller);
+            User receiver = GetUserByName(userName);
+            ChannelUser callerChUser = _ctx.ChannelUsers.FirstOrDefault(u => u.UserId == callerUsr.Id && u.ChannelId == channelId);
+            ChannelUser receiverChUser = _ctx.ChannelUsers.FirstOrDefault(u => u.UserId == receiver.Id && u.ChannelId == channelId);
+            if ((int)callerChUser.Role < (int)receiverChUser.Role || callerUsr.Id == receiver.Id)
+            {
+                Message msg = _ctx.Messages.FirstOrDefault(m => m.AuthorId == receiver.Id && m.Id == messageId);
+                _ctx.Messages.Remove(msg);
+                _ctx.SaveChanges();
+            }
         }
 
 
