@@ -83,15 +83,16 @@ namespace Semestro_projektas.Controllers
         public async Task<JsonResult> GetChatMessages(int chatId, string userName)
         {
             List<Message> messages = null;
-            //<(Id, AuthorName, Avatar, Created, Content, Role)>
-            List <(int, string, string, DateTime, string, int)> messagesToGet = new List<(int, string, string, DateTime, string, int)>();
+            //<(Id, AuthorName, Avatar, Created, Content, Role1, Role2)>
+            List <(int, string, string, DateTime, string, int, int)> messagesToGet = new List<(int, string, string, DateTime, string, int, int)>();
             if (User.Identity.Name == userName)
             {
                 messages = _repo.GetChatMessagesByChat(chatId, userName);
                 foreach (Message msg in messages) {
                     User usr = _repo.GetUserByName(msg.AuthorName);
                     ChannelUser chUsr = _repo.GetChannelUser(chatId, userName);
-                    messagesToGet.Add((msg.Id, msg.AuthorName, usr.Avatar, msg.Created, msg.Content, (int)chUsr.Role));
+                    ChannelUser authorUsr = _repo.GetChannelUser(chatId, msg.AuthorName);
+                    messagesToGet.Add((msg.Id, msg.AuthorName, usr.Avatar, msg.Created, msg.Content, (int)chUsr.Role, (int)authorUsr.Role));
                 }
             }
             else {
@@ -285,11 +286,11 @@ namespace Semestro_projektas.Controllers
 
 
         [HttpPost]
-        public async Task<JsonResult> DeleteMessage(int messageId, string userName)
+        public async Task<JsonResult> DeleteMessage(int messageId, string userName, string caller, int channel)
         {
-            if (User.Identity.Name == userName)
+            if (User.Identity.Name == caller)
             {
-                _repo.DeleteMessage(messageId, userName);
+                _repo.DeleteMessage(messageId, userName, caller, channel);
             }
 
             if (await _repo.SaveChangesAsync())
@@ -419,11 +420,21 @@ namespace Semestro_projektas.Controllers
         [HttpPost]
         public async Task<JsonResult> SearchInChat(int channel, string userName, string searchWord)
         {
+
+
             List<Message> messages = null;
-            
+            //<(Id, AuthorName, Avatar, Created, Content, Role1, Role2)>
+            List<(int, string, string, DateTime, string, int, int)> messagesToGet = new List<(int, string, string, DateTime, string, int, int)>();
             if (User.Identity.Name == userName)
             {
                 messages = _repo.SearchInChat(channel, userName, searchWord);
+                foreach (Message msg in messages)
+                {
+                    User usr = _repo.GetUserByName(msg.AuthorName);
+                    ChannelUser chUsr = _repo.GetChannelUser(channel, userName);
+                    ChannelUser authorUsr = _repo.GetChannelUser(channel, msg.AuthorName);
+                    messagesToGet.Add((msg.Id, msg.AuthorName, usr.Avatar, msg.Created, msg.Content, (int)chUsr.Role, (int)authorUsr.Role));
+                }
             }
             else
             {
@@ -432,7 +443,7 @@ namespace Semestro_projektas.Controllers
             // foreach (var c in chn) {
             //chnNames.Add("{c.nam}"c.Name);
             // }
-            var json = JsonConvert.SerializeObject(messages);
+            var json = JsonConvert.SerializeObject(messagesToGet);
             return Json(json);
 
         }
