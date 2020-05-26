@@ -348,10 +348,10 @@ namespace Semestro_projektas.Data.Repository
 
             foreach (Message msg in messages)
             {
-                User oldUsr = GetUserByName(oldName);
-                if (msg.Author == oldUsr)
+               // User oldUsr = GetUserByName(oldName);
+                if (msg.AuthorName == oldName)
                 {
-                    msg.Author.Name = newName;
+                    msg.AuthorName= newName;
                     _ctx.Messages.Update(msg);
                 }
             }

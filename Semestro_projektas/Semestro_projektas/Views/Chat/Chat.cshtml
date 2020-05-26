@@ -11,8 +11,8 @@
 
 
 <!--EmojiOneArea -->
-<link href="Content/emojionearea.min.css" rel="stylesheet" />
-<script src="Scripts/emojionearea.js"></script>
+<!--<link href="Content/emojionearea.min.css" rel="stylesheet" />
+<script src="Scripts/emojionearea.js"></script>-->
 
 <style>
 
@@ -231,8 +231,8 @@
     #searchInput:focus {
         background: url('@Url.Content("~/images/search.svg")') left no-repeat white;
         background-size: 20px;
-        background-position: 20px;
-        padding-left: 55px;
+        background-position: 10px;
+        padding-left: 35px;
         width: 92%;
         font-size: 20px;
         color: #000;
@@ -356,114 +356,118 @@
     <div class="row">
         <div class="col-md-2">
 
-
-            <div class="chat-channels">
-
-
-                <div class="panel-body" id="chatChannels" style="height:250px;">
-                    <h3>@_localizer.GetString("Vartotojo kanalai")</h3>
-                    <table class="table" id="userChannels"></table>
-                </div>
-            </div>
-            <br>
-            <p class="expand" id="expand-2"><input type="button" class="btn btn-warning btn-sm" id="getChannels" value="@_localizer.GetString("Naujas kanalas")"></p>
-            <div class="expandable" id="expandable-2">
-                <input id="newChannel" type="text" class="form-control input-sm" placeholder="@_localizer.GetString("Kanalo pavadinimas")" />
-                <br>
-                <input type="button" class="btn btn-warning btn-sm" id="createChannel" value="@_localizer.GetString("Kurti kanalą")">
-            </div>
-
-
-        </div>
-        <div class="col-md-8">
             <div class="chat-panel panel panel-default">
-                <h2>Studentų Chat'as</h2>
-                <div class="panel-heading">
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        string laik = @_localizer.GetString("Prisijungęs kaip");
-                        <h3> @laik @User.Identity.Name</h3>
-                    }
-                    else
-                    {
-                        <h3>@_localizer.GetString("Prisijungęs kaip Guest") </h3>
-                    }
+                <h3 class="text-left">@_localizer.GetString("Vartotojo kanalai")</h3>
+                <div class="chat-channels">
 
 
-                    <i class="fa fa-paper-plane fa-fw"></i>
-                    <h3 id="selectedChannel"></h3>
-                    <input type="text" class="navbar-form" placeholder="@_localizer.GetString("Ieškoti..")" id="searchbar">
-                    <button class="btn btn-primary" onclick="searchMessages()">@_localizer.GetString("Ieškoti")</button>
-                </div>
-                <!-- /.panel-heading -->
-                <div class="panel-body" id="chat" style="height:250px;">
-                    <input type="hidden" id="displayname" />
+                    <div class="panel-body" id="chatChannels" style="height:250px;">
 
-                    <table id="discussion"></table>
-                </div>
-                <!-- /.panel-body -->
-                <div class="panel-footer">
-                    <div class="input-group">
-                        <input id="message" type="text" name="message" class="form-control input-sm" placeholder="@_localizer.GetString("Rašykite žinutę čia...")" />
-
-                        <span class="input-group-btn">
-                            <input type="button" class="btn btn-warning btn-sm" id="sendmessage" value="@_localizer.GetString("Siųsti")">
-
-                        </span>
+                        <table class="table" id="userChannels"></table>
                     </div>
                 </div>
-
-                <div>
-                    <p class="expand" id="expand-1">@_localizer.GetString("Naudojimosi informacija")</p>
-                </div>
-                <div class="expandable" id="expandable-1">
-                    <p>
-                        <b>@_localizer.GetString("Rašyti žinutes galima tik prisijungus ir pasirinkus kanalą.")</b><br>
-                        <b>@_localizer.GetString("Vartotojai turi roles:")</b><br>
-                        @_localizer.GetString("Kanalo kūrėjas - vartotojas, kuris sukūrė kanalą. Gali atlikti visus administravimo veiksmus, taip pat ir ištrinti kanalą.")<br>
-                        @_localizer.GetString("Administratorius - vartotojas, kuris administruoja kanalą. Gali atlikti visus administravimo veiksmus, taip pat ir priskirti roles.")<br>
-                        @_localizer.GetString("Moderatorius - vartotojas, kuris administruoja kanalą. Gali administruoti paparastų vartotojų žinutes.")<br>
-                        @_localizer.GetString("Vartotojas - paprastas vartotojas, gali tik rašyti, trinti, redaguoti savo žinutes.")<br>
-                        <hr>
-                        <b>@_localizer.GetString("Administravimo komandos, kurias gali naudoti kanalo kūrėjas:") </b><br>
-                        <i>-delete n</i><br>
-                        @_localizer.GetString("Ištrina n žinučių")<br>
-                        @_localizer.GetString("Pvz.") <br>
-                        -delete 10<br>
-                        -delete 5<br>
-                        -delete 1000<br>
-                        <br>
-                        @_localizer.GetString("Žinučių filtravimui visi vartotojai gali naudotis žinučių paieškos funkcija")<br>
-                    </p>
-                </div>
-
-            </div>
-        </div>
-        <div class="col-md-2">
-
-            <div class="channel-users">
-                <div class="panel-body" id="chatChannelUsers" style="height:250px;">
-                    <h3>@_localizer.GetString("Vartotojai kanale")</h3>
-                    <table class="table" id="ChannelUsers"></table>
-                </div>
-            </div>
-            <br>
-            <div class="searchcontainer">
-
-                <h3>@_localizer.GetString("Pridėti vartotoją")</h3>
-
-                <input type="text" id="searchInput">
-                <div id="results"></div>
                 <br>
-                <br>
-
+                <p class="expand" id="expand-2"><input type="button" class="btn btn-warning btn-sm" id="getChannels" value="@_localizer.GetString("Naujas kanalas")"></p>
+                <div class="expandable" id="expandable-2">
+                    <input id="newChannel" type="text" onfocus="this.value=''" class="form-control input-sm" placeholder="@_localizer.GetString("Kanalo pavadinimas")" />
+                    <br>
+                    <input type="button" class="btn btn-warning btn-sm" id="createChannel" value="@_localizer.GetString("Kurti kanalą")">
+                </div>
+            </div>
 
             </div>
-        </div>
-        <!--Emoji dropdown menu. Pakolkas nesuristas su emojionarea js ir css failais.-->
+            <div class="col-md-8">
+                <div class="chat-panel panel panel-default">
+                    <h2>Studentų Chat'as</h2>
+                    <div class="panel-heading">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            string laik = @_localizer.GetString("Prisijungęs kaip");
+                            <h3 class="text-left"> @laik @User.Identity.Name</h3>
+                        }
+                        else
+                        {
+                            <h3 class="text-left">@_localizer.GetString("Prisijungęs kaip Guest") </h3>
+                        }
+
+
+                        <i class="fa fa-paper-plane fa-fw"></i>
+                        <h3 id="selectedChannel"></h3>
+                        <input type="text" class="navbar-form" placeholder="@_localizer.GetString("Ieškoti..")" id="searchbar">
+                        <button class="btn btn-primary" onclick="searchMessages()">@_localizer.GetString("Ieškoti")</button>
+                        <button id="cancelSearch" style="visibility:hidden">&times;</button>
+                    </div>
+                    <!-- /.panel-heading -->
+<div class="panel-body" id="chat" style="height:250px;">
+    <input type="hidden" id="displayname" />
+
+    <table id="discussion"></table>
+</div>
+<!-- /.panel-body -->
+<div class="panel-footer">
+    <div class="input-group">
+        <input id="message" type="text" name="message" class="form-control input-sm" placeholder="@_localizer.GetString("Rašykite žinutę čia...")" />
+
+        <span class="input-group-btn">
+            <input type="button" class="btn btn-warning btn-sm" id="sendmessage" value="@_localizer.GetString("Siųsti")">
+
+        </span>
     </div>
 </div>
-<div class="dropdown">
+
+<div>
+    <p class="expand" id="expand-1">@_localizer.GetString("Naudojimosi informacija")</p>
+</div>
+<div class="expandable" id="expandable-1">
+    <p>
+        <b>@_localizer.GetString("Rašyti žinutes galima tik prisijungus ir pasirinkus kanalą.")</b><br>
+        <b>@_localizer.GetString("Vartotojai turi roles:")</b><br>
+        @_localizer.GetString("Kanalo kūrėjas - vartotojas, kuris sukūrė kanalą. Gali atlikti visus administravimo veiksmus, taip pat ir ištrinti kanalą.")<br>
+        @_localizer.GetString("Administratorius - vartotojas, kuris administruoja kanalą. Gali atlikti visus administravimo veiksmus, taip pat ir priskirti roles.")<br>
+        @_localizer.GetString("Moderatorius - vartotojas, kuris administruoja kanalą. Gali administruoti paparastų vartotojų žinutes.")<br>
+        @_localizer.GetString("Vartotojas - paprastas vartotojas, gali tik rašyti, trinti, redaguoti savo žinutes.")<br>
+        <hr>
+        <b>@_localizer.GetString("Administravimo komandos, kurias gali naudoti kanalo kūrėjas:") </b><br>
+        <i>-delete n</i><br>
+        @_localizer.GetString("Ištrina n žinučių")<br>
+        @_localizer.GetString("Pvz.") <br>
+        -delete 10<br>
+        -delete 5<br>
+        -delete 1000<br>
+        <br>
+        @_localizer.GetString("Žinučių filtravimui visi vartotojai gali naudotis žinučių paieškos funkcija")<br>
+    </p>
+</div>
+
+                </div>
+            </div>
+<div class="col-md-2">
+    <div class="chat-panel panel panel-default">
+        <div class="searchcontainer">
+
+            <h3 class="text-left">@_localizer.GetString("Pridėti vartotoją")</h3>
+
+            <input type="text" onfocus="this.value=''" id="searchInput">
+            <div id="results"></div>
+            <br>
+            <br>
+
+
+        </div>
+        <h3 class="text-left">@_localizer.GetString("Vartotojai kanale")</h3>
+        <div class="channel-users">
+            <div class="panel-body" id="chatChannelUsers" style="height:250px;">
+
+                <table class="table" id="ChannelUsers"></table>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--Emoji dropdown menu. Pakolkas nesuristas su emojionarea js ir css failais.-->
+            </div>
+</div>
+<div class="dropdown" style="visibility:hidden">
     <button onclick="myFunction()" class="dropbtn">Emoji</button>
     <div id="myDropdown" class="dropdown-content">
         <a href="#">Link 1</a>
@@ -744,6 +748,11 @@
             });
 
 
+            $("#cancelSearch").click(function () {
+                loadChatLog(currentChannel);
+                $("#cancelSearch").css("visibility", "hidden");
+            });
+
             //On enter key press when inside input field send message
             $('#message').keypress(function (e) {
                 var key = e.which;
@@ -785,7 +794,7 @@
             loadChatLog(currentChannel);
             getChannelUsers();
             removeNotification(id);
-            
+            $("#cancelSearch").css("visibility", "hidden");
         }
 
 
@@ -1318,18 +1327,28 @@
                             element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
                             "</strong> " + " " + formatDate(element.Item4) + "</th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
                             "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Item5) + "<textarea class='form-control' id='edit" +
-                            element.Item1 + "' style='visibility: hidden; width: 0;'>" +
+                            element.Item1 + "' style='visibility: hidden; width: 0; height: 0'>" +
                             element.Item5 + "</textarea></th><th style='display:inline-flex;'><button id='saveEdit" +
                             element.Item1 + "' onclick='saveEdit(" + element.Item1 + ")' style='visibility: hidden; width: 0;'>Išsaugoti</button><button id='editMessage" +
                             element.Item1 + "' onclick='editMessage(" + element.Item1 + ")'  style='float:right;'>Redaguoti</button><button id='deleteMessage" +
                             element.Item1 + "' onclick='deleteMessage(" + element.Item1 + ")'  style='float:right;'>Trinti</button></th></tr>");
                     }
                     else {
-                        $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
-                            element.Item1 + "'><strong>" + htmlEncode(element.Item2) +
-                            "</strong>" + " " + formatDate(element.Item4) + "</th></tr><tr class='otherMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
-                            "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Item5) + "</th><th></th></tr>");
+                        if (element.Item6 > element.Item7) {
+                            $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
+                                element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
+                                "</strong>" + " " + formatDate(element.Item4) + "</th></tr><tr class='otherMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
+                                "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Item5) + "</th><th></th></tr>");
+                        }
+                        else {
+                            $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
+                                element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
+                                "</strong> " + " " + formatDate(element.Item4) + "</th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
+                                "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Item5) + "</th><th style='display:inline-flex;'><button id='deleteMessage" +
+                                element.Item1 + "' onclick='deleteOtherMessage(" + element.Item1 + ", &quot;" + element.Item2 + "&quot;)'  style='float:right;'>Trinti</button></th></tr>");
+                        }
                     }
+                    $("#cancelSearch").css("visibility", "visible");
                 });
                 },
                 failure: function (response) {

@@ -92,7 +92,7 @@
             <div class="form-group row">
                 @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @type = "password", @placeholder = _localizer.GetString("Slapyvardis") } })
+                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @type = "password", @placeholder = _localizer.GetString("Slaptažodis") } })
                     @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger validation" })
                 </div>
             </div>
