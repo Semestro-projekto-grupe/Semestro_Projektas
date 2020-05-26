@@ -14,7 +14,27 @@
     <link href="~/css/emojionearea.css" rel="stylesheet" />
     <script src="~/js/emojionearea.js"></script>
     <style>
+=======
+        IEnumerable<User> users = ViewData["User"] as IEnumerable<User>;
         IEnumerable<Channel> userChannels = ViewData["userChannels"] as IEnumerable<Channel>;
+        IEnumerable<string> roles = ViewData["Roles"] as IEnumerable<string>;
+        int roleVal = 0;
+    }
+
+
+    <!--EmojiOneArea -->
+    <link href="Content/emojionearea.min.css" rel="stylesheet" />
+    <script src="Scripts/emojionearea.js"></script>
+
+    <style>
+
+    body {
+            background-image: url('@Url.Content("~/images/index.jpg")');
+            background-position: center center fixed;
+            background-size: cover;
+            overflow-x: hidden;
+        }
+
 >>>>>>> Stashed changes
     div.panel-body {
         overflow: scroll;
