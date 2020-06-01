@@ -15,6 +15,7 @@ namespace Semestro_projektas.Models
         public User User { get; set; }
         public RoleTypes Role { get; set; }
         public bool ReceivedNotification { get; set; } = false;
+        public DateTime DateJoined { get; set; }
     }
 
 }

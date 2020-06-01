@@ -194,6 +194,7 @@ namespace Semestro_projektas.Data.Repository
             channelUser.Channel = channel;
             channelUser.UserId = user.Id;
             channelUser.Role = role;
+            channelUser.DateJoined = DateTime.Now;
             _ctx.ChannelUsers.Add(channelUser);
             user.channelUsers.Add(channelUser);
             channel.channelUsers.Add(channelUser);
@@ -475,6 +476,40 @@ namespace Semestro_projektas.Data.Repository
                     _ctx.Messages.Remove(msg);
                 }
             }
+        }
+
+
+        public ChannelUser GetMostActiveUser(int channelId, string userName)
+        {
+            List<User> channelUsers = GetChannelUsers(channelId, userName);
+            int maxCount = -1;
+            User maxUsr = new User();
+            foreach (User u in channelUsers) {
+                int msgCnt = CountUserMessages(channelId, u.UserName);
+                if (msgCnt > maxCount) {
+                    maxUsr = u;
+                    maxCount = msgCnt;
+                }
+            }
+            return GetChannelUser(channelId, maxUsr.UserName);
+        }
+
+        public User GetChannelUser(ChannelUser chUser)
+        {
+            return _ctx.Users.FirstOrDefault(u => u.Id == chUser.UserId);
+        }
+
+
+        public int CountUserMessages(int channelId, string userName) {
+            List <Message> chMessages = GetChatMessagesByChat(channelId, userName);
+            User usr = GetUserByName(userName);
+            return chMessages.Where(m => m.AuthorId == usr.Id).Count();
+        }
+
+        public int CountChannelMessages(int channelId, string userName)
+        {
+            List<Message> chMessages = GetChatMessagesByChat(channelId, userName);
+            return chMessages.Count;
         }
 
     }

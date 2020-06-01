@@ -62,5 +62,12 @@ namespace Semestro_projektas.Data.Repository
        void DeleteMessagesCommand(int channelId, string userName, int messageCount);
 
         ChannelUser GetChannelUser(int chatId, string userName);
+
+        ChannelUser GetMostActiveUser(int channelId, string userName);
+        User GetChannelUser(ChannelUser chUser);
+
+        int CountUserMessages(int channelId, string userName);
+
+        int CountChannelMessages(int channelId, string userName);
     }
 }

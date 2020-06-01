@@ -259,7 +259,7 @@
             </div>
             <div class="modal-body">
                 <img src='@Url.Content("~/images/avatar.png")' id="pfp" style="width:150px;height:150px; float:left;">
-                <div id="userData" style="height:150px; padding-left: 160px;"></div>
+                <div id="userData" style="height:200px; padding-left: 160px;"></div>
             </div>
             <div class="modal-footer" style="height:130px">
                 <div style="position:absolute;">
@@ -306,7 +306,7 @@
                 <h4 class="modal-title" id="channelName">@_localizer.GetString("Kanalas")</h4>
             </div>
             <div class="modal-body">
-                <div id="channelData" style="height:10px;"></div>
+                <div id="channelData" style="height:80px;"></div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-default" onclick="callLeaveChannel()" id="callLeaveChannel">@_localizer.GetString("Palikti kanalą")</button>
@@ -447,7 +447,7 @@
 
             <h3 class="text-left">@_localizer.GetString("Pridėti vartotoją")</h3>
 
-            <input type="text" onfocus="this.value=''" id="searchInput">
+            <input type="text" onfocus="this.value=''" id="searchInput" autocomplete="off">
             <div id="results"></div>
             <br>
             <br>
@@ -1117,6 +1117,8 @@
                             $('#userData').append("<p><b>Gimimo data: </b>" + response.item4 + "</p>");
                         }
                         $('#userData').append("<p><b>Kanalo rolė: </b>" + response.item6 + "</p>");
+                        $('#userData').append("<p><b>Prisijungė prie kanalo: </b>" + response.rest.item1 + "</p>");
+                        $('#userData').append("<p><b>Parašė žinučių kanale: </b>" + response.item7 + "</p>");
                         $("#pfp").attr("src", "/avatars/" + response.item5);
                         $("#kickUsr").attr("onclick", "kickUser('" + id + "', '" + response.item1 + "')");
                         $("#assignRole").attr("onclick", "assignRole('" + id + "')");
@@ -1225,17 +1227,18 @@
                      success: function (response) {
                          $("#channelProfile").modal();
                          console.log(response);
-                         let channel = JSON.parse(response);
+                        // let channel = JSON.parse(response);
                          console.log("success get messages! " + response + " response ilgis " + response.length);
                          $('#channelData').empty();
-                         $('#channelName').text("Kanalas " + channel.Name);
-                        // $('#channelData').append("<p><b>Vardas: </b>" + response.item2 + "</p>");
-                      //   $('#channelData').append("<p><b>Pavardė: </b>" + response.item3 + "</p>");
-                        // $('#channelData').append("<p><b>Gimimo data: </b>" + response.item4 + "</p>");
-                         $("#deleteChn").attr("onclick", "deleteChannel(" + channel.Id + ")");
-                         $('#deleteChannelName').text("Ar tikrai norite pašalinti kanalą " + channel.Name + "?");
-                         $("#leaveChn").attr("onclick", "leaveChannel(" + channel.Id + ")");
-                         $('#leaveChannelName').text("Ar tikrai norite palikti kanalą " + channel.Name + "?");
+                         $('#channelName').text("Kanalas " + response.item2);
+                         $('#channelData').append("<p><b>Kanalo sukūrimo data: </b>" + response.item6 + "</p>");
+                         $('#channelData').append("<p><b>Kanale parašyta žinučių: </b>" + response.item3 + "</p>");
+                         $('#channelData').append("<p><b>Aktyviausias vartotojas: </b>" + response.item4 + " (" + response.item5 + " žinučių)</p>");
+                        // $('#channelData').append("<p><b>Gimimo data: </b>" + response.item5 + "</p>");
+                         $("#deleteChn").attr("onclick", "deleteChannel(" + response.item1 + ")");
+                         $('#deleteChannelName').text("Ar tikrai norite pašalinti kanalą " + response.item2 + "?");
+                         $("#leaveChn").attr("onclick", "leaveChannel(" + response.item1 + ")");
+                         $('#leaveChannelName').text("Ar tikrai norite palikti kanalą " + response.item2 + "?");
 
                          //liktu isverst, "Kanalas", "Ar tikrai norite pasalinti/palikti kanala"
                          //tie patys kintamieji ir i ekrana keliauja ir naudojami uzklausoje
