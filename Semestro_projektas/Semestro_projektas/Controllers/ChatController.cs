@@ -149,6 +149,7 @@ namespace Semestro_projektas.Controllers
         {
             Channel channel = new Channel();
             channel.Name = name;
+            channel.CreationDate = DateTime.Now;
             _repo.CreateChannel(channel, userName);
             if (await _repo.SaveChangesAsync())
             {
@@ -262,6 +263,7 @@ namespace Semestro_projektas.Controllers
         {
             var data = _repo.GetUser(userId);
             var roleType = _repo.GetUserRole(userId, channelId);
+            var chUser = _repo.GetChannelUser(channelId, data.UserName);
             string role = "Nėra";
 
             switch (roleType)
@@ -280,7 +282,8 @@ namespace Semestro_projektas.Controllers
                     break;
             }
 
-            var temp = Tuple.Create(data.UserName, data.Name, data.Surname, data.Date.ToString("yyyy-MM-dd"), data.Avatar, role);
+            var temp = Tuple.Create(data.UserName, data.Name, data.Surname, data.Date.ToString("yyyy-MM-dd"), data.Avatar,
+                role, _repo.CountUserMessages(channelId, data.UserName), chUser.DateJoined.ToString("yyyy-MM-dd H:mm:ss"));
             return Json(temp);
         }
 
@@ -313,7 +316,11 @@ namespace Semestro_projektas.Controllers
             {
                 var ch = _repo.GetChannelSettings(channelId);
                 var json = JsonConvert.SerializeObject(ch);
-                return Json(json);
+                ChannelUser activeUser = _repo.GetMostActiveUser(ch.Id, userName);
+                User usr = _repo.GetChannelUser(activeUser);
+                var temp = Tuple.Create(ch.Id, ch.Name, _repo.CountChannelMessages(channelId, userName),
+                    usr.UserName, _repo.CountUserMessages(channelId, usr.UserName), ch.CreationDate.ToString("yyyy-MM-dd H:mm:ss"));
+                return Json(temp);
             }
             else {
                 return Json("fail read ch settings");
