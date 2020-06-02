@@ -259,7 +259,7 @@
             </div>
             <div class="modal-body">
                 <img src='@Url.Content("~/images/avatar.png")' id="pfp" style="width:150px;height:150px; float:left;">
-                <div id="userData" style="height:200px; padding-left: 160px;"></div>
+                <div id="userData" style="height:250px; padding-left: 160px;"></div>
             </div>
             <div class="modal-footer" style="height:130px">
                 <div style="position:absolute;">
@@ -398,7 +398,7 @@
                         <button id="cancelSearch" style="visibility:hidden">&times;</button>
                     </div>
                     <!-- /.panel-heading -->
-<div class="panel-body" id="chat" style="height:250px;">
+<div class="panel-body" id="chat" style="height:400px;">
     <input type="hidden" id="displayname" />
 
     <table id="discussion"></table>
@@ -1104,7 +1104,9 @@
                             }
                         }
                         //selectChannel(channels[0].Id);
-
+                        if (currentChannel === 0) {
+                            selectChannel(channels[0].Item1);
+                        }
                     },
                     failure: function (response) {
                         console.log("failure send message!");
