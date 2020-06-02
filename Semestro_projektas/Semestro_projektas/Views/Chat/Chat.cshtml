@@ -520,7 +520,7 @@
             });
 
             connection.on('AddChannelUser', (channel) => {
-                console.log(currentChannel);
+                //console.log(currentChannel);
                 if (currentChannel === channel) {
                     getChannelUsers();
 
@@ -648,10 +648,10 @@
                          data: { channel: channelId, userName: "@User.Identity.Name" },
                         dataType: "json",
                         success: function (response) {
-                            console.log("success send notification! " + response);
+                           // console.log("success send notification! " + response);
                         },
                         failure: function (response) {
-                            console.log("failure send message!");
+                           // console.log("failure send message!");
                         }
                     });
 
@@ -706,7 +706,7 @@
                     data: { name: userName, text: message, channelId: currentChannel },
                     dataType: "json",
                     success: function (response) {
-                        console.log("success send message!");
+                        //console.log("success send message!");
                         connection.invoke('Send', userName, message, currentChannel);
                         connection.invoke('SendNotification', currentChannel);
                         // Clear text box and reset focus for next comment.
@@ -714,7 +714,7 @@
 
                     },
                     failure: function (response) {
-                        console.log("failure send message!");
+                       // console.log("failure send message!");
                     }
 
                 });
@@ -735,14 +735,14 @@
                         data: { name: channelName, userName: "@User.Identity.Name" },
                         dataType: "json",
                         success: function (response) {
-                            console.log("success create channel! " + response);
+                          //  console.log("success create channel! " + response);
                             $('#userChannels').empty()
                             getUserChannels();
 
                            // connection.invoke('AddChannelToUser', channelName, '@User.Identity.Name');
                         },
                         failure: function (response) {
-                            console.log("failure send message!");
+                           // console.log("failure send message!");
                         }
 
                     });
@@ -822,10 +822,10 @@
                 data: { chatId: channel, userName: "@User.Identity.Name" },
             dataType: "json",
             success: function (response) {
-                console.log("success get messages! " + response + " response");
+               // console.log("success get messages! " + response + " response");
                 msgs = JSON.parse(response);
                 $('#discussion').empty();
-                console.log(msgs);
+               // console.log(msgs);
                 msgs.forEach((element) => {
                     if ("@User.Identity.Name" === element.Item2) {
                         if (validURL(element.Item5)) {
@@ -917,7 +917,7 @@
                 updateScroll();
             },
             failure: function (response) {
-                console.log("failure getting messages!");
+                //console.log("failure getting messages!");
             }
 
             });
@@ -931,12 +931,12 @@
                         type: "POST",
                     dataType: "json",
                     success: function (response) {
-                        console.log("success get messages! " + response + " response");
+                       // console.log("success get messages! " + response + " response");
                         usersjson = JSON.parse(response);
 
                     },
                     failure: function (response) {
-                        console.log("failure getting messages!");
+                       // console.log("failure getting messages!");
                     }
 
             }).then(response => usersjson);
@@ -945,7 +945,7 @@
         async function fetchData(search) {
 
             //let search = document.getElementById("searchInput").value;
-            console.log(search);
+            //console.log(search);
             let data = await getUsersJson();
             if (!$('#results').is(':empty')) {
                 $('#results').empty();
@@ -991,7 +991,7 @@
             }
 
 
-            console.log(dataArray);
+           // console.log(dataArray);
 
         }
 
@@ -1003,8 +1003,8 @@
                 data: { userName: userNm, inviterName: "@User.Identity.Name", channelId: currentChannel },
                 dataType: "json",
                 success: function (response) {
-
-                    console.log("success add user! " + response + " response");
+                    
+                    //console.log("success add user! " + response + " response");
                     connection.invoke('AddChannelUser', currentChannel);
                     connection.invoke('AddChannelToUser', userNm);
                 }
@@ -1032,7 +1032,7 @@
                     success: function (response) {
 
                         let users = JSON.parse(response);
-                        console.log("success get messages! " + users + " response ilgis " + users.length);
+                        //console.log("success get messages! " + users + " response ilgis " + users.length);
                         $('#ChannelUsers').empty()
                         users.forEach((element) => {
                             //$("#ChannelUsers").append("<tr><td>" + element.UserName + "</td> <td class='kickrow' onclick=\"kickUser('" + element.Id + "')\">        </td></tr>");
@@ -1041,7 +1041,7 @@
 
                     },
                     failure: function (response) {
-                        console.log("failure getting messages!");
+                        //console.log("failure getting messages!");
                     }
 
                 });
@@ -1057,7 +1057,7 @@
                      data: { channelId: currentChannel, userId: uId, caller: "@User.Identity.Name" },
                     dataType: "json",
                      success: function (response) {
-                         console.log("kick user success " + response);
+                        // console.log("kick user success " + response);
                        /* let users = JSON.parse(response);
                         console.log("success get messages! " + msgs + " response ilgis " + msgs.length);
                         $('#ChannelUsers').empty()
@@ -1069,7 +1069,7 @@
                          connection.invoke('KickChannelUser', uName, currentChannel);
                     },
                     failure: function (response) {
-                        console.log("failure getting messages!");
+                      //  console.log("failure getting messages!");
                     }
 
                     });
@@ -1087,12 +1087,12 @@
                     data: { userName: "@User.Identity.Name" },
                     dataType: "json",
                     success: function (response) {
-                        console.log("success send message! " + response + " response");
+                       // console.log("success send message! " + response + " response");
                         channels = JSON.parse(response);
-                        console.log("success send message! " + channels + " channels response " + channels.length);
+                        //console.log("success send message! " + channels + " channels response " + channels.length);
                         $("#userChannels").empty();
                         for (i = 0; i < channels.length; i++) {
-                            console.log(channels[i]);
+                            //console.log(channels[i]);
                             if (channels[i].Item3 === false && channels[i].Item1 !== currentChannel) {
                                 $("#userChannels").append("<tr id='channel" + channels[i].Item1 + "'><td style='word-break: break-word;' onclick='selectChannel(" + channels[i].Item1 + ")'>" + channels[i].Item2 + "</td><td style='background:green; width:25px;' onclick='getChannelSettings(" + channels[i].Item1 + ")'></td></tr>");
                             }
@@ -1109,7 +1109,7 @@
                         }
                     },
                     failure: function (response) {
-                        console.log("failure send message!");
+                        //console.log("failure send message!");
                     }
 
                 });
@@ -1165,7 +1165,7 @@
                         connection.invoke('EditMessage', value, contId, currentChannel);
                     },
                     failure: function (response) {
-                        console.log("failure getting messages!");
+                       // console.log("failure getting messages!");
                     }
 
                     });
@@ -1182,9 +1182,9 @@
                     dataType: "json",
                     success: function (response) {
                         $("#userProfile").modal();
-                        console.log(response);
+                      //  console.log(response);
                        // let channel = JSON.parse(response);
-                        console.log("success get messages! " + response + " response ilgis " + response.length);
+                       // console.log("success get messages! " + response + " response ilgis " + response.length);
                         $('#userData').empty();
                         $('#profileName').text("@_localizer.GetString("Vartotojo") " + response.item1 + " profilis");
                         $('#userData').append("<p><b>@_localizer.GetString("Vardas"): </b>" + response.item2 + "</p>");
@@ -1202,10 +1202,10 @@
                         $("#kickUsr").attr("onclick", "kickUser('" + id + "', '" + response.item1 + "')");
                         $("#assignRole").attr("onclick", "assignRole('" + id + "')");
                         $('#kickUserName').text("@_localizer.GetString("Ar tikrai norite išspirti vartotoją") " + response.item1);
-                        console.log("--------------- " + response.item7);
+                        //console.log("--------------- " + response.item7);
                     },
                     failure: function (response) {
-                        console.log("failure getting messages!");
+                       // console.log("failure getting messages!");
                     }
 
                     });
@@ -1222,7 +1222,7 @@
                   data: { messageId: id, userName: "@User.Identity.Name", caller: "@User.Identity.Name", channel: currentChannel },
                     dataType: "json",
                      success: function (response) {
-                         console.log("kick user success " + response);
+                        // console.log("kick user success " + response);
                        /* let users = JSON.parse(response);
                         console.log("success get messages! " + msgs + " response ilgis " + msgs.length);
                         $('#ChannelUsers').empty()
@@ -1233,7 +1233,7 @@
                          connection.invoke('DeleteMessage', id, currentChannel);
                     },
                     failure: function (response) {
-                        console.log("failure getting messages!");
+                       // console.log("failure getting messages!");
                     }
 
                     });
@@ -1247,7 +1247,7 @@
                   data: { messageId: id, userName: user, caller: "@User.Identity.Name", channel: currentChannel },
                     dataType: "json",
                      success: function (response) {
-                         console.log("kick user success " + response);
+                        // console.log("kick user success " + response);
                        /* let users = JSON.parse(response);
                         console.log("success get messages! " + msgs + " response ilgis " + msgs.length);
                         $('#ChannelUsers').empty()
@@ -1258,7 +1258,7 @@
                          connection.invoke('DeleteMessage', id, currentChannel);
                     },
                     failure: function (response) {
-                        console.log("failure getting messages!");
+                       // console.log("failure getting messages!");
                     }
 
                     });
@@ -1273,7 +1273,7 @@
                      data: { channelId: id, userName: "@User.Identity.Name" },
                     dataType: "json",
                      success: function (response) {
-                         console.log("delete channel success " + response);
+                         //console.log("delete channel success " + response);
                        /* let users = JSON.parse(response);
                         console.log("success get messages! " + msgs + " response ilgis " + msgs.length);
                         $('#ChannelUsers').empty()
@@ -1285,7 +1285,7 @@
                          connection.invoke('DeleteChannel', id);
                     },
                     failure: function (response) {
-                        console.log("failure getting messages!");
+                       // console.log("failure getting messages!");
                     }
 
                     });
@@ -1305,9 +1305,10 @@
                     dataType: "json",
                      success: function (response) {
                          $("#channelProfile").modal();
-                         console.log(response);
+                        // console.log(response);
                         // let channel = JSON.parse(response);
-                         console.log("success get messages! " + response + " response ilgis " + response.length);
+
+                         //console.log("success get messages! " + response + " response ilgis " + response.length);
                          $('#channelData').empty();
                          $('#channelName').text("@_localizer.GetString("Kanalas") " + response.item2);
                          $('#channelData').append("<p><b>@_localizer.GetString("Kanalo sukūrimo data"): </b>" + response.item6 + "</p>");
@@ -1329,7 +1330,7 @@
                          //plius nepamirs reiksmiu resursu faile (kol kas irasytos)
                     },
                     failure: function (response) {
-                        console.log("failure getting messages!");
+                        //console.log("failure getting messages!");
                     }
 
                     });
@@ -1348,7 +1349,7 @@
 
                     },
                     failure: function (response) {
-                        console.log("failure getting messages!");
+                        //console.log("failure getting messages!");
                     }
 
                     });
@@ -1365,7 +1366,7 @@
                          connection.invoke('LeaveChannel', id, "@User.Identity.Name");
                     },
                     failure: function (response) {
-                        console.log("failure getting messages!");
+                      //  console.log("failure getting messages!");
                     }
 
                     });
@@ -1384,10 +1385,10 @@
                          data: { channel: channelId, userName: "@User.Identity.Name" },
                         dataType: "json",
                         success: function (response) {
-                            console.log("success send notification! " + response);
+                            //console.log("success send notification! " + response);
                         },
                         failure: function (response) {
-                            console.log("failure send message!");
+                           // console.log("failure send message!");
                         }
                     });
         }
@@ -1494,7 +1495,7 @@
                 });
                 },
                 failure: function (response) {
-                    console.log("failure send message!");
+                    //console.log("failure send message!");
                 }
             });
         }
@@ -1506,7 +1507,7 @@
                     data: { channelId: currentChannel, userName: "@User.Identity.Name", messageCount: count },
                 dataType: "json",
                     success: function (response) {
-                        console.log("kick user success " + response);
+                       // console.log("kick user success " + response);
                     /* let users = JSON.parse(response);
                     console.log("success get messages! " + msgs + " response ilgis " + msgs.length);
                     $('#ChannelUsers').empty()
@@ -1519,7 +1520,7 @@
 
                 },
                 failure: function (response) {
-                    console.log("failure getting messages!");
+                    //console.log("failure getting messages!");
                 }
 
                 });
