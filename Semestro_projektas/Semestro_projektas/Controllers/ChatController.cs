@@ -56,7 +56,7 @@ namespace Semestro_projektas.Controllers
             msg.Channel = channel;
             msg.AuthorName = author.UserName;
             msg.ChannelId = channel.Id;
-            if (User.Identity.Name == name)
+            if (User.Identity.Name == name && msg.Content.Length <= 2000)
             {
                 _repo.SaveMessage(msg);
             }
@@ -75,7 +75,13 @@ namespace Semestro_projektas.Controllers
         public async Task<JsonResult> GetUsersJson()
         {
             List<User> users = _repo.GetUsers();
-            var json = JsonConvert.SerializeObject(users);
+            List<string> userNames = new List<string>();
+
+            foreach (User u in users) {
+                userNames.Add(u.UserName);
+            }
+
+            var json = JsonConvert.SerializeObject(userNames);
             return Json(json);
         }
 
@@ -147,10 +153,13 @@ namespace Semestro_projektas.Controllers
         [HttpPost]
         public async Task<JsonResult> CreateChannel(string name, string userName)
         {
-            Channel channel = new Channel();
-            channel.Name = name;
-            channel.CreationDate = DateTime.Now;
-            _repo.CreateChannel(channel, userName);
+            if (name.Length <= 40)
+            {
+                Channel channel = new Channel();
+                channel.Name = name;
+                channel.CreationDate = DateTime.Now;
+                _repo.CreateChannel(channel, userName);
+            }
             if (await _repo.SaveChangesAsync())
             {
                 return Json("Kanalas sukurtas");

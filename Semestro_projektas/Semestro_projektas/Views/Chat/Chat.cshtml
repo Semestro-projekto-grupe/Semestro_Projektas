@@ -553,14 +553,31 @@
 
 
             connection.on('EditMessage', (value, id, channel) => {
+
+                if (validURL(value)) {
+                    if (!checkURL(value)) {
+                        
+                            value = "<a href='" + value + "' target='_blank'>" + value + "</a>";
+                        
+                       
+                    }
+                    else {
+                        value = "<a href='" + value + "' target='_blank'>" + value + "</a><br><img width='200px' src='" + value + "'></img>";
+                    }
+                }
+
                 if (channel === currentChannel) {
+                    
+                    
                     if ($("#" + id).find('textarea')[0]) {
                         let txtArea = $("#" + id).find('textarea')[0].outerHTML;
+
                         $("#" + id).html(value + txtArea);
                     }
                     else {
                         $("#" + id).html(value);
                     }
+                    
                 }
             });
 
@@ -811,30 +828,90 @@
                 console.log(msgs);
                 msgs.forEach((element) => {
                     if ("@User.Identity.Name" === element.Item2) {
-                        $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
-                            element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
-                            "</strong> " + " " + formatDate(element.Item4) + "</th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
-                            "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Item5) + "<textarea class='form-control' id='edit" +
-                            element.Item1 + "' style='visibility: hidden; width: 0; height: 0'>" +
-                            element.Item5 + "</textarea></th><th style='display:inline-flex;'><button id='saveEdit" +
-                            element.Item1 + "' onclick='saveEdit(" + element.Item1 + ")' style='visibility: hidden; width: 0;'>Išsaugoti</button><button id='editMessage" +
-                            element.Item1 + "' onclick='editMessage(" + element.Item1 + ")'  style='float:right;'>Redaguoti</button><button id='deleteMessage" +
-                            element.Item1 + "' onclick='deleteMessage(" + element.Item1 + ")'  style='float:right;'>Trinti</button></th></tr>");
-                    }
-                    else {
-                        if (element.Item6 > element.Item7) {
-                            $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
-                                element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
-                                "</strong>" + " " + formatDate(element.Item4) + "</th></tr><tr class='otherMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
-                                "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Item5) + "</th><th></th></tr>");
+                        if (validURL(element.Item5)) {
+                            if (!checkURL(element.Item5)) {
+                                $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
+                                    element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
+                                    "</strong> " + " " + formatDate(element.Item4) + "</th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
+                                    "' style='word-break: break-word; width:100%;'><a href='" + element.Item5 + "'target='_blank'>" + element.Item5 + "</a> <textarea class='form-control' id='edit" +
+                                    element.Item1 + "' style='visibility: hidden; width: 0; height: 0'>" +
+                                    element.Item5 + "</textarea></th><th style='display:inline-flex;'><button id='saveEdit" +
+                                    element.Item1 + "' onclick='saveEdit(" + element.Item1 + ")' style='visibility: hidden; width: 0;'>Išsaugoti</button><button id='editMessage" +
+                                    element.Item1 + "' onclick='editMessage(" + element.Item1 + ")'  style='float:right;'>Redaguoti</button><button id='deleteMessage" +
+                                    element.Item1 + "' onclick='deleteMessage(" + element.Item1 + ")'  style='float:right;'>Trinti</button></th></tr>");
+                            }
+                            else {
+                                $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
+                                    element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
+                                    "</strong> " + " " + formatDate(element.Item4) + "</th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
+                                    "' style='word-break: break-word; width:100%;'><a href='" + element.Item5 + "'target='_blank'>" + element.Item5 + "</a><br><img width='200px' src='" + element.Item5 + "'></img> <textarea class='form-control' id='edit" +
+                                    element.Item1 + "' style='visibility: hidden; width: 0; height: 0'>" +
+                                    element.Item5 + "</textarea></th><th style='display:inline-flex;'><button id='saveEdit" +
+                                    element.Item1 + "' onclick='saveEdit(" + element.Item1 + ")' style='visibility: hidden; width: 0;'>Išsaugoti</button><button id='editMessage" +
+                                    element.Item1 + "' onclick='editMessage(" + element.Item1 + ")'  style='float:right;'>Redaguoti</button><button id='deleteMessage" +
+                                    element.Item1 + "' onclick='deleteMessage(" + element.Item1 + ")'  style='float:right;'>Trinti</button></th></tr>");
+                            }
                         }
                         else {
                             $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
                                 element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
                                 "</strong> " + " " + formatDate(element.Item4) + "</th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
-                                "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Item5) + "</th><th style='display:inline-flex;'><button id='deleteMessage" +
-                                element.Item1 + "' onclick='deleteOtherMessage(" + element.Item1 + ", &quot;" + element.Item2 + "&quot;)'  style='float:right;'>Trinti</button></th></tr>");
+                                "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Item5) + "<textarea class='form-control' id='edit" +
+                                element.Item1 + "' style='visibility: hidden; width: 0; height: 0'>" +
+                                element.Item5 + "</textarea></th><th style='display:inline-flex;'><button id='saveEdit" +
+                                element.Item1 + "' onclick='saveEdit(" + element.Item1 + ")' style='visibility: hidden; width: 0;'>Išsaugoti</button><button id='editMessage" +
+                                element.Item1 + "' onclick='editMessage(" + element.Item1 + ")'  style='float:right;'>Redaguoti</button><button id='deleteMessage" +
+                                element.Item1 + "' onclick='deleteMessage(" + element.Item1 + ")'  style='float:right;'>Trinti</button></th></tr>");
                         }
+                    }
+                    else {
+                        if (element.Item6 > element.Item7) {
+                            if (validURL(element.Item5)) {
+                                if (!checkURL(element.Item5)) {
+                                    $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
+                                        element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
+                                        "</strong>" + " " + formatDate(element.Item4) + "</th></tr><tr class='otherMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
+                                        "' style='word-break: break-word; width:100%;'><a href='" + element.Item5 + "'target='_blank'>" + element.Item5 + "</a></th><th></th></tr>");
+                                }
+                                else {
+                                    $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
+                                        element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
+                                        "</strong>" + " " + formatDate(element.Item4) + "</th></tr><tr class='otherMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
+                                        "' style='word-break: break-word; width:100%;'><a href='" + element.Item5 + "'target='_blank'>" + element.Item5 + "</a><br><img width='200px' src='" + element.Item5 + "'></img></th><th></th></tr>");
+                                }
+                            }
+                            else {
+                                $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
+                                    element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
+                                    "</strong>" + " " + formatDate(element.Item4) + "</th></tr><tr class='otherMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
+                                    "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Item5) + "</th><th></th></tr>");
+                            }
+                        }
+                        else {
+                            if (validURL(element.Item5)) {
+                                if (!checkURL(element.Item5)) {
+                                    $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
+                                        element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
+                                        "</strong> " + " " + formatDate(element.Item4) + "</th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
+                                        "' style='word-break: break-word; width:100%;'><a href='" + element.Item5 + "'target='_blank'>" + element.Item5 + "</a></th><th style='display:inline-flex;'><button id='deleteMessage" +
+                                        element.Item1 + "' onclick='deleteOtherMessage(" + element.Item1 + ", &quot;" + element.Item2 + "&quot;)'  style='float:right;'>Trinti</button></th></tr>");
+                                }
+                                else {
+                                    $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
+                                        element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
+                                        "</strong> " + " " + formatDate(element.Item4) + "</th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
+                                        "' style='word-break: break-word; width:100%;'><a href='" + element.Item5 + "'target='_blank'>" + element.Item5 + "</a><br><img width='200px' src='" + element.Item5 + "'></img></th><th style='display:inline-flex;'><button id='deleteMessage" +
+                                        element.Item1 + "' onclick='deleteOtherMessage(" + element.Item1 + ", &quot;" + element.Item2 + "&quot;)'  style='float:right;'>Trinti</button></th></tr>");
+                                }
+                            }
+                            else {
+                                $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
+                                    element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
+                                    "</strong> " + " " + formatDate(element.Item4) + "</th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
+                                    "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Item5) + "</th><th style='display:inline-flex;'><button id='deleteMessage" +
+                                    element.Item1 + "' onclick='deleteOtherMessage(" + element.Item1 + ", &quot;" + element.Item2 + "&quot;)'  style='float:right;'>Trinti</button></th></tr>");
+                            }
+                            }
                     }
                 });
                 updateScroll();
@@ -877,7 +954,7 @@
             let dataArray = new Array();
 
             data.forEach((element) => {
-                if (element.UserName.startsWith(search)) {
+                if (element.startsWith(search)) {
                     dataArray.push(element);
                 }
             });
@@ -893,7 +970,7 @@
                 let node = document.createElement("div")//("<div class='suggestions' onclick='selectSuggestion()'></div>");
 
                 node.setAttribute("class", "suggestions");
-                let theFunction = "selectSuggestion(\"" + dataArray[i].UserName + "\")";
+                let theFunction = "selectSuggestion(\"" + dataArray[i] + "\")";
                 //alert(theFunction);
                 node.setAttribute("onclick", theFunction);
 
@@ -901,7 +978,7 @@
                 img.src = '@Url.Content("~/images/prideti.png")';
                 img.width = "15";
                 node.appendChild(img);
-                node.appendChild(document.createTextNode(dataArray[i].UserName));
+                node.appendChild(document.createTextNode(dataArray[i]));
 
                 document.getElementById('results').appendChild(node);
                 //$('#suggestion' + i).append(data.results[i].original_title);
@@ -1325,31 +1402,91 @@
                 let msgs = JSON.parse(response);
                 $('#discussion').empty();
                 msgs.forEach((element) => {
-                    if ("@User.Identity.Name" === element.Item2) {
-                        $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
-                            element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
-                            "</strong> " + " " + formatDate(element.Item4) + "</th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
-                            "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Item5) + "<textarea class='form-control' id='edit" +
-                            element.Item1 + "' style='visibility: hidden; width: 0; height: 0'>" +
-                            element.Item5 + "</textarea></th><th style='display:inline-flex;'><button id='saveEdit" +
-                            element.Item1 + "' onclick='saveEdit(" + element.Item1 + ")' style='visibility: hidden; width: 0;'>Išsaugoti</button><button id='editMessage" +
-                            element.Item1 + "' onclick='editMessage(" + element.Item1 + ")'  style='float:right;'>Redaguoti</button><button id='deleteMessage" +
-                            element.Item1 + "' onclick='deleteMessage(" + element.Item1 + ")'  style='float:right;'>Trinti</button></th></tr>");
-                    }
-                    else {
-                        if (element.Item6 > element.Item7) {
-                            $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
-                                element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
-                                "</strong>" + " " + formatDate(element.Item4) + "</th></tr><tr class='otherMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
-                                "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Item5) + "</th><th></th></tr>");
+                   if ("@User.Identity.Name" === element.Item2) {
+                        if (validURL(element.Item5)) {
+                            if (!checkURL(element.Item5)) {
+                                $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
+                                    element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
+                                    "</strong> " + " " + formatDate(element.Item4) + "</th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
+                                    "' style='word-break: break-word; width:100%;'><a href='" + element.Item5 + "'target='_blank'>" + element.Item5 + "</a> <textarea class='form-control' id='edit" +
+                                    element.Item1 + "' style='visibility: hidden; width: 0; height: 0'>" +
+                                    element.Item5 + "</textarea></th><th style='display:inline-flex;'><button id='saveEdit" +
+                                    element.Item1 + "' onclick='saveEdit(" + element.Item1 + ")' style='visibility: hidden; width: 0;'>Išsaugoti</button><button id='editMessage" +
+                                    element.Item1 + "' onclick='editMessage(" + element.Item1 + ")'  style='float:right;'>Redaguoti</button><button id='deleteMessage" +
+                                    element.Item1 + "' onclick='deleteMessage(" + element.Item1 + ")'  style='float:right;'>Trinti</button></th></tr>");
+                            }
+                            else {
+                                $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
+                                    element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
+                                    "</strong> " + " " + formatDate(element.Item4) + "</th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
+                                    "' style='word-break: break-word; width:100%;'><a href='" + element.Item5 + "'target='_blank'>" + element.Item5 + "</a><br><img width='200px' src='" + element.Item5 + "'></img> <textarea class='form-control' id='edit" +
+                                    element.Item1 + "' style='visibility: hidden; width: 0; height: 0'>" +
+                                    element.Item5 + "</textarea></th><th style='display:inline-flex;'><button id='saveEdit" +
+                                    element.Item1 + "' onclick='saveEdit(" + element.Item1 + ")' style='visibility: hidden; width: 0;'>Išsaugoti</button><button id='editMessage" +
+                                    element.Item1 + "' onclick='editMessage(" + element.Item1 + ")'  style='float:right;'>Redaguoti</button><button id='deleteMessage" +
+                                    element.Item1 + "' onclick='deleteMessage(" + element.Item1 + ")'  style='float:right;'>Trinti</button></th></tr>");
+                            }
                         }
                         else {
                             $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
                                 element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
                                 "</strong> " + " " + formatDate(element.Item4) + "</th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
-                                "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Item5) + "</th><th style='display:inline-flex;'><button id='deleteMessage" +
-                                element.Item1 + "' onclick='deleteOtherMessage(" + element.Item1 + ", &quot;" + element.Item2 + "&quot;)'  style='float:right;'>Trinti</button></th></tr>");
+                                "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Item5) + "<textarea class='form-control' id='edit" +
+                                element.Item1 + "' style='visibility: hidden; width: 0; height: 0'>" +
+                                element.Item5 + "</textarea></th><th style='display:inline-flex;'><button id='saveEdit" +
+                                element.Item1 + "' onclick='saveEdit(" + element.Item1 + ")' style='visibility: hidden; width: 0;'>Išsaugoti</button><button id='editMessage" +
+                                element.Item1 + "' onclick='editMessage(" + element.Item1 + ")'  style='float:right;'>Redaguoti</button><button id='deleteMessage" +
+                                element.Item1 + "' onclick='deleteMessage(" + element.Item1 + ")'  style='float:right;'>Trinti</button></th></tr>");
                         }
+                    }
+                    else {
+                        if (element.Item6 > element.Item7) {
+                            if (validURL(element.Item5)) {
+                                if (!checkURL(element.Item5)) {
+                                    $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
+                                        element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
+                                        "</strong>" + " " + formatDate(element.Item4) + "</th></tr><tr class='otherMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
+                                        "' style='word-break: break-word; width:100%;'><a href='" + element.Item5 + "'target='_blank'>" + element.Item5 + "</a></th><th></th></tr>");
+                                }
+                                else {
+                                    $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
+                                        element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
+                                        "</strong>" + " " + formatDate(element.Item4) + "</th></tr><tr class='otherMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
+                                        "' style='word-break: break-word; width:100%;'><a href='" + element.Item5 + "'target='_blank'>" + element.Item5 + "</a><br><img width='200px' src='" + element.Item5 + "'></img></th><th></th></tr>");
+                                }
+                            }
+                            else {
+                                $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
+                                    element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
+                                    "</strong>" + " " + formatDate(element.Item4) + "</th></tr><tr class='otherMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
+                                    "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Item5) + "</th><th></th></tr>");
+                            }
+                        }
+                        else {
+                            if (validURL(element.Item5)) {
+                                if (!checkURL(element.Item5)) {
+                                    $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
+                                        element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
+                                        "</strong> " + " " + formatDate(element.Item4) + "</th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
+                                        "' style='word-break: break-word; width:100%;'><a href='" + element.Item5 + "'target='_blank'>" + element.Item5 + "</a></th><th style='display:inline-flex;'><button id='deleteMessage" +
+                                        element.Item1 + "' onclick='deleteOtherMessage(" + element.Item1 + ", &quot;" + element.Item2 + "&quot;)'  style='float:right;'>Trinti</button></th></tr>");
+                                }
+                                else {
+                                    $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
+                                        element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
+                                        "</strong> " + " " + formatDate(element.Item4) + "</th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
+                                        "' style='word-break: break-word; width:100%;'><a href='" + element.Item5 + "'target='_blank'>" + element.Item5 + "</a><br><img width='200px' src='" + element.Item5 + "'></img></th><th style='display:inline-flex;'><button id='deleteMessage" +
+                                        element.Item1 + "' onclick='deleteOtherMessage(" + element.Item1 + ", &quot;" + element.Item2 + "&quot;)'  style='float:right;'>Trinti</button></th></tr>");
+                                }
+                            }
+                            else {
+                                $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
+                                    element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
+                                    "</strong> " + " " + formatDate(element.Item4) + "</th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
+                                    "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Item5) + "</th><th style='display:inline-flex;'><button id='deleteMessage" +
+                                    element.Item1 + "' onclick='deleteOtherMessage(" + element.Item1 + ", &quot;" + element.Item2 + "&quot;)'  style='float:right;'>Trinti</button></th></tr>");
+                            }
+                            }
                     }
                     $("#cancelSearch").css("visibility", "visible");
                 });
@@ -1401,6 +1538,22 @@
                 day = '0' + day;
 
             return [year, month, day].join('-') + " " + hour + ":" + minute;
+        }
+
+
+
+        function validURL(str) {
+            var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
+                '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+                '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+                '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+                '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+                '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
+            return !!pattern.test(str);
+        }
+
+        function checkURL(url) {
+            return (url.match(/\.(jpeg|jpg|gif|png)$/) != null);
         }
 
 
