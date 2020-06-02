@@ -123,6 +123,9 @@
   <data name="Administravimo komandos, kurias gali naudoti kanalo kūrėjas:" xml:space="preserve">
     <value>Commands available to channel creator:</value>
   </data>
+  <data name="Aktyviausias vartotojas" xml:space="preserve">
+    <value>Most active user</value>
+  </data>
   <data name="Ar tikrai norite išspirti vartotoją" xml:space="preserve">
     <value>Really kick the user?</value>
   </data>
@@ -138,11 +141,17 @@
   <data name="Ar tikrai norite pašalinti kanalą?" xml:space="preserve">
     <value>Are you sure about that?</value>
   </data>
+  <data name="Gimimo data" xml:space="preserve">
+    <value>Birthday</value>
+  </data>
   <data name="Ieškoti" xml:space="preserve">
     <value>Search</value>
   </data>
   <data name="Ieškoti.." xml:space="preserve">
     <value>Search</value>
+  </data>
+  <data name="Išsaugoti" xml:space="preserve">
+    <value>Save</value>
   </data>
   <data name="Išspirti" xml:space="preserve">
     <value>Kick</value>
@@ -153,11 +162,20 @@
   <data name="Kanalas" xml:space="preserve">
     <value>Channel</value>
   </data>
+  <data name="Kanale parašyta žinučių" xml:space="preserve">
+    <value>Messages written in channel</value>
+  </data>
   <data name="Kanalo kūrėjas - vartotojas, kuris sukūrė kanalą. Gali atlikti visus administravimo veiksmus, taip pat ir ištrinti kanalą." xml:space="preserve">
     <value>Channel creator - has all actions available to administrator. Can delete channel.</value>
   </data>
   <data name="Kanalo pavadinimas" xml:space="preserve">
     <value>Channel name</value>
+  </data>
+  <data name="Kanalo rolė" xml:space="preserve">
+    <value>Channel role</value>
+  </data>
+  <data name="Kanalo sukūrimo data" xml:space="preserve">
+    <value>Channel creation date</value>
   </data>
   <data name="Kurti kanalą" xml:space="preserve">
     <value>Create a channel</value>
@@ -177,8 +195,17 @@
   <data name="Palikti kanalą" xml:space="preserve">
     <value>Leave channel</value>
   </data>
+  <data name="Parašė žinučių kanale" xml:space="preserve">
+    <value>Messages written in channel</value>
+  </data>
+  <data name="Pavardė" xml:space="preserve">
+    <value>Surname</value>
+  </data>
   <data name="Pridėti vartotoją" xml:space="preserve">
     <value>Add user</value>
+  </data>
+  <data name="Prisijungė prie kanalo" xml:space="preserve">
+    <value>Channel join date</value>
   </data>
   <data name="Prisijungęs kaip" xml:space="preserve">
     <value>Logged as</value>
@@ -187,6 +214,9 @@
     <value>Logges as Guest</value>
   </data>
   <data name="Priskirti" xml:space="preserve">
+    <value>Assign role</value>
+  </data>
+  <data name="Priskirti rolę" xml:space="preserve">
     <value>Assign role</value>
   </data>
   <data name="Pvz." xml:space="preserve">
@@ -198,14 +228,23 @@
   <data name="Rašyti žinutes galima tik prisijungus ir pasirinkus kanalą." xml:space="preserve">
     <value>To be able to weire a message you need to be logged in and chose a channel.</value>
   </data>
+  <data name="Redaguoti" xml:space="preserve">
+    <value>Edit</value>
+  </data>
   <data name="Registruoti vartotojai (išskleisti)" xml:space="preserve">
     <value>Registered Users (expand)</value>
   </data>
   <data name="Siųsti" xml:space="preserve">
     <value>Send</value>
   </data>
+  <data name="Trinti" xml:space="preserve">
+    <value>Delete</value>
+  </data>
   <data name="Uždaryti" xml:space="preserve">
     <value>Close</value>
+  </data>
+  <data name="Vardas" xml:space="preserve">
+    <value>Name</value>
   </data>
   <data name="Vartotojai kanale" xml:space="preserve">
     <value>Users in Channel</value>
@@ -215,6 +254,9 @@
   </data>
   <data name="Vartotojas - paprastas vartotojas, gali tik rašyti, trinti, redaguoti savo žinutes." xml:space="preserve">
     <value>User. Can post, edit, delete his own messages.</value>
+  </data>
+  <data name="Vartotojo" xml:space="preserve">
+    <value>User</value>
   </data>
   <data name="Vartotojo kanalai" xml:space="preserve">
     <value>User Channels</value>

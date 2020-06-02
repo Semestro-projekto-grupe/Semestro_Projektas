@@ -263,7 +263,7 @@
             </div>
             <div class="modal-footer" style="height:130px">
                 <div style="position:absolute;">
-                    <p>Priskirti rolę: </p>
+                    <p>@_localizer.GetString("Priskirti rolę"): </p>
                     <select class="form-control form-control-sm" id="rolesList">
                         @foreach (string s in roles)
                         {
@@ -836,9 +836,9 @@
                                     "' style='word-break: break-word; width:100%;'><a href='" + element.Item5 + "'target='_blank'>" + element.Item5 + "</a> <textarea class='form-control' id='edit" +
                                     element.Item1 + "' style='visibility: hidden; width: 0; height: 0'>" +
                                     element.Item5 + "</textarea></th><th style='display:inline-flex;'><button id='saveEdit" +
-                                    element.Item1 + "' onclick='saveEdit(" + element.Item1 + ")' style='visibility: hidden; width: 0;'>Išsaugoti</button><button id='editMessage" +
-                                    element.Item1 + "' onclick='editMessage(" + element.Item1 + ")'  style='float:right;'>Redaguoti</button><button id='deleteMessage" +
-                                    element.Item1 + "' onclick='deleteMessage(" + element.Item1 + ")'  style='float:right;'>Trinti</button></th></tr>");
+                                    element.Item1 + "' onclick='saveEdit(" + element.Item1 + ")' style='visibility: hidden; width: 0;'>@_localizer.GetString("Išsaugoti")</button><button id='editMessage" +
+                                    element.Item1 + "' onclick='editMessage(" + element.Item1 + ")'  style='float:right;'>@_localizer.GetString("Redaguoti")</button><button id='deleteMessage" +
+                                    element.Item1 + "' onclick='deleteMessage(" + element.Item1 + ")'  style='float:right;'>@_localizer.GetString("Trinti")</button></th></tr>");
                             }
                             else {
                                 $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
@@ -847,9 +847,9 @@
                                     "' style='word-break: break-word; width:100%;'><a href='" + element.Item5 + "'target='_blank'>" + element.Item5 + "</a><br><img width='200px' src='" + element.Item5 + "'></img> <textarea class='form-control' id='edit" +
                                     element.Item1 + "' style='visibility: hidden; width: 0; height: 0'>" +
                                     element.Item5 + "</textarea></th><th style='display:inline-flex;'><button id='saveEdit" +
-                                    element.Item1 + "' onclick='saveEdit(" + element.Item1 + ")' style='visibility: hidden; width: 0;'>Išsaugoti</button><button id='editMessage" +
-                                    element.Item1 + "' onclick='editMessage(" + element.Item1 + ")'  style='float:right;'>Redaguoti</button><button id='deleteMessage" +
-                                    element.Item1 + "' onclick='deleteMessage(" + element.Item1 + ")'  style='float:right;'>Trinti</button></th></tr>");
+                                    element.Item1 + "' onclick='saveEdit(" + element.Item1 + ")' style='visibility: hidden; width: 0;'>@_localizer.GetString("Išsaugoti")</button><button id='editMessage" +
+                                    element.Item1 + "' onclick='editMessage(" + element.Item1 + ")'  style='float:right;'>@_localizer.GetString("Redaguoti")</button><button id='deleteMessage" +
+                                    element.Item1 + "' onclick='deleteMessage(" + element.Item1 + ")'  style='float:right;'>@_localizer.GetString("Trinti")</button></th></tr>");
                             }
                         }
                         else {
@@ -859,9 +859,9 @@
                                 "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Item5) + "<textarea class='form-control' id='edit" +
                                 element.Item1 + "' style='visibility: hidden; width: 0; height: 0'>" +
                                 element.Item5 + "</textarea></th><th style='display:inline-flex;'><button id='saveEdit" +
-                                element.Item1 + "' onclick='saveEdit(" + element.Item1 + ")' style='visibility: hidden; width: 0;'>Išsaugoti</button><button id='editMessage" +
-                                element.Item1 + "' onclick='editMessage(" + element.Item1 + ")'  style='float:right;'>Redaguoti</button><button id='deleteMessage" +
-                                element.Item1 + "' onclick='deleteMessage(" + element.Item1 + ")'  style='float:right;'>Trinti</button></th></tr>");
+                                element.Item1 + "' onclick='saveEdit(" + element.Item1 + ")' style='visibility: hidden; width: 0;'>@_localizer.GetString("Išsaugoti")</button><button id='editMessage" +
+                                element.Item1 + "' onclick='editMessage(" + element.Item1 + ")'  style='float:right;'>@_localizer.GetString("Redaguoti")</button><button id='deleteMessage" +
+                                element.Item1 + "' onclick='deleteMessage(" + element.Item1 + ")'  style='float:right;'>@_localizer.GetString("Trinti")</button></th></tr>");
                         }
                     }
                     else {
@@ -894,14 +894,14 @@
                                         element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
                                         "</strong> " + " " + formatDate(element.Item4) + "</th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
                                         "' style='word-break: break-word; width:100%;'><a href='" + element.Item5 + "'target='_blank'>" + element.Item5 + "</a></th><th style='display:inline-flex;'><button id='deleteMessage" +
-                                        element.Item1 + "' onclick='deleteOtherMessage(" + element.Item1 + ", &quot;" + element.Item2 + "&quot;)'  style='float:right;'>Trinti</button></th></tr>");
+                                        element.Item1 + "' onclick='deleteOtherMessage(" + element.Item1 + ", &quot;" + element.Item2 + "&quot;)'  style='float:right;'>@_localizer.GetString("Trinti")</button></th></tr>");
                                 }
                                 else {
                                     $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
                                         element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
                                         "</strong> " + " " + formatDate(element.Item4) + "</th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
                                         "' style='word-break: break-word; width:100%;'><a href='" + element.Item5 + "'target='_blank'>" + element.Item5 + "</a><br><img width='200px' src='" + element.Item5 + "'></img></th><th style='display:inline-flex;'><button id='deleteMessage" +
-                                        element.Item1 + "' onclick='deleteOtherMessage(" + element.Item1 + ", &quot;" + element.Item2 + "&quot;)'  style='float:right;'>Trinti</button></th></tr>");
+                                        element.Item1 + "' onclick='deleteOtherMessage(" + element.Item1 + ", &quot;" + element.Item2 + "&quot;)'  style='float:right;'>@_localizer.GetString("Trinti")</button></th></tr>");
                                 }
                             }
                             else {
@@ -909,7 +909,7 @@
                                     element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
                                     "</strong> " + " " + formatDate(element.Item4) + "</th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
                                     "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Item5) + "</th><th style='display:inline-flex;'><button id='deleteMessage" +
-                                    element.Item1 + "' onclick='deleteOtherMessage(" + element.Item1 + ", &quot;" + element.Item2 + "&quot;)'  style='float:right;'>Trinti</button></th></tr>");
+                                    element.Item1 + "' onclick='deleteOtherMessage(" + element.Item1 + ", &quot;" + element.Item2 + "&quot;)'  style='float:right;'>@_localizer.GetString("Trinti")</button></th></tr>");
                             }
                             }
                     }
@@ -1186,22 +1186,22 @@
                        // let channel = JSON.parse(response);
                         console.log("success get messages! " + response + " response ilgis " + response.length);
                         $('#userData').empty();
-                        $('#profileName').text("Vartotojo " + response.item1 + " profilis");
-                        $('#userData').append("<p><b>Vardas: </b>" + response.item2 + "</p>");
-                        $('#userData').append("<p><b>Pavardė: </b>" + response.item3 + "</p>");
+                        $('#profileName').text("@_localizer.GetString("Vartotojo") " + response.item1 + " profilis");
+                        $('#userData').append("<p><b>@_localizer.GetString("Vardas"): </b>" + response.item2 + "</p>");
+                        $('#userData').append("<p><b>@_localizer.GetString("Pavardė"): </b>" + response.item3 + "</p>");
                         if (response.item4 === "1850-01-01") {
-                            $('#userData').append("<p><b>Gimimo data: </b>(Paslėpta)</p>");
+                            $('#userData').append("<p><b>@_localizer.GetString("Gimimo data"): </b>(Paslėpta)</p>");
                         }
                         else {
-                            $('#userData').append("<p><b>Gimimo data: </b>" + response.item4 + "</p>");
+                            $('#userData').append("<p><b>@_localizer.GetString("Gimimo data"): </b>" + response.item4 + "</p>");
                         }
-                        $('#userData').append("<p><b>Kanalo rolė: </b>" + response.item6 + "</p>");
-                        $('#userData').append("<p><b>Prisijungė prie kanalo: </b>" + response.rest.item1 + "</p>");
-                        $('#userData').append("<p><b>Parašė žinučių kanale: </b>" + response.item7 + "</p>");
+                        $('#userData').append("<p><b>@_localizer.GetString("Kanalo rolė"): </b>" + response.item6 + "</p>");
+                        $('#userData').append("<p><b>@_localizer.GetString("Prisijungė prie kanalo"): </b>" + response.rest.item1 + "</p>");
+                        $('#userData').append("<p><b>@_localizer.GetString("Parašė žinučių kanale"): </b>" + response.item7 + "</p>");
                         $("#pfp").attr("src", "/avatars/" + response.item5);
                         $("#kickUsr").attr("onclick", "kickUser('" + id + "', '" + response.item1 + "')");
                         $("#assignRole").attr("onclick", "assignRole('" + id + "')");
-                        $('#kickUserName').text("Ar tikrai norite išspirti vartotoją " + response.item1);
+                        $('#kickUserName').text("@_localizer.GetString("Ar tikrai norite išspirti vartotoją") " + response.item1);
                         console.log("--------------- " + response.item7);
                     },
                     failure: function (response) {
@@ -1309,15 +1309,15 @@
                         // let channel = JSON.parse(response);
                          console.log("success get messages! " + response + " response ilgis " + response.length);
                          $('#channelData').empty();
-                         $('#channelName').text("Kanalas " + response.item2);
-                         $('#channelData').append("<p><b>Kanalo sukūrimo data: </b>" + response.item6 + "</p>");
-                         $('#channelData').append("<p><b>Kanale parašyta žinučių: </b>" + response.item3 + "</p>");
-                         $('#channelData').append("<p><b>Aktyviausias vartotojas: </b>" + response.item4 + " (" + response.item5 + " žinučių)</p>");
+                         $('#channelName').text("@_localizer.GetString("Kanalas") " + response.item2);
+                         $('#channelData').append("<p><b>@_localizer.GetString("Kanalo sukūrimo data"): </b>" + response.item6 + "</p>");
+                         $('#channelData').append("<p><b>@_localizer.GetString("Kanale parašyta žinučių"): </b>" + response.item3 + "</p>");
+                         $('#channelData').append("<p><b>@_localizer.GetString("Aktyviausias vartotojas"): </b>" + response.item4 + " (" + response.item5 + " žinučių)</p>");
                         // $('#channelData').append("<p><b>Gimimo data: </b>" + response.item5 + "</p>");
                          $("#deleteChn").attr("onclick", "deleteChannel(" + response.item1 + ")");
-                         $('#deleteChannelName').text("Ar tikrai norite pašalinti kanalą " + response.item2 + "?");
+                         $('#deleteChannelName').text("@_localizer.GetString("Ar tikrai norite pašalinti kanalą") " + response.item2 + "?");
                          $("#leaveChn").attr("onclick", "leaveChannel(" + response.item1 + ")");
-                         $('#leaveChannelName').text("Ar tikrai norite palikti kanalą " + response.item2 + "?");
+                         $('#leaveChannelName').text("@_localizer.GetString("Ar tikrai norite palikti kanalą") " + response.item2 + "?");
 
                          //liktu isverst, "Kanalas", "Ar tikrai norite pasalinti/palikti kanala"
                          //tie patys kintamieji ir i ekrana keliauja ir naudojami uzklausoje
@@ -1413,9 +1413,9 @@
                                     "' style='word-break: break-word; width:100%;'><a href='" + element.Item5 + "'target='_blank'>" + element.Item5 + "</a> <textarea class='form-control' id='edit" +
                                     element.Item1 + "' style='visibility: hidden; width: 0; height: 0'>" +
                                     element.Item5 + "</textarea></th><th style='display:inline-flex;'><button id='saveEdit" +
-                                    element.Item1 + "' onclick='saveEdit(" + element.Item1 + ")' style='visibility: hidden; width: 0;'>Išsaugoti</button><button id='editMessage" +
-                                    element.Item1 + "' onclick='editMessage(" + element.Item1 + ")'  style='float:right;'>Redaguoti</button><button id='deleteMessage" +
-                                    element.Item1 + "' onclick='deleteMessage(" + element.Item1 + ")'  style='float:right;'>Trinti</button></th></tr>");
+                                    element.Item1 + "' onclick='saveEdit(" + element.Item1 + ")' style='visibility: hidden; width: 0;'>@_localizer.GetString("Išsaugoti")</button><button id='editMessage" +
+                                    element.Item1 + "' onclick='editMessage(" + element.Item1 + ")'  style='float:right;'>@_localizer.GetString("Redaguoti")</button><button id='deleteMessage" +
+                                    element.Item1 + "' onclick='deleteMessage(" + element.Item1 + ")'  style='float:right;'>@_localizer.GetString("Trinti")</button></th></tr>");
                             }
                             else {
                                 $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
@@ -1424,9 +1424,9 @@
                                     "' style='word-break: break-word; width:100%;'><a href='" + element.Item5 + "'target='_blank'>" + element.Item5 + "</a><br><img width='200px' src='" + element.Item5 + "'></img> <textarea class='form-control' id='edit" +
                                     element.Item1 + "' style='visibility: hidden; width: 0; height: 0'>" +
                                     element.Item5 + "</textarea></th><th style='display:inline-flex;'><button id='saveEdit" +
-                                    element.Item1 + "' onclick='saveEdit(" + element.Item1 + ")' style='visibility: hidden; width: 0;'>Išsaugoti</button><button id='editMessage" +
-                                    element.Item1 + "' onclick='editMessage(" + element.Item1 + ")'  style='float:right;'>Redaguoti</button><button id='deleteMessage" +
-                                    element.Item1 + "' onclick='deleteMessage(" + element.Item1 + ")'  style='float:right;'>Trinti</button></th></tr>");
+                                    element.Item1 + "' onclick='saveEdit(" + element.Item1 + ")' style='visibility: hidden; width: 0;'>@_localizer.GetString("Išsaugoti")</button><button id='editMessage" +
+                                    element.Item1 + "' onclick='editMessage(" + element.Item1 + ")'  style='float:right;'>@_localizer.GetString("Redaguoti")</button><button id='deleteMessage" +
+                                    element.Item1 + "' onclick='deleteMessage(" + element.Item1 + ")'  style='float:right;'>@_localizer.GetString("Trinti")</button></th></tr>");
                             }
                         }
                         else {
@@ -1436,9 +1436,9 @@
                                 "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Item5) + "<textarea class='form-control' id='edit" +
                                 element.Item1 + "' style='visibility: hidden; width: 0; height: 0'>" +
                                 element.Item5 + "</textarea></th><th style='display:inline-flex;'><button id='saveEdit" +
-                                element.Item1 + "' onclick='saveEdit(" + element.Item1 + ")' style='visibility: hidden; width: 0;'>Išsaugoti</button><button id='editMessage" +
-                                element.Item1 + "' onclick='editMessage(" + element.Item1 + ")'  style='float:right;'>Redaguoti</button><button id='deleteMessage" +
-                                element.Item1 + "' onclick='deleteMessage(" + element.Item1 + ")'  style='float:right;'>Trinti</button></th></tr>");
+                                element.Item1 + "' onclick='saveEdit(" + element.Item1 + ")' style='visibility: hidden; width: 0;'>@_localizer.GetString("Išsaugoti")</button><button id='editMessage" +
+                                element.Item1 + "' onclick='editMessage(" + element.Item1 + ")'  style='float:right;'>@_localizer.GetString("Redaguoti")</button><button id='deleteMessage" +
+                                element.Item1 + "' onclick='deleteMessage(" + element.Item1 + ")'  style='float:right;'>@_localizer.GetString("Trinti")</button></th></tr>");
                         }
                     }
                     else {
@@ -1471,14 +1471,14 @@
                                         element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
                                         "</strong> " + " " + formatDate(element.Item4) + "</th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
                                         "' style='word-break: break-word; width:100%;'><a href='" + element.Item5 + "'target='_blank'>" + element.Item5 + "</a></th><th style='display:inline-flex;'><button id='deleteMessage" +
-                                        element.Item1 + "' onclick='deleteOtherMessage(" + element.Item1 + ", &quot;" + element.Item2 + "&quot;)'  style='float:right;'>Trinti</button></th></tr>");
+                                        element.Item1 + "' onclick='deleteOtherMessage(" + element.Item1 + ", &quot;" + element.Item2 + "&quot;)'  style='float:right;'>@_localizer.GetString("Trinti")</button></th></tr>");
                                 }
                                 else {
                                     $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
                                         element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
                                         "</strong> " + " " + formatDate(element.Item4) + "</th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
                                         "' style='word-break: break-word; width:100%;'><a href='" + element.Item5 + "'target='_blank'>" + element.Item5 + "</a><br><img width='200px' src='" + element.Item5 + "'></img></th><th style='display:inline-flex;'><button id='deleteMessage" +
-                                        element.Item1 + "' onclick='deleteOtherMessage(" + element.Item1 + ", &quot;" + element.Item2 + "&quot;)'  style='float:right;'>Trinti</button></th></tr>");
+                                        element.Item1 + "' onclick='deleteOtherMessage(" + element.Item1 + ", &quot;" + element.Item2 + "&quot;)'  style='float:right;'>@_localizer.GetString("Trinti")</button></th></tr>");
                                 }
                             }
                             else {
@@ -1486,7 +1486,7 @@
                                     element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
                                     "</strong> " + " " + formatDate(element.Item4) + "</th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
                                     "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Item5) + "</th><th style='display:inline-flex;'><button id='deleteMessage" +
-                                    element.Item1 + "' onclick='deleteOtherMessage(" + element.Item1 + ", &quot;" + element.Item2 + "&quot;)'  style='float:right;'>Trinti</button></th></tr>");
+                                    element.Item1 + "' onclick='deleteOtherMessage(" + element.Item1 + ", &quot;" + element.Item2 + "&quot;)'  style='float:right;'>@_localizer.GetString("Trinti")</button></th></tr>");
                             }
                             }
                     }
