@@ -246,6 +246,9 @@
         width:100%;
     }
 
+    #allEmojis > *{
+        cursor: pointer;
+    }
 
 
 </style>
@@ -287,7 +290,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title" id="kickUserName">@_localizer.GetString("Ar tikrai norite išspirti vartotoją")</h4>
+                <h4 class="modal-title" id="kickUserName">Ar tikrai norite išspirti vartotoją</h4>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" data-dismiss="modal">@_localizer.GetString("Uždaryti")</button>
@@ -324,7 +327,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title" id="deleteChannelName">@_localizer.GetString("Ar tikrai norite pašalinti kanalą?")</h4>
+                <h4 class="modal-title" id="deleteChannelName">Ar tikrai norite pašalinti kanalą?</h4>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" data-dismiss="modal">@_localizer.GetString("Uždaryti")</button>
@@ -339,7 +342,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title" id="leaveChannelName">@_localizer.GetString("Ar tikrai norite palikti kanalą?")</h4>
+                <h4 class="modal-title" id="leaveChannelName">Ar tikrai norite palikti kanalą?</h4>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" data-dismiss="modal">@_localizer.GetString("Uždaryti")</button>
@@ -416,30 +419,236 @@
 </div>
 
 <div>
-    <p class="expand" id="expand-1">@_localizer.GetString("Naudojimosi informacija")</p>
+    <p class="expand" id="expand-3">Emoji</p>
 </div>
-<div class="expandable" id="expandable-1">
-    <p>
-        <b>@_localizer.GetString("Rašyti žinutes galima tik prisijungus ir pasirinkus kanalą.")</b><br>
-        <b>@_localizer.GetString("Vartotojai turi roles:")</b><br>
-        @_localizer.GetString("Kanalo kūrėjas - vartotojas, kuris sukūrė kanalą. Gali atlikti visus administravimo veiksmus, taip pat ir ištrinti kanalą.")<br>
-        @_localizer.GetString("Administratorius - vartotojas, kuris administruoja kanalą. Gali atlikti visus administravimo veiksmus, taip pat ir priskirti roles.")<br>
-        @_localizer.GetString("Moderatorius - vartotojas, kuris administruoja kanalą. Gali administruoti paparastų vartotojų žinutes.")<br>
-        @_localizer.GetString("Vartotojas - paprastas vartotojas, gali tik rašyti, trinti, redaguoti savo žinutes.")<br>
-        <hr>
-        <b>@_localizer.GetString("Administravimo komandos, kurias gali naudoti kanalo kūrėjas:") </b><br>
-        <i>-delete n</i><br>
-        @_localizer.GetString("Ištrina n žinučių")<br>
-        @_localizer.GetString("Pvz.") <br>
-        -delete 10<br>
-        -delete 5<br>
-        -delete 1000<br>
-        <br>
-        @_localizer.GetString("Žinučių filtravimui visi vartotojai gali naudotis žinučių paieškos funkcija")<br>
-    </p>
+<div class="expandable" id="expandable-3">
+    <div class="panel-body" style="height:200px;">
+        <p style="font-size:30px" id="allEmojis">
+            <nobr onclick="writeEmoji('😀')">😀</nobr>
+            <nobr onclick="writeEmoji('😂')">😂</nobr>
+            <nobr onclick="writeEmoji('🤣')">🤣</nobr>
+            <nobr onclick="writeEmoji('😃')">😃</nobr>
+            <nobr onclick="writeEmoji('😄')">😄</nobr>
+            <nobr onclick="writeEmoji('😅')">😅</nobr>
+            <nobr onclick="writeEmoji('😆')">😆</nobr>
+            <nobr onclick="writeEmoji('😉')">😉</nobr>
+            <nobr onclick="writeEmoji('😊')">😊</nobr>
+            <nobr onclick="writeEmoji('😋')">😋</nobr>
+            <nobr onclick="writeEmoji('😎')">😎</nobr>
+            <nobr onclick="writeEmoji('😍')">😍</nobr>
+            <nobr onclick="writeEmoji('😘')">😘</nobr>
+            <nobr onclick="writeEmoji('😗')">😗</nobr>
+            <nobr onclick="writeEmoji('😙')">😙</nobr>
+            <nobr onclick="writeEmoji('😚')">😚</nobr>
+            <nobr onclick="writeEmoji('🙂')">🙂</nobr>
+            <nobr onclick="writeEmoji('🤗')">🤗</nobr>
+            <nobr onclick="writeEmoji('🤩')">🤩</nobr>
+            <nobr onclick="writeEmoji('🤔')">🤔</nobr>
+            <nobr onclick="writeEmoji('🤨')">🤨</nobr>
+            <nobr onclick="writeEmoji('😐')">😐</nobr>
+            <nobr onclick="writeEmoji('😑')">😑</nobr>
+            <nobr onclick="writeEmoji('😶')">😶</nobr>
+            <nobr onclick="writeEmoji('🙄')">🙄</nobr>
+            <nobr onclick="writeEmoji('😏')">😏</nobr>
+            <nobr onclick="writeEmoji('😣')">😣</nobr>
+            <nobr onclick="writeEmoji('😥')">😥</nobr>
+            <nobr onclick="writeEmoji('😮')">😮</nobr>
+            <nobr onclick="writeEmoji('🤐')">🤐</nobr>
+            <nobr onclick="writeEmoji('😯')">😯</nobr>
+            <nobr onclick="writeEmoji('😪')">😪</nobr>
+            <nobr onclick="writeEmoji('😫')">😫</nobr>
+            <nobr onclick="writeEmoji('😴')">😴</nobr>
+            <nobr onclick="writeEmoji('😌')">😌</nobr>
+            <nobr onclick="writeEmoji('😛')">😛</nobr>
+            <nobr onclick="writeEmoji('😜')">😜</nobr>
+            <nobr onclick="writeEmoji('😝')">😝</nobr>
+            <nobr onclick="writeEmoji('🤤')">🤤</nobr>
+            <nobr onclick="writeEmoji('😒')">😒</nobr>
+            <!---->
+            <nobr onclick="writeEmoji('😓')">😓</nobr>
+            <nobr onclick="writeEmoji('😔')">😔</nobr>
+            <nobr onclick="writeEmoji('😕')">😕</nobr>
+            <nobr onclick="writeEmoji('🙃')">🙃</nobr>
+            <nobr onclick="writeEmoji('🤑')">🤑</nobr>
+            <nobr onclick="writeEmoji('😲')">😲</nobr>
+            <nobr onclick="writeEmoji('🙁')">🙁</nobr>
+            <nobr onclick="writeEmoji('😖')">😖</nobr>
+            <nobr onclick="writeEmoji('😞')">😞</nobr>
+            <nobr onclick="writeEmoji('😟')">😟</nobr>
+            <nobr onclick="writeEmoji('😤')">😤</nobr>
+            <nobr onclick="writeEmoji('😢')">😢</nobr>
+            <nobr onclick="writeEmoji('😭')">😭</nobr>
+            <nobr onclick="writeEmoji('😦')">😦</nobr>
+            <nobr onclick="writeEmoji('😧')">😧</nobr>
+            <nobr onclick="writeEmoji('😨')">😨</nobr>
+            <nobr onclick="writeEmoji('😩')">😩</nobr>
+            <nobr onclick="writeEmoji('🤯')">🤯</nobr>
+            <nobr onclick="writeEmoji('😬')">😬</nobr>
+            <nobr onclick="writeEmoji('😰')">😰</nobr>
+            <nobr onclick="writeEmoji('😱')">😱</nobr>
+            <nobr onclick="writeEmoji('😳')">😳</nobr>
+            <nobr onclick="writeEmoji('🤪')">🤪</nobr>
+            <nobr onclick="writeEmoji('😵')">😵</nobr>
+            <nobr onclick="writeEmoji('😡')">😡</nobr>
+            <nobr onclick="writeEmoji('😠')">😠</nobr>
+            <nobr onclick="writeEmoji('🤬')">🤬</nobr>
+            <nobr onclick="writeEmoji('😷')">😷</nobr>
+            <nobr onclick="writeEmoji('🤒')">🤒</nobr>
+            <nobr onclick="writeEmoji('🤕')">🤕</nobr>
+            <nobr onclick="writeEmoji('🤢')">🤢</nobr>
+            <nobr onclick="writeEmoji('🤮')">🤮</nobr>
+            <nobr onclick="writeEmoji('🤧')">🤧</nobr>
+            <nobr onclick="writeEmoji('😇')">😇</nobr>
+            <nobr onclick="writeEmoji('🤠')">🤠</nobr>
+            <nobr onclick="writeEmoji('🤡')">🤡</nobr>
+            <nobr onclick="writeEmoji('🤥')">🤥</nobr>
+            <nobr onclick="writeEmoji('🤫')">🤫</nobr>
+            <nobr onclick="writeEmoji('🤭')">🤭</nobr>
+            <nobr onclick="writeEmoji('🧐')">🧐</nobr>
+            <nobr onclick="writeEmoji('🤓')">🤓</nobr>
+            <nobr onclick="writeEmoji('😈')">😈</nobr>
+            <nobr onclick="writeEmoji('👿')">👿</nobr>
+            <nobr onclick="writeEmoji('👹')">👹</nobr>
+            <nobr onclick="writeEmoji('👺')">👺</nobr>
+            <nobr onclick="writeEmoji('💀')">💀</nobr>
+            <nobr onclick="writeEmoji('👻')">👻</nobr>
+            <nobr onclick="writeEmoji('👽')">👽</nobr>
+            <nobr onclick="writeEmoji('🤖')">🤖</nobr>
+            <nobr onclick="writeEmoji('💩')">💩</nobr>
+            <nobr onclick="writeEmoji('😺')">😺</nobr>
+            <nobr onclick="writeEmoji('😸')">😸</nobr>
+            <nobr onclick="writeEmoji('😹')">😹</nobr>
+            <nobr onclick="writeEmoji('😻')">😻</nobr>
+            <nobr onclick="writeEmoji('😼')">😼</nobr>
+            <nobr onclick="writeEmoji('😽')">😽</nobr>
+            <nobr onclick="writeEmoji('🙀')">🙀</nobr>
+            <nobr onclick="writeEmoji('😿')">😿</nobr>
+            <nobr onclick="writeEmoji('😾')">😾</nobr>
+            <nobr onclick="writeEmoji('👍')">👍</nobr>
+            <nobr onclick="writeEmoji('👎')">👎</nobr>
+            <nobr onclick="writeEmoji('👊')">👊</nobr>
+            <nobr onclick="writeEmoji('✊')">✊</nobr>
+            <nobr onclick="writeEmoji('🤛')">🤛</nobr>
+            <nobr onclick="writeEmoji('🤜')">🤜</nobr>
+            <nobr onclick="writeEmoji('🤞')">🤞</nobr>
+            <nobr onclick="writeEmoji('✌️')">✌️</nobr>
+            <nobr onclick="writeEmoji('🤟')">🤟</nobr>
+            <nobr onclick="writeEmoji('🤘')">🤘</nobr>
+            <nobr onclick="writeEmoji('👌')">👌</nobr>
+            <nobr onclick="writeEmoji('👈')">👈</nobr>
+            <nobr onclick="writeEmoji('👉')">👉</nobr>
+            <nobr onclick="writeEmoji('👆')">👆</nobr>
+            <nobr onclick="writeEmoji('👇')">👇</nobr>
+            <nobr onclick="writeEmoji('☝️')">☝️</nobr>
+            <nobr onclick="writeEmoji('✋')">✋</nobr>
+            <nobr onclick="writeEmoji('🤚')">🤚</nobr>
+            <nobr onclick="writeEmoji('🖐')">🖐</nobr>
+            <nobr onclick="writeEmoji('🖖')">🖖</nobr>
+            <nobr onclick="writeEmoji('👋')">👋</nobr>
+            <nobr onclick="writeEmoji('🤙')">🤙</nobr>
+            <nobr onclick="writeEmoji('💪')">💪</nobr>
+            <nobr onclick="writeEmoji('⌚️')">⌚️</nobr>
+            <nobr onclick="writeEmoji('📱')">📱</nobr>
+            <nobr onclick="writeEmoji('📲')">📲</nobr>
+            <nobr onclick="writeEmoji('💻')">💻</nobr>
+            <nobr onclick="writeEmoji('⌨️')">⌨️</nobr>
+            <nobr onclick="writeEmoji('🖥')">🖥</nobr>
+            <nobr onclick="writeEmoji('🖨')">🖨</nobr>
+            <nobr onclick="writeEmoji('🖱')">🖱</nobr>
+            <nobr onclick="writeEmoji('🖲')">🖲</nobr>
+            <nobr onclick="writeEmoji('🕹')">🕹</nobr>
+            <nobr onclick="writeEmoji('🗜')">🗜</nobr>
+            <nobr onclick="writeEmoji('💽')">💽</nobr>
+            <nobr onclick="writeEmoji('💾')">💾</nobr>
+            <nobr onclick="writeEmoji('💿')">💿</nobr>
+            <nobr onclick="writeEmoji('📀')">📀</nobr>
+            <nobr onclick="writeEmoji('📼')">📼</nobr>
+            <nobr onclick="writeEmoji('📷')">📷</nobr>
+            <nobr onclick="writeEmoji('📸')">📸</nobr>
+            <nobr onclick="writeEmoji('📹')">📹</nobr>
+            <nobr onclick="writeEmoji('🎥')">🎥</nobr>
+            <nobr onclick="writeEmoji('📽')">📽</nobr>
+            <nobr onclick="writeEmoji('🎞')">🎞</nobr>
+            <nobr onclick="writeEmoji('📞')">📞</nobr>
+            <nobr onclick="writeEmoji('☎️')">☎️</nobr>
+            <nobr onclick="writeEmoji('📟')">📟</nobr>
+            <nobr onclick="writeEmoji('📠')">📠</nobr>
+            <nobr onclick="writeEmoji('📺')">📺</nobr>
+            <nobr onclick="writeEmoji('📻')">📻</nobr>
+            <nobr onclick="writeEmoji('🎙')">🎙</nobr>
+            <nobr onclick="writeEmoji('🎚')">🎚</nobr>
+            <nobr onclick="writeEmoji('🎛')">🎛</nobr>
+            <nobr onclick="writeEmoji('⏱')">⏱</nobr>
+            <nobr onclick="writeEmoji('⏲')">⏲</nobr>
+            <nobr onclick="writeEmoji('⏰')">⏰</nobr>
+            <nobr onclick="writeEmoji('🕰')">🕰</nobr>
+            <nobr onclick="writeEmoji('⌛️')">⌛️</nobr>
+            <nobr onclick="writeEmoji('⏳')">⏳</nobr>
+            <nobr onclick="writeEmoji('📡')">📡</nobr>
+            <nobr onclick="writeEmoji('🔋')">🔋</nobr>
+            <nobr onclick="writeEmoji('🔌')">🔌</nobr>
+            <nobr onclick="writeEmoji('💡')">💡</nobr>
+            <nobr onclick="writeEmoji('🔦')">🔦</nobr>
+            <nobr onclick="writeEmoji('🕯')">🕯</nobr>
+            <nobr onclick="writeEmoji('🗑')">🗑</nobr>
+            <nobr onclick="writeEmoji('🛢')">🛢</nobr>
+            <nobr onclick="writeEmoji('💸')">💸</nobr>
+            <nobr onclick="writeEmoji('💵')">💵</nobr>
+            <nobr onclick="writeEmoji('💴')">💴</nobr>
+            <nobr onclick="writeEmoji('💶')">💴</nobr>
+            <nobr onclick="writeEmoji('💷')">💷</nobr>
+            <nobr onclick="writeEmoji('💰')">💰</nobr>
+            <nobr onclick="writeEmoji('💎')">💎</nobr>
+            <nobr onclick="writeEmoji('⚖️')">⚖️</nobr>
+            <nobr onclick="writeEmoji('🔧')">🔧</nobr>
+            <nobr onclick="writeEmoji('🔨')">🔨</nobr>
+            <nobr onclick="writeEmoji('⚒')">⚒</nobr>
+            <nobr onclick="writeEmoji('🛠')">🛠</nobr>
+            <nobr onclick="writeEmoji('⛏')">⛏</nobr>
+            <nobr onclick="writeEmoji('🔩')">🔩</nobr>
+            <nobr onclick="writeEmoji('⚙️')">⚙️</nobr>
+            <nobr onclick="writeEmoji('⛓')">⛓</nobr>
+            <nobr onclick="writeEmoji('🔫')">🔫</nobr>
+            <nobr onclick="writeEmoji('💣')">💣</nobr>
+            <nobr onclick="writeEmoji('🔪')">🔪</nobr>
+            <nobr onclick="writeEmoji('🗡')">🗡</nobr>
+            <nobr onclick="writeEmoji('⚔️')">⚔️</nobr>
+            <nobr onclick="writeEmoji('🛡')">🛡</nobr>
+            <nobr onclick="writeEmoji('🚬')">🚬</nobr>
+            <nobr onclick="writeEmoji('⚰️')">⚰️</nobr>
+            <nobr onclick="writeEmoji('⚱️')">⚱️</nobr>
+            <nobr onclick="writeEmoji('🏺')">🏺</nobr>
+        </p>
+    </div>
 </div>
 
-                </div>
+
+
+    <div>
+        <p class="expand" id="expand-1">@_localizer.GetString("Naudojimosi informacija")</p>
+    </div>
+    <div class="expandable" id="expandable-1">
+        <p>
+            <b>@_localizer.GetString("Rašyti žinutes galima tik prisijungus ir pasirinkus kanalą.")</b><br>
+            <b>@_localizer.GetString("Vartotojai turi roles:")</b><br>
+            @_localizer.GetString("Kanalo kūrėjas - vartotojas, kuris sukūrė kanalą. Gali atlikti visus administravimo veiksmus, taip pat ir ištrinti kanalą.")<br>
+            @_localizer.GetString("Administratorius - vartotojas, kuris administruoja kanalą. Gali atlikti visus administravimo veiksmus, taip pat ir priskirti roles.")<br>
+            @_localizer.GetString("Moderatorius - vartotojas, kuris administruoja kanalą. Gali administruoti paparastų vartotojų žinutes.")<br>
+            @_localizer.GetString("Vartotojas - paprastas vartotojas, gali tik rašyti, trinti, redaguoti savo žinutes.")<br>
+            <hr>
+            <b>@_localizer.GetString("Administravimo komandos, kurias gali naudoti kanalo kūrėjas:") </b><br>
+            <i>-delete n</i><br>
+            @_localizer.GetString("Ištrina n žinučių")<br>
+            @_localizer.GetString("Pvz.") <br>
+            -delete 10<br>
+            -delete 5<br>
+            -delete 1000<br>
+            <br>
+            @_localizer.GetString("Žinučių filtravimui visi vartotojai gali naudotis žinučių paieškos funkcija")<br>
+        </p>
+    </div>
+
+</div>
             </div>
 <div class="col-md-2">
     <div class="chat-panel panel panel-default">
@@ -556,10 +765,10 @@
 
                 if (validURL(value)) {
                     if (!checkURL(value)) {
-                        
+
                             value = "<a href='" + value + "' target='_blank'>" + value + "</a>";
-                        
-                       
+
+
                     }
                     else {
                         value = "<a href='" + value + "' target='_blank'>" + value + "</a><br><img width='200px' src='" + value + "'></img>";
@@ -567,8 +776,8 @@
                 }
 
                 if (channel === currentChannel) {
-                    
-                    
+
+
                     if ($("#" + id).find('textarea')[0]) {
                         let txtArea = $("#" + id).find('textarea')[0].outerHTML;
 
@@ -577,7 +786,7 @@
                     else {
                         $("#" + id).html(value);
                     }
-                    
+
                 }
             });
 
@@ -1003,7 +1212,7 @@
                 data: { userName: userNm, inviterName: "@User.Identity.Name", channelId: currentChannel },
                 dataType: "json",
                 success: function (response) {
-                    
+
                     //console.log("success add user! " + response + " response");
                     connection.invoke('AddChannelUser', currentChannel);
                     connection.invoke('AddChannelToUser', userNm);
@@ -1122,10 +1331,16 @@
                 let deletebtnId = "deleteMessage" + id;
                 let saveEditbtnId = "saveEdit" + id;
                 $("#" + elId).css("visibility", "visible");
+                $("#" + elId).css("width", "fill-available");
+                $("#" + elId).css("width", "-moz-available");
                 $("#" + elId).css("width", "-webkit-fill-available");
-                $("#" + elId).css("height", "fit-content");
+                $("#" + elId).css("height", "-moz-available");
+                $("#" + elId).css("height", "-webkit-fill-available");
+                $("#" + elId).css("height", "fill-available");
                 $("#" + saveEditbtnId).css("visibility", "visible");
-                $("#" + saveEditbtnId).css("width", "fit-content");
+                $("#" + saveEditbtnId).css("width", "-moz-available");
+                $("#" + saveEditbtnId).css("width", "-webkit-fill-available");
+                $("#" + saveEditbtnId).css("width", "fill-available");
                 $("#" + contId).css("width", "0");
                 $("#" + contId).css("visibility", "hidden");
                 $("#" + editbtnId).css("width", "0");
@@ -1151,9 +1366,15 @@
                     success: function (response) {
                         $("#" + contId).css("width", "100%");
                         $("#" + contId).css("visibility", "visible");
-                        $("#" + editbtnId).css("width", "fit-content");
+                       // $("#" + editbtnId).css("width", "fit-content");
+                        $("#" + editbtnId).css("width", "-moz-available");
+                        $("#" + editbtnId).css("width", "-webkit-fill-available");
+                        $("#" + editbtnId).css("width", "fill-available");
                         $("#" + editbtnId).css("visibility", "visible");
-                        $("#" + deletebtnId).css("width", "fit-content");
+                       // $("#" + deletebtnId).css("width", "fit-content");
+                        $("#" + deletebtnId).css("width", "-moz-available");
+                        $("#" + deletebtnId).css("width", "-webkit-fill-available");
+                        $("#" + deletebtnId).css("width", "fill-available");
                         $("#" + deletebtnId).css("visibility", "visible");
                         $("#" + elId).css("visibility", "hidden");
                         $("#" + elId).css("width", "0");
@@ -1201,7 +1422,7 @@
                         $("#pfp").attr("src", "/avatars/" + response.item5);
                         $("#kickUsr").attr("onclick", "kickUser('" + id + "', '" + response.item1 + "')");
                         $("#assignRole").attr("onclick", "assignRole('" + id + "')");
-                        $('#kickUserName').text("@_localizer.GetString("Ar tikrai norite išspirti vartotoją") " + response.item1);
+                        $('#kickUserName').text("Ar tikrai norite išspirti vartotoją " + response.item1);
                         //console.log("--------------- " + response.item7);
                     },
                     failure: function (response) {
@@ -1316,9 +1537,9 @@
                          $('#channelData').append("<p><b>@_localizer.GetString("Aktyviausias vartotojas"): </b>" + response.item4 + " (" + response.item5 + " žinučių)</p>");
                         // $('#channelData').append("<p><b>Gimimo data: </b>" + response.item5 + "</p>");
                          $("#deleteChn").attr("onclick", "deleteChannel(" + response.item1 + ")");
-                         $('#deleteChannelName').text("@_localizer.GetString("Ar tikrai norite pašalinti kanalą") " + response.item2 + "?");
+                         $('#deleteChannelName').text("Ar tikrai norite pašalinti kanalą " + response.item2 + "?");
                          $("#leaveChn").attr("onclick", "leaveChannel(" + response.item1 + ")");
-                         $('#leaveChannelName').text("@_localizer.GetString("Ar tikrai norite palikti kanalą") " + response.item2 + "?");
+                         $('#leaveChannelName').text("Ar tikrai norite palikti kanalą " + response.item2 + "?");
 
                          //liktu isverst, "Kanalas", "Ar tikrai norite pasalinti/palikti kanala"
                          //tie patys kintamieji ir i ekrana keliauja ir naudojami uzklausoje
@@ -1559,6 +1780,11 @@
             return (url.match(/\.(jpeg|jpg|gif|png)$/) != null);
         }
 
+
+
+        function writeEmoji(emoji) {
+            $("#message").val($('#message').val() + emoji);
+        }
 
     </script>
 
