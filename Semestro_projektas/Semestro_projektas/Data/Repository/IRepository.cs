@@ -18,7 +18,7 @@ namespace Semestro_projektas.Data.Repository
 
         Message GetMessage(int id);
         List<Message> GetChatMessages();
-        List<Message> GetChatMessagesByChat(int chatId, string user);
+        List<Message> GetChatMessagesByChat(int chatId, string user, int count);
         void SaveMessage(Message message);
         void EditMessage(int id, string text, string user);
         void RemoveMessage(int id);

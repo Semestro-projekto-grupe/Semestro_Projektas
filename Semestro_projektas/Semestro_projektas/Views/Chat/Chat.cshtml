@@ -1034,7 +1034,11 @@
                // console.log("success get messages! " + response + " response");
                 msgs = JSON.parse(response);
                 $('#discussion').empty();
-               // console.log(msgs);
+                // console.log(msgs);
+                if (msgs.length >= 20) {
+                    $('#discussion').append("<button onclick='loadChatLogCounted(" + channel + ", 40)' style='width:100%'>@_localizer.GetString("užkrauti daugiau")...</button>");
+
+                }
                 msgs.forEach((element) => {
                     if ("@User.Identity.Name" === element.Item2) {
                         if (validURL(element.Item5)) {
@@ -1131,6 +1135,118 @@
 
             });
         }
+
+
+         function loadChatLogCounted(channel, cnt) {
+            $.ajax({
+            url: '@Url.Action("GetChatMessages")',
+                type: "POST",
+                data: { chatId: channel, userName: "@User.Identity.Name", count:cnt },
+            dataType: "json",
+            success: function (response) {
+               // console.log("success get messages! " + response + " response");
+                msgs = JSON.parse(response);
+                $('#discussion').empty();
+               // console.log(msgs);
+                let newCnt = cnt + 20;
+                $('#discussion').append("<button onclick='loadChatLogCounted(" + channel + ", " + newCnt+")' style='width:100%'>@_localizer.GetString("užkrauti daugiau")...</button>");
+                msgs.forEach((element) => {
+                    if ("@User.Identity.Name" === element.Item2) {
+                        if (validURL(element.Item5)) {
+                            if (!checkURL(element.Item5)) {
+                                $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
+                                    element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
+                                    "</strong> " + " " + formatDate(element.Item4) + "</th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
+                                    "' style='word-break: break-word; width:100%;'><a href='" + element.Item5 + "'target='_blank'>" + element.Item5 + "</a> <textarea class='form-control' id='edit" +
+                                    element.Item1 + "' style='visibility: hidden; width: 0; height: 0'>" +
+                                    element.Item5 + "</textarea></th><th style='display:inline-flex;'><button id='saveEdit" +
+                                    element.Item1 + "' onclick='saveEdit(" + element.Item1 + ")' style='visibility: hidden; width: 0;'>@_localizer.GetString("Išsaugoti")</button><button id='editMessage" +
+                                    element.Item1 + "' onclick='editMessage(" + element.Item1 + ")'  style='float:right;'>@_localizer.GetString("Redaguoti")</button><button id='deleteMessage" +
+                                    element.Item1 + "' onclick='deleteMessage(" + element.Item1 + ")'  style='float:right;'>@_localizer.GetString("Trinti")</button></th></tr>");
+                            }
+                            else {
+                                $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
+                                    element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
+                                    "</strong> " + " " + formatDate(element.Item4) + "</th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
+                                    "' style='word-break: break-word; width:100%;'><a href='" + element.Item5 + "'target='_blank'>" + element.Item5 + "</a><br><img width='200px' src='" + element.Item5 + "'></img> <textarea class='form-control' id='edit" +
+                                    element.Item1 + "' style='visibility: hidden; width: 0; height: 0'>" +
+                                    element.Item5 + "</textarea></th><th style='display:inline-flex;'><button id='saveEdit" +
+                                    element.Item1 + "' onclick='saveEdit(" + element.Item1 + ")' style='visibility: hidden; width: 0;'>@_localizer.GetString("Išsaugoti")</button><button id='editMessage" +
+                                    element.Item1 + "' onclick='editMessage(" + element.Item1 + ")'  style='float:right;'>@_localizer.GetString("Redaguoti")</button><button id='deleteMessage" +
+                                    element.Item1 + "' onclick='deleteMessage(" + element.Item1 + ")'  style='float:right;'>@_localizer.GetString("Trinti")</button></th></tr>");
+                            }
+                        }
+                        else {
+                            $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
+                                element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
+                                "</strong> " + " " + formatDate(element.Item4) + "</th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
+                                "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Item5) + "<textarea class='form-control' id='edit" +
+                                element.Item1 + "' style='visibility: hidden; width: 0; height: 0'>" +
+                                element.Item5 + "</textarea></th><th style='display:inline-flex;'><button id='saveEdit" +
+                                element.Item1 + "' onclick='saveEdit(" + element.Item1 + ")' style='visibility: hidden; width: 0;'>@_localizer.GetString("Išsaugoti")</button><button id='editMessage" +
+                                element.Item1 + "' onclick='editMessage(" + element.Item1 + ")'  style='float:right;'>@_localizer.GetString("Redaguoti")</button><button id='deleteMessage" +
+                                element.Item1 + "' onclick='deleteMessage(" + element.Item1 + ")'  style='float:right;'>@_localizer.GetString("Trinti")</button></th></tr>");
+                        }
+                    }
+                    else {
+                        if (element.Item6 > element.Item7) {
+                            if (validURL(element.Item5)) {
+                                if (!checkURL(element.Item5)) {
+                                    $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
+                                        element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
+                                        "</strong>" + " " + formatDate(element.Item4) + "</th></tr><tr class='otherMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
+                                        "' style='word-break: break-word; width:100%;'><a href='" + element.Item5 + "'target='_blank'>" + element.Item5 + "</a></th><th></th></tr>");
+                                }
+                                else {
+                                    $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
+                                        element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
+                                        "</strong>" + " " + formatDate(element.Item4) + "</th></tr><tr class='otherMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
+                                        "' style='word-break: break-word; width:100%;'><a href='" + element.Item5 + "'target='_blank'>" + element.Item5 + "</a><br><img width='200px' src='" + element.Item5 + "'></img></th><th></th></tr>");
+                                }
+                            }
+                            else {
+                                $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
+                                    element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
+                                    "</strong>" + " " + formatDate(element.Item4) + "</th></tr><tr class='otherMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
+                                    "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Item5) + "</th><th></th></tr>");
+                            }
+                        }
+                        else {
+                            if (validURL(element.Item5)) {
+                                if (!checkURL(element.Item5)) {
+                                    $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
+                                        element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
+                                        "</strong> " + " " + formatDate(element.Item4) + "</th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
+                                        "' style='word-break: break-word; width:100%;'><a href='" + element.Item5 + "'target='_blank'>" + element.Item5 + "</a></th><th style='display:inline-flex;'><button id='deleteMessage" +
+                                        element.Item1 + "' onclick='deleteOtherMessage(" + element.Item1 + ", &quot;" + element.Item2 + "&quot;)'  style='float:right;'>@_localizer.GetString("Trinti")</button></th></tr>");
+                                }
+                                else {
+                                    $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
+                                        element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
+                                        "</strong> " + " " + formatDate(element.Item4) + "</th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
+                                        "' style='word-break: break-word; width:100%;'><a href='" + element.Item5 + "'target='_blank'>" + element.Item5 + "</a><br><img width='200px' src='" + element.Item5 + "'></img></th><th style='display:inline-flex;'><button id='deleteMessage" +
+                                        element.Item1 + "' onclick='deleteOtherMessage(" + element.Item1 + ", &quot;" + element.Item2 + "&quot;)'  style='float:right;'>@_localizer.GetString("Trinti")</button></th></tr>");
+                                }
+                            }
+                            else {
+                                $('#discussion').append("<tr style='color:green; text-align:left; width:100%; display:inline-table;'><th><img src='/avatars/" + element.Item3 + "' style='width:40px;' id='profile-pic" +
+                                    element.Item1 + "'><strong> " + htmlEncode(element.Item2) +
+                                    "</strong> " + " " + formatDate(element.Item4) + "</th></tr><tr class='editableMessage' style='color:black; text-align:left; width:100%; display:table-row;'><th id='content" + element.Item1 +
+                                    "' style='word-break: break-word; width:100%;'>" + htmlEncode(element.Item5) + "</th><th style='display:inline-flex;'><button id='deleteMessage" +
+                                    element.Item1 + "' onclick='deleteOtherMessage(" + element.Item1 + ", &quot;" + element.Item2 + "&quot;)'  style='float:right;'>@_localizer.GetString("Trinti")</button></th></tr>");
+                            }
+                            }
+                    }
+                });
+                updateScroll();
+            },
+            failure: function (response) {
+                //console.log("failure getting messages!");
+            }
+
+            });
+        }
+
 
 
         async function getUsersJson() {

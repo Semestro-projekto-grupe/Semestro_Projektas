@@ -243,6 +243,9 @@
   <data name="Uždaryti" xml:space="preserve">
     <value>Close</value>
   </data>
+  <data name="užkrauti daugiau" xml:space="preserve">
+    <value>load more</value>
+  </data>
   <data name="Vardas" xml:space="preserve">
     <value>Name</value>
   </data>

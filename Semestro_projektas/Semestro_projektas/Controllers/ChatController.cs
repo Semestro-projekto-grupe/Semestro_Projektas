@@ -86,14 +86,14 @@ namespace Semestro_projektas.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> GetChatMessages(int chatId, string userName)
+        public async Task<JsonResult> GetChatMessages(int chatId, string userName, int count = 20)
         {
             List<Message> messages = null;
             //<(Id, AuthorName, Avatar, Created, Content, Role1, Role2)>
             List <(int, string, string, DateTime, string, int, int)> messagesToGet = new List<(int, string, string, DateTime, string, int, int)>();
             if (User.Identity.Name == userName)
             {
-                messages = _repo.GetChatMessagesByChat(chatId, userName);
+                messages = _repo.GetChatMessagesByChat(chatId, userName, count);
                 foreach (Message msg in messages) {
                     User usr = _repo.GetUserByName(msg.AuthorName);
                     ChannelUser chUsr = _repo.GetChannelUser(chatId, userName);

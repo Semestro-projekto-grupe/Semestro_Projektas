@@ -30,12 +30,13 @@ namespace Semestro_projektas.Data.Repository
             return _ctx.Messages.ToList();
         }
 
-        public List<Message> GetChatMessagesByChat(int chatId, string user)
+        public List<Message> GetChatMessagesByChat(int chatId, string user, int count)
         {
            // if (CheckIfChannelExists(user, chatId))
            // {
                 List<Message> messg = _ctx.Messages.Where(m => m.ChannelId == chatId).ToList();
-                return messg;
+                List<Message> skippedMsgs = messg.Skip(Math.Max(0, messg.Count - count)).ToList();
+            return skippedMsgs;
            // }
            // else
            // {
@@ -471,8 +472,10 @@ namespace Semestro_projektas.Data.Repository
             ChannelUser chUser = _ctx.ChannelUsers.FirstOrDefault(u => u.UserId == userId && u.ChannelId == channelId);
             if (chUser.Role == RoleTypes.Creator)
             {
-                List<Message> msgs = GetChatMessagesByChat(channelId, userName);
-                foreach (var msg in msgs.Skip(Math.Max(0, msgs.Count - messageCount))) {
+                List<Message> msgs = GetChatMessagesByChat(channelId, userName, messageCount);
+                //foreach (var msg in msgs.Skip(Math.Max(0, msgs.Count - messageCount))) {
+                foreach (var msg in msgs)
+                {
                     _ctx.Messages.Remove(msg);
                 }
             }
@@ -501,14 +504,14 @@ namespace Semestro_projektas.Data.Repository
 
 
         public int CountUserMessages(int channelId, string userName) {
-            List <Message> chMessages = GetChatMessagesByChat(channelId, userName);
+            List <Message> chMessages = GetChatMessagesByChat(channelId, userName, 9999999);
             User usr = GetUserByName(userName);
             return chMessages.Where(m => m.AuthorId == usr.Id).Count();
         }
 
         public int CountChannelMessages(int channelId, string userName)
         {
-            List<Message> chMessages = GetChatMessagesByChat(channelId, userName);
+            List<Message> chMessages = GetChatMessagesByChat(channelId, userName, 9999999);
             return chMessages.Count;
         }
 
